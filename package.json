@@ -1,0 +1,68 @@
+{
+  "name": "blade-runner-foundry-vtt",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Foundry VTT game System for Fria Ligan's Blade Runner RPG",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development gulp build",
+    "dev:watch": "cross-env NODE_ENV=development gulp watch",
+    "build": "cross-env NODE_ENV=production gulp build",
+    "link-project": "gulp link",
+    "clean": "gulp clean",
+    "clean:link": "gulp link --clean",
+    "bump": "cross-env NODE_ENV=production npm run lint:fix && gulp bump --r",
+    "release": "gulp release",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --ext .js --fix .",
+    "postinstall": "npx patch-package & npx husky install",
+    "upd": "npm list -g --depth=0 & npm outdated & npx npm-check -u",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt.git"
+  },
+  "keywords": [
+    "Combat Tracker",
+    "Initiative Cards",
+    "Foundry VTT",
+    "Fria Ligan",
+    "Free League"
+  ],
+  "author": "Stefouch",
+  "contributors": [
+    {
+      "name": "Stefouch",
+      "url": "https://stefouch.be"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues"
+  },
+  "homepage": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt#readme",
+  "engines": {
+    "node": "15"
+  },
+  "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^9.269.0",
+    "@types/jquery": "^3.5.14",
+    "@typhonjs-fvtt/eslint-config-foundry.js": "^0.8.0",
+    "chalk": "^4.1.2",
+    "cross-env": "^7.0.3",
+    "devmoji": "2.3.0",
+    "esbuild": "^0.14.44",
+    "esbuild-sass-plugin": "^2.2.6",
+    "eslint": "^8.18.0",
+    "eslint-config-jquery": "^3.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "execa": "^6.1.0",
+    "fs-extra-plus": "^0.6.0",
+    "gulp": "^4.0.2",
+    "husky": "^7.0.4",
+    "prettier": "^2.7.1",
+    "semver": "^7.3.7",
+    "standard-version": "^9.3.2"
+  }
+}

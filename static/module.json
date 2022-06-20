@@ -1,0 +1,52 @@
+{
+  "name": "yze-combat",
+  "title": "Year Zero Engine Combat",
+  "description": "WIP / Initiative deck.",
+  "version": "0.1.0",
+  "minimumCoreVersion": 9,
+  "compatibleCoreVersion": 9,
+  "author": "Stefouch",
+  "authors": [
+    {
+      "name": "Stefouch",
+      "discord": "Stefouch#5202",
+      "url": "https://github.com/Stefouch"
+    },
+    {
+      "name": "aMediocreDad"
+    },
+    {
+      "name": "Bithir"
+    }
+  ],
+  "contributors": ["FloRad"],
+  "localization": "",
+  "bugs": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues",
+  "media": [],
+  "scripts": [],
+  "esmodules": ["yze-combat.js"],
+  "styles": ["yze-combat.css"],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ],
+  "url": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt",
+  "readme": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/blob/main/README.md",
+  "changelog": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/blob/main/CHANGELOG.md",
+  "license": "LICENSE.txt",
+  "socket": false,
+  "manifest": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/latest/download/system.json",
+  "download": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/download/latest/yearzero-combat-fvtt.zip",
+  "flags": {
+    "allowBugReporter": true
+  }
+}

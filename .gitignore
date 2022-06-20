@@ -1,0 +1,24 @@
+# IDE
+/.vs
+/.vscode/*
+!/.vscode/extensions.json
+!/.vscode/i18n-ally-custom-framework.yml
+*.code-workspace
+
+# Node Modules
+/node_modules
+package-lock.json
+
+# Logs
+/logs
+npm-debug.log
+*.log
+
+# Local Configuration
+foundryconfig.json
+jtmConfig.json
+/*.lock
+
+# Distribution Files
+/dist
+/foundry.js
