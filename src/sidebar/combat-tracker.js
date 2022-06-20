@@ -1,4 +1,4 @@
-import { MODULE_NAME } from '@system/constants';
+import { MODULE_NAME } from '@module/constants';
 
 export default class YearZeroCombatTracker extends CombatTracker {
   // TODO https://gitlab.com/peginc/swade/-/blob/develop/src/module/sidebar/SwadeCombatTracker.ts

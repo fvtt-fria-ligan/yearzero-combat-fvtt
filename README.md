@@ -11,7 +11,7 @@ npm run dev
 
 # Then link the project
 # Unix
-ln -s dist/* /absolute/path/to/foundry/data/system-name
+ln -s dist/* /absolute/path/to/foundry/data/module-name
 
 # Windows
 mklink /J /absolute/path/to/link /absolute/path/to/this/repo/dist

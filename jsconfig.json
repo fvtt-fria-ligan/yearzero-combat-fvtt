@@ -9,7 +9,7 @@
       // "@lib/*": ["./static/lib/*"],
       // "@actor/*": ["./src/actor/*"],
       // "@item/*": ["./src/item/*"],
-      "@system/*": ["./src/system/*"],
+      "@module/*": ["src/module/*"],
       "@utils/*": ["./src/utils/*"],
       // "@components/*": ["./src/components/*"],
     }

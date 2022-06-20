@@ -12,11 +12,13 @@
  * ============================================================================
  */
 
-import { YZEC } from '@system/config';
+import { YZEC } from '@module/config';
 // import { XXX } from '@system/constants';
 // import { registerSheets } from '@system/sheets';
-import { initializeHandlebars } from '@system/handlebars';
-import { registerSystemSettings } from '@system/settings';
+import { initializeHandlebars } from '@module/handlebars';
+import { registerSystemSettings } from '@module/settings';
+import YearZeroCombat from './combat/YearZeroCombat';
+import YearZeroCombatant from './combat/YearZeroCombatant';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */
