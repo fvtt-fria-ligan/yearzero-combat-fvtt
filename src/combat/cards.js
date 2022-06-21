@@ -9,7 +9,7 @@ export default class YearZeroCards extends Cards {
    * Draws cards for initiative.
    * @param {Cards}   to          The cards document to which the cards are deposited
    * @param {number} [qty=1]      How many cards to draw
-   * @param {number} [drawMode=0] How to draw the, e.g. from the top of the deck
+   * @param {number} [drawMode=0] How to draw the cards, e.g. from the top of the deck
    * @returns {Promise.<Cards[]>} An array of drawn cards, in the order they were drawn
    * @see {@link CONST.CARD_DRAW_MODES}
    * @async
