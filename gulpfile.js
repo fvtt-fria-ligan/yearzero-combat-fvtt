@@ -19,7 +19,7 @@ const distDirectory = './dist';
 const templateExt = 'hbs';
 const staticFiles = ['lib', 'lang', 'assets', 'fonts', 'scripts', 'module.json', 'LICENSE'];
 const getDownloadURL = version =>
-  `https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/download/v${version}/yearzero-combat-fvtt_v${version}.zip`;
+  `https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/download/v${version}/yze-combat_v${version}.zip`;
 const packageJson = JSON.parse(fs.readFileSync('package.json'));
 
 const stdio = 'inherit';
@@ -130,7 +130,7 @@ function getDataPath() {
 async function linkUserData() {
   let destinationDirectory;
   if (fs.existsSync(path.resolve('static/module.json'))) {
-    destinationDirectory = 'systems';
+    destinationDirectory = 'modules';
   }
   else {
     throw new Error(`Could not find ${chalk.blueBright('module.json')}`);
