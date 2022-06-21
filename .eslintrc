@@ -14,16 +14,14 @@
     "eslint:recommended",
     "jquery",
     "@typhonjs-fvtt/eslint-config-foundry.js/0.8.0",
-    "prettier"
-    // "plugin:prettier/recommended"
-  ],
+    "prettier"  ],
   "plugins": [
     "prettier"
   ],
   "rules": {
     // "prettier/prettier": ["error"],
     "arrow-parens": ["error", "as-needed"],
-    "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
+   // "brace-style": ["error", "stroustrup", { "allowSingleLine": true }], // This one collides with prettier
     "comma-dangle": ["error", "always-multiline"],
     "comma-spacing": "error",
     "comma-style": "error",
