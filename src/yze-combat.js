@@ -17,8 +17,8 @@ import { YZEC } from '@module/config';
 // import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
-import YearZeroCombat from './combat/YearZeroCombat';
-import YearZeroCombatant from './combat/YearZeroCombatant';
+import YearZeroCombat from './combat/combat';
+import YearZeroCombatant from './combat/combatant';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */

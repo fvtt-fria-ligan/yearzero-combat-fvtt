@@ -28,7 +28,7 @@ export default class YearZeroCombat extends Combat {
    */
   async drawCard(qty = 1) {
     const deckId = 0; // TODO
-    /** @type {import('./YearZeroCards').default} */
+    /** @type {import('./cards').default} */
     const initiativeDeck = game.cards.get(deckId, { strict: true }); // strict:true throws an error if not found.
     const discardId = 0; // TODO
     const discardPile = game.cards.get(discardId, { strict: true });
