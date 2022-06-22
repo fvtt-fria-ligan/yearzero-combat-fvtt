@@ -1,21 +1,29 @@
 import { getCanvas } from '../utils/client-hooks';
 export default class YearZeroCombatant extends Combatant {
-
   async setCardValue(cardValue) {
-    return this.setFlag('yzec', 'cardValue', cardValue);
+    return this.setFlag('yze-combat', 'cardValue', cardValue);
   }
 
   get cardValue() {
-    return this.getFlag('yzce', 'cardValue');
+    return this.getFlag('yze-combat', 'cardValue');
   }
 
   get cardString() {
-    return this.getFlag('yzce', 'cardString');
+    return this.getFlag('yze-combat', 'cardString');
   }
 
   async setCardString(cardString) {
-    return this.setFlag('yzce', 'cardString', cardString);
+    return this.setFlag('yze-combat', 'cardString', cardString);
   }
+
+  get fastAction() {
+    return this.getFlag('yze-combat', 'fastAction');
+  }
+
+  get slowAction() {
+    return this.getFlag('yze-combat', 'slowAction');
+  }
+
   /**
    *
    * @param {Combatant} target    the combatant with which this combatant will swap a card
@@ -44,7 +52,7 @@ export default class YearZeroCombatant extends Combatant {
     const sortValue = tokenIndex + combatants;
     this.data.update({
       flags: {
-        yzce: {
+        'yze-combat': {
           cardValue: sortValue,
         },
       },
