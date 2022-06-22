@@ -3,9 +3,6 @@
 
 # IDE
 /.vs
-/.vscode/*
-!/.vscode/extensions.json
-!/.vscode/i18n-ally-custom-framework.yml
 *.code-workspace
 
 # Node Modules

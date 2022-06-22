@@ -21,7 +21,7 @@
   "rules": {
     // "prettier/prettier": ["error"],
     "arrow-parens": ["error", "as-needed"],
-   // "brace-style": ["error", "stroustrup", { "allowSingleLine": true }], // This one collides with prettier
+    "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
     "comma-dangle": ["error", "always-multiline"],
     "comma-spacing": "error",
     "comma-style": "error",

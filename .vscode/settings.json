@@ -1,0 +1,4 @@
+{
+  "editor.formatOnSave": false,
+  "i18n-ally.localesPaths": ["static/lang"],
+}
