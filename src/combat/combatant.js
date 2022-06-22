@@ -1,6 +1,5 @@
 import { getCanvas } from '../utils/client-hooks';
 export default class YearZeroCombatant extends Combatant {
-  // TODO https://gitlab.com/peginc/swade/-/blob/develop/src/module/documents/SwadeCombatant.ts
 
   async setCardValue(cardValue) {
     return this.setFlag('yzec', 'cardValue', cardValue);
