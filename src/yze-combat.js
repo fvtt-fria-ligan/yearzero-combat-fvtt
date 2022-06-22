@@ -19,6 +19,7 @@ import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
 import YearZeroCombat from './combat/combat';
 import YearZeroCombatant from './combat/combatant';
+import YearZeroCombatTracker from './sidebar/combat-tracker.js';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */
@@ -43,6 +44,7 @@ Hooks.once('init', () => {
   // TODO Combat
   // CONFIG.Combat.documentClass = YearZeroCombat;
   // CONFIG.Combatant.documentClass = YearZeroCombatant;
+  CONFIG.ui.combat = YearZeroCombatTracker;
 
   // registerSheets();
   initializeHandlebars();
