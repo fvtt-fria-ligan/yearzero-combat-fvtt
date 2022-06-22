@@ -124,7 +124,8 @@ function getManifest() {
 function getTargetVersion(currentVersion, release) {
   if (['major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch', 'prerelease'].includes(release)) {
     return semver.inc(currentVersion, release);
-  } else {
+  }
+  else {
     return semver.valid(release);
   }
 }
@@ -198,7 +199,8 @@ async function bumpVersion(cb) {
     fs.writeFileSync(`static/${manifest.name}`, JSON.stringify(manifest.file, null, '  '));
 
     return cb();
-  } catch (err) {
+  }
+  catch (err) {
     cb(err);
   }
 }

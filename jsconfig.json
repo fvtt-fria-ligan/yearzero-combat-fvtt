@@ -10,7 +10,7 @@
       // "@actor/*": ["./src/actor/*"],
       // "@item/*": ["./src/item/*"],
       "@module/*": ["src/module/*"],
-      "@utils/*": ["./src/utils/*"],
+      "@utils/*": ["./src/utils/*"]
       // "@components/*": ["./src/components/*"],
     }
   },

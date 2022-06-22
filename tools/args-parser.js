@@ -8,7 +8,8 @@ export default (() => {
       if (!value) {
         if (index + 1 < arr.length && !arr[index + 1].startsWith('--')) {
           value = arr.splice(index + 1, 1).join();
-        } else value = true;
+        }
+        else value = true;
       }
       acc[key.replace('--', '')] = value;
     }

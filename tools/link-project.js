@@ -13,7 +13,8 @@ try {
   DATAPATH = readFileSync(`./${FILENAME}`, 'utf-8');
   const temp = readFileSync(MODULEPATH);
   PKG = JSON.parse(temp);
-} catch (error) {
+}
+catch (error) {
   console.error(`Could not read ${c.blue('package.json')}, or ${c.blue(FILENAME)}. See error for further details.`);
   throw error;
 }
@@ -37,10 +38,12 @@ try {
         ),
       );
       process.exit(0);
-    } else rmSync(path, { recursive: true });
+    }
+    else rmSync(path, { recursive: true });
   }
   symlink();
-} catch (error) {
+}
+catch (error) {
   console.error(error);
   process.exit(0);
 }
