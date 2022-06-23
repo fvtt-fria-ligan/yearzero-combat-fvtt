@@ -1,6 +1,8 @@
 /* eslint-disable no-shadow */
+import path from 'node:path';
 import gulp from 'gulp';
 import chalk from 'chalk';
+import yaml from 'gulp-yaml';
 import * as fs from 'fs-extra-plus';
 import { execa } from 'execa';
 import semver from 'semver';
@@ -15,7 +17,7 @@ const production = process.env.NODE_ENV === 'production';
 const sourceDirectory = './src';
 const distDirectory = './dist';
 const templateExt = 'hbs';
-const staticFiles = ['lib', 'lang', 'assets', 'fonts', 'scripts', 'module.json', 'LICENSE'];
+const staticFiles = ['cards', 'module.json', 'LICENSE'];
 const getDownloadURL = version =>
   `https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/download/v${version}/yze-combat_v${version}.zip`;
 const packageJson = JSON.parse(fs.readFileSync('package.json'));
@@ -32,6 +34,10 @@ const stdio = 'inherit';
  */
 async function buildSource({ watch } = {}) {
   await esBuild({ production, watch });
+  gulp
+    .src('src/lang/**/*.{yml,yaml}')
+    .pipe(yaml({ safe: true }))
+    .pipe(gulp.dest('./dist/lang'));
 }
 
 /* ------------------------------------------ */
@@ -60,9 +66,7 @@ async function pipeTemplates() {
  */
 async function pipeStatics() {
   for (const file of staticFiles) {
-    if (fs.existsSync(`static/${file}`)) {
-      await fs.copy(`static/${file}`, `${distDirectory}/${file}`);
-    }
+    if (fs.existsSync(`static/${file}`)) await fs.copy(`static/${file}`, `${distDirectory}/${file}`);
   }
 }
 

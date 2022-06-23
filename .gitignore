@@ -7,7 +7,6 @@
 
 # Node Modules
 /node_modules
-package-lock.json
 
 # Logs
 /logs
@@ -18,6 +17,7 @@ npm-debug.log
 pathconfig
 jtmConfig.json
 /*.lock
+static/lang/foundry/
 
 # Distribution Files
 /dist
