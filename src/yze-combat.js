@@ -13,7 +13,7 @@
  */
 
 import { YZEC } from '@module/config';
-// import { XXX } from '@system/constants';
+import { MODULE_NAME } from '@module/constants';
 // import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
@@ -40,7 +40,7 @@ Hooks.once('init', () => {
   CONFIG.Cards.presets = {
     initiative: {
       label: 'YZEC.InitiativeDeckPreset',
-      src: 'systems/yze-combat/cards/initiative-deck.json',
+      src: `modules/${MODULE_NAME}/cards/initiative-deck.json`,
       type: 'deck',
     },
   };
