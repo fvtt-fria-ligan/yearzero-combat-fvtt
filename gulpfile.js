@@ -14,7 +14,6 @@ import esBuild from './esbuild.config.js';
 /* ------------------------------------------ */
 
 const production = process.env.NODE_ENV === 'production';
-const repoName = path.basename(path.resolve('.'));
 const sourceDirectory = './src';
 const distDirectory = './dist';
 const templateExt = 'hbs';
@@ -96,61 +95,6 @@ function buildWatch() {
  */
 async function cleanDist() {
   if (fs.existsSync('./dist')) await fs.remove('./dist');
-}
-
-/* ------------------------------------------ */
-/*  Link                                      */
-/* ------------------------------------------ */
-
-/**
- * Gets the data path of Foundry VTT based on what is configured in `foundryconfig.json`.
- * @returns {string} data path
- * @throws {Error} When user data path invalid (no data directory found)
- * @throws {Error} When no user data path defined in `foundryconfig.json`
- */
-function getDataPath() {
-  const config = JSON.parse(fs.readFileSync('foundryconfig.json'));
-
-  if (config?.dataPath) {
-    if (!fs.existsSync(path.resolve(config.dataPath))) {
-      throw new Error('User Data path invalid, no Data directory found');
-    }
-
-    return path.resolve(config.dataPath);
-  }
-  else {
-    throw new Error('No User Data path defined in foundryconfig.json');
-  }
-}
-
-/* ------------------------------------------ */
-
-/**
- * Links build to User Data folder.
- * @throws {Error} When could not find the `module.json`
- * @async
- */
-async function linkUserData() {
-  let destinationDirectory;
-  if (fs.existsSync(path.resolve('static/module.json'))) {
-    destinationDirectory = 'modules';
-  }
-  else {
-    throw new Error(`Could not find ${chalk.blueBright('module.json')}`);
-  }
-
-  const linkDirectory = path.resolve(getDataPath(), destinationDirectory, repoName);
-
-  if (argv.clean || argv.c) {
-    console.log(chalk.yellow(`Removing build in ${chalk.blueBright(linkDirectory)}.`));
-
-    await fs.remove(linkDirectory);
-  }
-  else if (!fs.existsSync(linkDirectory)) {
-    console.log(chalk.green(`Linking dist to ${chalk.blueBright(linkDirectory)}.`));
-    await fs.ensureDir(path.resolve(linkDirectory, '..'));
-    await fs.symlink(path.resolve(distDirectory), linkDirectory);
-  }
 }
 
 /* ------------------------------------------ */
@@ -272,7 +216,6 @@ async function bumpVersion(cb) {
 const execBuild = gulp.parallel(buildSource, pipeTemplates, pipeStatics);
 
 export const clean = cleanDist;
-export const link = linkUserData;
 export const build = gulp.series(clean, execBuild);
 export const watch = gulp.series(buildWatch);
 export const bump = gulp.series(bumpVersion, changelog, clean, execBuild);

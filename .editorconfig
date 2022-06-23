@@ -10,3 +10,6 @@ trim_trailing_whitespace = true
 
 [*.{hbs,htm,html}]
 indent_style = tab
+
+[{pathconfig,pathconfig.example}]
+insert_final_newline = false

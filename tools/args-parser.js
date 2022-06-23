@@ -3,6 +3,7 @@ export default (() => {
   if (args.length === 0) return;
   return args.reduce((acc, arg, index, arr) => {
     if (arg.startsWith('--')) {
+      // eslint-disable-next-line prefer-const
       let [key, value] = arg.split('=');
       if (!value) {
         if (index + 1 < arr.length && !arr[index + 1].startsWith('--')) {
