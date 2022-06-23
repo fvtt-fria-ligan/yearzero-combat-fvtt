@@ -10,22 +10,31 @@ export default class YearZeroCombatTracker extends CombatTracker {
     });
   }
 
-  /* ------------------------------------------ */
-
-  /** @override */
-  getData() {
-    const data = super.getData();
-    // TODO transform data
-    return data;
+  async _onCombatantControl(event) {
+    super._onCombatantControl(event);
+    const btn = event.currentTarget;
+    const li = btn.closest('.combatant');
+    const combat = this.viewed;
+    const c = combat.combatants.get(li.dataset.combatantId);
+    switch (btn.dataset.control) {
+      case 'toggleFast':
+        return c.setFlag('yze-combat', 'fast', !c.fast);
+      case 'toggleSlow':
+        return c.setFlag('yze-combat', 'slow', !c.slow);
+    }
   }
 
-  /* ------------------------------------------ */
-
-  /**
-   * @param {JQuery.<HTMLElement>} html
-   * @override
-   */
-  activateListeners(html) {
-    super.activateListeners(html);
+  /** @override */
+  async getData(options) {
+    const data = await super.getData(options);
+    return {
+      ...data,
+      turns: data.turns.map(turn => {
+        const c = this.viewed.combatants.get(turn.id);
+        turn.fast = c.fast;
+        turn.slow = c.slow;
+        return turn;
+      }),
+    };
   }
 }
