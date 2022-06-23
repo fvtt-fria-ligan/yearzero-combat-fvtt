@@ -6,10 +6,9 @@ import { MODULE_NAME } from './constants';
  * @returns {Promise}
  */
 function preloadHandlebarsTemplates() {
-  const path = `systems/${MODULE_NAME}/templates`;
-  return loadTemplates([
-    // `${path}/xxx-sheet.hbs`,
-  ]);
+  /* Esbuild defines the paths for us at build time. */
+  // eslint-disable-next-line no-undef
+  return loadTemplates(PATHS);
 }
 
 /* ------------------------------------------ */
