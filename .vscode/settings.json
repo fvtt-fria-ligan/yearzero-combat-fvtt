@@ -1,4 +1,7 @@
 {
   "editor.formatOnSave": false,
-  "i18n-ally.localesPaths": ["src/lang"],
+  "i18n-ally.localesPaths": [
+    "src/lang"
+  ],
+  "i18n-ally.keystyle": "flat",
 }
