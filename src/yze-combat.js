@@ -30,8 +30,8 @@ import YearZeroCombatTracker from './sidebar/combat-tracker';
 Hooks.once('init', () => {
   logger.log('YZEC | Initializing the Year Zero Combat Module');
 
-  // ! Hooks.call('yzeCombatInit');
-  // ! Hooks.call('yzeCombatReady');
+  // TODO Hooks.call('yzeCombatInit');
+  // TODO Hooks.call('yzeCombatReady');
 
   // Records configuration values.
   CONFIG.YZE_COMBAT = YZEC;
@@ -57,7 +57,9 @@ Hooks.once('init', () => {
 /* ------------------------------------------ */
 
 Hooks.once('ready', async () => {
-  await setupModule();
+  if (game.user.isGM) {
+    await setupModule();
+  }
   console.log('YZEC | READY!');
 });
 
