@@ -20,7 +20,7 @@ async function setupCards(stackType) {
   if (cardStack) return cardStack;
 
   // Otherwise, creates it.
-  ui.notifications.info(`YZEC.No${stackType.capitalize}Found`, { localize: true });
+  ui.notifications.info(`YZEC.No${stackType.capitalize()}Found`, { localize: true });
 
   const cardsCls = getDocumentClass('Cards');
   let preset;
@@ -30,6 +30,7 @@ async function setupCards(stackType) {
     case CARD_STACK.INITIATIVE_DECK:
       preset = CONFIG.Cards.presets.initiative;
       data = await foundry.utils.fetchJsonWithTimeout(preset.src);
+      data.name = game.i18n.localize('YZEC.InitiativeDeckName');
       break;
     case CARD_STACK.DISCARD_PILE:
       data = {
