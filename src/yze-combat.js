@@ -17,6 +17,7 @@ import { MODULE_NAME } from '@module/constants';
 // import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
+import { setupModule } from '@module/setup';
 import YearZeroCards from './combat/cards';
 import YearZeroCombat from './combat/combat';
 import YearZeroCombatant from './combat/combatant';
@@ -55,7 +56,8 @@ Hooks.once('init', () => {
 /*  Foundry VTT Ready                         */
 /* ------------------------------------------ */
 
-Hooks.once('ready', () => {
+Hooks.once('ready', async () => {
+  await setupModule();
   console.log('YZEC | READY!');
 });
 
