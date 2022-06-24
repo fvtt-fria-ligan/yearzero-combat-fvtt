@@ -9,14 +9,14 @@
   gap: 1em;
   margin: .5em;
 
-  .action-card-filter-container {
+  .card-container {
     border: none;
     filter: drop-shadow(2px 3px 2px rgba(0,0,0,.5));
     transform-origin: center left;
     transition: transform .2s ease-in,filter .2s ease-in,z-index .2s step-end;
     z-index: 1;
     
-    .result-image {
+    .card-image {
       aspect-ratio: 1/1.4;
       border: none;
       height: 75px;
@@ -25,7 +25,7 @@
     }
   }
 
-  .result-text-card {
+  .card-name {
     font-size: 1.125em;
     font-weight: bold;
     line-height: 1;
@@ -34,28 +34,28 @@
   }
 }
 
-.chat-message:last-child .initiative-draw .action-card-filter-container,
-.chat-message:last-child .initiative-draw .action-card-filter-container:hover,
-.chat-message:nth-last-of-type(2):not(:nth-of-type(2)) .initiative-draw .action-card-filter-container,
-.chat-message:nth-last-of-type(2):not(:nth-of-type(2)) .initiative-draw .action-card-filter-container:hover {
+.chat-message:last-child .initiative-draw .card-container,
+.chat-message:last-child .initiative-draw .card-container:hover,
+.chat-message:nth-last-of-type(2):not(:nth-of-type(2)) .initiative-draw .card-container,
+.chat-message:nth-last-of-type(2):not(:nth-of-type(2)) .initiative-draw .card-container:hover {
   transform-origin: bottom left;
 }
 
-.chat-message:first-child .initiative-draw .action-card-filter-container,
-.chat-message:first-child .initiative-draw .action-card-filter-container:hover,
-.chat-message:nth-of-type(2) .initiative-draw .action-card-filter-container,
-.chat-message:nth-of-type(2) .initiative-draw .action-card-filter-container:hover {
+.chat-message:first-child .initiative-draw .card-container,
+.chat-message:first-child .initiative-draw .card-container:hover,
+.chat-message:nth-of-type(2) .initiative-draw .card-container,
+.chat-message:nth-of-type(2) .initiative-draw .card-container:hover {
   transform-origin: top left;
 }
 
-.chat-message:nth-child(4n+1) .initiative-draw .action-card-filter-container {
+.chat-message:nth-child(4n+1) .initiative-draw .card-container {
   transform: rotate(2deg);
   &:hover {
     transform: rotate(0deg) scale(4.75);
   }
 }
 
-.chat-message:nth-child(4n+2) .initiative-draw .action-card-filter-container {
+.chat-message:nth-child(4n+2) .initiative-draw .card-container {
   transform: rotate(-4deg);
   &:hover {
     transform: rotate(0deg) scale(4.75);
