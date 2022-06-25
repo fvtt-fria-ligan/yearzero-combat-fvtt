@@ -1,6 +1,27 @@
 import { MODULE_NAME, CARD_STACK } from '@module/constants';
 
 /**
+ * A static class (cannot be instantiated) with utility methods
+ * to customize
+ * @static
+ */
+export class YearZeroCombatHook {
+  constructor() {
+    throw new SyntaxError('This class cannot be instantiated!');
+  }
+
+  /**
+   * Changes the default starting Initiative Deck data.
+   * @param {string} src Path to the Initiative Deck preset JSON
+   * @static
+   */
+  static setSourceForInitiativeDeckPreset(src = '') {
+    if (typeof src !== 'string') throw new Error('Source path to the Initiative Deck preset JSON must be a String');
+    CONFIG.Cards.presets.initiative.src = src;
+  }
+}
+
+/**
  * Gets the canvas (if ready).
  * @returns {Canvas}
  */
