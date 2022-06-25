@@ -1,4 +1,4 @@
-import { MODULE_NAME } from '@module/constants';
+import { MODULE_NAME, SETTINGS_KEYS } from '@module/constants';
 
 export default class YearZeroCombatTracker extends CombatTracker {
   // TODO https://gitlab.com/peginc/swade/-/blob/develop/src/module/sidebar/SwadeCombatTracker.ts
@@ -29,6 +29,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
     const data = await super.getData(options);
     return {
       ...data,
+      displaySlowAndFastActions: game.settings.get(MODULE_NAME, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS),
       turns: data.turns.map(turn => {
         const c = this.viewed.combatants.get(turn.id);
         turn.fast = c.fast;
