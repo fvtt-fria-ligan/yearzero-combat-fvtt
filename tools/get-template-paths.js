@@ -1,5 +1,5 @@
 import { readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, sep, posix } from 'node:path';
 
 const getPaths = path => {
   const paths = [];
@@ -13,4 +13,9 @@ const getPaths = path => {
 };
 
 export default (() =>
-  getPaths('./src/templates').map(templatePath => `modules/yze-combat/${templatePath.replace('src/', '')}`))();
+  getPaths('./src/templates')
+    .map(templatePath => {
+      templatePath = templatePath.split(sep).slice(1).join(posix.sep);
+      return `modules/yze-combat/${templatePath}`;
+    })
+)();

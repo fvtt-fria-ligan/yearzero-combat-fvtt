@@ -1,1 +1,5 @@
-YZEC.WARNING.InvalidDeckType: Vous ne pouvez piocher des cartes d'initiative seulement à partir d'un deck
+YZEC.InitiativeDeckName: Deck d'Initiative
+YZEC.InitiativeDeckDiscardPileName: Défausse des Cartes d'Initiative
+YZEC.NoInitiativeDeckFound: Aucun deck d'initiative trouvé, création d'un nouveau ...
+YZEC.NoInitiativeDeckDiscardPileFound: Aucune pile de défausse trouvée, création d'une nouvelle ...
+YZEC.WARNING.InvalidDeckType: Vous ne pouvez piocher des cartes d'initiative que depuis un deck

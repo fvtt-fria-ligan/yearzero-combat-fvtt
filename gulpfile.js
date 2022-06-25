@@ -34,16 +34,12 @@ const stdio = 'inherit';
  */
 async function buildSource({ watch } = {}) {
   await esBuild({ production, watch });
-  gulp
-    .src('src/lang/**/*.{yml,yaml}')
-    .pipe(yaml({ safe: true }))
-    .pipe(gulp.dest('./dist/lang'));
 }
 
 /* ------------------------------------------ */
 
 /**
- * Copies other source files.
+ * Copies all template files.
  * @async
  */
 async function pipeTemplates() {
@@ -56,6 +52,19 @@ async function pipeTemplates() {
       );
     }
   }
+}
+
+/* ------------------------------------------ */
+
+/**
+ * Creates the JSON translation files, from the Yaml ones.
+ * @async
+ */
+async function pipeTranslations() {
+  gulp
+    .src('src/lang/**/*.{yml,yaml}')
+    .pipe(yaml({ safe: true }))
+    .pipe(gulp.dest('./dist/lang'));
 }
 
 /* ------------------------------------------ */
@@ -78,6 +87,7 @@ async function pipeStatics() {
 function buildWatch() {
   buildSource({ watch: true });
   gulp.watch(`${sourceDirectory}/**/*.${templateExt}`, { ignoreInitial: false }, pipeTemplates);
+  gulp.watch(`${sourceDirectory}/lang/**/*.yml`, { ignoreInitial: false }, pipeTranslations);
   gulp.watch(
     staticFiles.map(file => `static/${file}`),
     { ignoreInitial: false },

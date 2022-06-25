@@ -3,6 +3,7 @@
 
 # IDE
 /.vs
+/.vscode/launch.json
 *.code-workspace
 
 # Node Modules

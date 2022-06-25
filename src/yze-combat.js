@@ -13,37 +13,38 @@
  */
 
 import { YZEC } from '@module/config';
-// import { XXX } from '@system/constants';
+import { MODULE_NAME } from '@module/constants';
 // import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
+import { setupModule } from '@module/setup';
+import YearZeroCards from './combat/cards';
 import YearZeroCombat from './combat/combat';
 import YearZeroCombatant from './combat/combatant';
-import YearZeroCombatTracker from './sidebar/combat-tracker.js';
+import YearZeroCombatTracker from './sidebar/combat-tracker';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */
 /* ------------------------------------------ */
 
-/**
- * Debugging
- */
-/** @__PURE__ */ (async () => {
-  CONFIG.debug.hooks = true;
-  console.warn('HOOKS DEBUG ACTIVATED: ', CONFIG.debug.hooks);
-})();
-
 Hooks.once('init', () => {
   logger.log('YZEC | Initializing the Year Zero Combat Module');
 
-  // ! Hooks.call('yzeCombatInit');
-  // ! Hooks.call('yzeCombatReady');
+  // TODO Hooks.call('yzeCombatInit');
+  // TODO Hooks.call('yzeCombatReady');
 
   // Records configuration values.
   CONFIG.YZE_COMBAT = YZEC;
-  // TODO Combat
-  // CONFIG.Combat.documentClass = YearZeroCombat;
-  // CONFIG.Combatant.documentClass = YearZeroCombatant;
+  CONFIG.Combat.documentClass = YearZeroCombat;
+  CONFIG.Combatant.documentClass = YearZeroCombatant;
+  CONFIG.Cards.documentClass = YearZeroCards;
+  CONFIG.Cards.presets = {
+    initiative: {
+      label: 'YZEC.InitiativeDeckPreset',
+      src: `modules/${MODULE_NAME}/cards/initiative-deck.json`,
+      type: 'deck',
+    },
+  };
   CONFIG.ui.combat = YearZeroCombatTracker;
 
   // registerSheets();
@@ -55,7 +56,10 @@ Hooks.once('init', () => {
 /*  Foundry VTT Ready                         */
 /* ------------------------------------------ */
 
-Hooks.once('ready', () => {
+Hooks.once('ready', async () => {
+  if (game.user.isGM) {
+    await setupModule();
+  }
   console.log('YZEC | READY!');
 });
 
