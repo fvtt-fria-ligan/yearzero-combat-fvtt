@@ -24,6 +24,8 @@ usageMatchRegex:
   - "[^\\w\\d]ui\\.notifications\\.error\\(['\"`]({key})['\"`],\\s{\\s*.*\\slocalize: true\\s*.*}"
   - "\\{\\{\\s*localize\\s+[\"']({key})['\"]\\}\\}"
   - "\\{\\{[\\w\\.\\s\\=]*\\(localize\\s+[\"']({key})['\"]\\)[\\w\\.\\s\\=]*\\}\\}"
+  - "name:\\s+[\"'](SETTINGS.{key})[\"']"
+  - "hint:\\s+[\"'](SETTINGS.{key})[\"']"
 
 # An array of strings containing refactor templates.
 # The "$1" will be replaced by the keypath specified.
