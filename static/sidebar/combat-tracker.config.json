@@ -4,14 +4,14 @@
     {
       "id": "fast-action-button",
       "icon": "fa-forward",
-      "tooltip": "Fast Action",
+      "tooltip": "YZEC.CombatTracker.fastAction",
       "eventName": "fast-action-button-clicked",
       "visibility": "owner"
     },
     {
       "id": "slow-action-button",
       "icon": "fa-play",
-      "tooltip": "Slow Action",
+      "tooltip": "YZEC.CombatTracker.slowAction",
       "eventName": "slow-action-button-clicked",
       "visibility": "owner"
     }
