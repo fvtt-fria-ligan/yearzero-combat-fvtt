@@ -1,5 +1,3 @@
-import { MODULE_NAME } from './constants';
-
 /**
  * Defines a set of template paths to pre-load.
  * Pre-loaded templates are compiled and cached for fast access when rendering.
@@ -8,7 +6,9 @@ import { MODULE_NAME } from './constants';
 function preloadHandlebarsTemplates() {
   /* Esbuild defines the paths for us at build time. */
   // eslint-disable-next-line no-undef
-  return loadTemplates(PATHS);
+  const paths = PATHS;
+  console.log('YZEC | Loading Handlebars templates:', paths);
+  return loadTemplates(paths);
 }
 
 /* ------------------------------------------ */
