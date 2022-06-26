@@ -1,4 +1,4 @@
-import { MODULE_NAME, SETTINGS_KEYS } from '@module/constants';
+import { MODULE_NAME } from '@module/constants';
 
 export default class YearZeroCombatTracker extends CombatTracker {
   // TODO https://gitlab.com/peginc/swade/-/blob/develop/src/module/sidebar/SwadeCombatTracker.ts
@@ -15,27 +15,36 @@ export default class YearZeroCombatTracker extends CombatTracker {
     const btn = event.currentTarget;
     const li = btn.closest('.combatant');
     const combat = this.viewed;
-    const c = combat.combatants.get(li.dataset.combatantId);
-    switch (btn.dataset.control) {
-      case 'toggleFast':
-        return c.setFlag('yze-combat', 'fast', !c.fast);
-      case 'toggleSlow':
-        return c.setFlag('yze-combat', 'slow', !c.slow);
-    }
+    const combatant = combat.combatants.get(li.dataset.combatantId);
+    const eventName = btn.dataset.event;
+    const eventData = {
+      combat,
+      combatant,
+      event: eventName,
+      origin: btn,
+    };
+    eventData.emit = options =>
+      game.socket.emit(`module.${MODULE_NAME}`, {
+        data: eventData,
+        options,
+      });
+    Hooks.call(`${MODULE_NAME}.${eventName}`, eventData);
   }
 
   /** @override */
   async getData(options) {
     const data = await super.getData(options);
+    const buttons = await this.#getButtonConfig();
     return {
       ...data,
-      displaySlowAndFastActions: game.settings.get(MODULE_NAME, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS),
-      turns: data.turns.map(turn => {
-        const c = this.viewed.combatants.get(turn.id);
-        turn.fast = c.fast;
-        turn.slow = c.slow;
-        return turn;
-      }),
+      buttons,
     };
+  }
+
+  /** @private */
+  async #getButtonConfig() {
+    const { src } = CONFIG.YZE_COMBAT.CombatTracker.config;
+    const { buttons } = await foundry.utils.fetchJsonWithTimeout(src);
+    return buttons;
   }
 }
