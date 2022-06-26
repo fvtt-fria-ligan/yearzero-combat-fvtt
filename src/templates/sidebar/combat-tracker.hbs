@@ -65,12 +65,14 @@
             <div class="token-name flexcol">
                 <h4>{{this.name}}</h4>
                 <div class="combatant-controls flexrow">
-                                        {{#if (and ../displaySlowAndFastActions ../user.isOwner)}}
-                    <a class="combatant-control {{#if this.fast}}active{{/if}}" title="{{localize 'COMBAT.TOGGLE_FAST'}}" data-control="toggleFast">
-                        <i class="fas fa-forward"></i></a>
-                    <a class="combatant-control {{#if this.slow}}active{{/if}}" title="{{localize 'COMBAT.TOGGLE_SLOW'}}" data-control="toggleSlow">
-                        <i class="fas fa-play"></i></a>
-                                        {{/if}}
+									 	{{#if this.owner}}
+										{{#each ../buttons}}
+										{{#if (eq visibility 'owner') }}
+                    <a class="combatant-control" title="{{localize tooltip}}" data-event={{socketEvent}}>
+                        <i class="fas {{icon}}"></i></a>
+										{{/if}}
+										{{/each}}
+										{{/if}}
                     {{#if ../user.isGM}}
                     <a class="combatant-control {{#if this.hidden}}active{{/if}}" title="{{localize 'COMBAT.ToggleVis'}}" data-control="toggleHidden">
                         <i class="fas fa-eye-slash"></i></a>

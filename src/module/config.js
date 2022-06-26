@@ -1,4 +1,4 @@
-// import * as CST from './constants.js';
+import { MODULE_NAME } from './constants.js';
 
 /**
  * The Year Zero Engine Combat configuration.
@@ -19,6 +19,12 @@ export const YZEC = {};
  * // Note: { } x3
  * <div>{{{config.Icons.buttons.xxx}}}</div>
  */
+YZEC.CombatTracker = {
+  config: {
+    src: `modules/${MODULE_NAME}/sidebar/combat-tracker.config.json`,
+  },
+};
+
 YZEC.Icons = {
   // tabs: {
   //   bio: '<i class="fas fa-align-left"></i>',
