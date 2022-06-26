@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/fvtt-fria-ligan/yearzero-combat-fvtt/main/schemas/combat-tracker.schema.json",
+  "title": "Combat Tracker Schema",
+  "description": "Defines the valid configuration for the Year Zero Combat FVTT Combat Tracker.",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "title": "Schema",
+      "description": "Pointer to the schema against which this document should be validated."
+    },
+    "buttons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "type": "string",
+            "description": "The color to display on the button. Default: 'currentColor'"
+          },
+          "eventName": {
+            "type": "string",
+            "description": "The name of the socket event to trigger when the button is clicked"
+          },
+          "icon": {
+            "type": "string",
+            "description": "The icon to display on the button. E.g. 'fa-bolt'"
+          },
+          "id": {
+            "type": "string",
+            "description": "The id of the button"
+          },
+          "tooltip": {
+            "type": "string",
+            "description": "The tooltip to display on the button"
+          },
+          "visibility": {
+            "type": "string",
+            "description": "The player the button is visible to. Default: 'all'",
+            "enum": ["gm", "owner", "all"]
+          }
+        },
+        "required": ["eventName", "icon", "id", "tooltip"],
+        "additionalProperties": false
+      }
+    },
+    "sort": {
+      "type": "string",
+      "description": "The order in which to display the combatants. Default: 'ascending'",
+      "enum": ["ascending", "descending"]
+    }
+  },
+  "required": ["buttons", "$schema"],
+  "additionalProperties": false
+}
