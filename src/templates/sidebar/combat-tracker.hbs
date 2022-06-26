@@ -68,7 +68,7 @@
 									 	{{#if this.owner}}
 										{{#each ../buttons}}
 										{{#if (eq visibility 'owner') }}
-                    <a class="combatant-control" title="{{localize tooltip}}" data-event={{socketEvent}}>
+                    <a class="combatant-control" id={{id}} data-event={{eventName}} data-tooltip="{{localize tooltip}}">
                         <i class="fas {{icon}}"></i></a>
 										{{/if}}
 										{{/each}}
