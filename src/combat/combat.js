@@ -74,10 +74,20 @@ export default class YearZeroCombat extends Combat {
     return this;
   }
 
-  /** @override */
+  /**
+   *
+   * sort the combatants by initiative order low to high
+   *
+   * @param {combatant} a
+   * @param {combatant} b
+   *
+   * @override */
   _sortCombatants(a, b) {
     if (!a || !b) return 0;
-    // TODO
+
+    if (a.cardValue < b.cardValue) return 1;
+    if (a.cardValue > b.cardValue) return -1;
+    return 0;
   }
 
   /**
@@ -115,7 +125,11 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async startCombat() {
-    // TODO
+    const combatantsIds = this.combatants
+      .filter(combatant => !combatant.isDefeated && combatant.initiative === null)
+      .map(combatant => combatant.id);
+    await this.rollInitiative(combatantsIds);
+    return super.startCombat();
   }
 
   /** @override */
@@ -125,11 +139,21 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async nextRound() {
-    // TODO
+    // TODO reset fast and slow actions for each combatant
   }
 
-  _getInitResetUpdate() {}
-  _handleStartOfTurnExpirations() {}
-  _handleEndOfTurnExpirations() {}
-  async playInitiativeSound() {}
+  // _getInitResetUpdate() {}
+  // _handleStartOfTurnExpirations() {}
+  // _handleEndOfTurnExpirations() {}
+
+  async playInitiativeSound() {
+    const data = {
+      // TODO src of sound
+      // src: 'modules/yze-combat/assets/sounds/initiative.wav'
+      volume: 0.75,
+      autoplay: true,
+      loop: false,
+    };
+    AudioHelper.playSound(data);
+  }
 }
