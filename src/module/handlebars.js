@@ -84,10 +84,6 @@ function registerHandlebarsHelpers() {
     return (a / b) * 100;
   });
 
-  Handlebars.registerHelper('getProperty', function (obj, key) {
-    return obj[key];
-  });
-
   // Handlebars.registerHelper('boxes', function (field, options) {
   //   const value = Number(options.hash.value);
   //   const min = Number(options.hash.min);
