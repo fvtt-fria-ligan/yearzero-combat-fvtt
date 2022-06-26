@@ -31,7 +31,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
         options,
       });
     Hooks.call(`${MODULE_NAME}.${eventName}`, eventData);
-    combatant.setProperty(property, !combatant.getProperty(property));
+    combatant.setFlag('yze-combat', property, !combatant.getFlag('yze-combat', property));
   }
 
   /** @override */
