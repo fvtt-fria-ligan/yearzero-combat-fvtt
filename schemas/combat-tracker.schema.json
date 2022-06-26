@@ -15,13 +15,9 @@
       "items": {
         "type": "object",
         "properties": {
-          "color": {
-            "type": "string",
-            "description": "The color to display on the button. Default: 'currentColor'"
-          },
           "eventName": {
             "type": "string",
-            "description": "The name of the socket event to trigger when the button is clicked"
+            "description": "The name of the event to trigger when the button is clicked. Note: The eventName will be prepended with 'yze-combat.' to prevent conflicts with other events. E.g. 'Hooks.on('yze-combat.foo', ...)'"
           },
           "icon": {
             "type": "string",
@@ -29,11 +25,15 @@
           },
           "id": {
             "type": "string",
-            "description": "The id of the button"
+            "description": "The id-attribute of the button"
+          },
+          "property": {
+            "type": "string",
+            "description": "The property to set on the combatant when the button is clicked. E.g. 'isDead'"
           },
           "tooltip": {
             "type": "string",
-            "description": "The tooltip to display on the button"
+            "description": "The tooltip to display when the button is hovered"
           },
           "visibility": {
             "type": "string",
@@ -41,7 +41,7 @@
             "enum": ["gm", "owner", "all"]
           }
         },
-        "required": ["eventName", "icon", "id", "tooltip"],
+        "required": ["eventName", "icon", "id", "property", "tooltip"],
         "additionalProperties": false
       }
     },
