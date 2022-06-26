@@ -1,0 +1,19 @@
+{
+  "$schema": "../../schemas/combat-tracker.schema.json",
+  "buttons": [
+    {
+      "id": "fast-action-button",
+      "icon": "fa-forward",
+      "tooltip": "Fast Action",
+      "eventName": "fast-action-button-clicked",
+      "visibility": "owner"
+    },
+    {
+      "id": "slow-action-button",
+      "icon": "fa-play",
+      "tooltip": "Slow Action",
+      "eventName": "slow-action-button-clicked",
+      "visibility": "owner"
+    }
+  ]
+}
