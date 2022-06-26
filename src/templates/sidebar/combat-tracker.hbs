@@ -1,7 +1,7 @@
 {{! Defines a partial that is used below to iterate over various button contexts}}
 {{#*inline "buttonPartial"}}
 	{{#each buttons}}
-		<a class="combatant-control {{#if (getProperty ../combatant property)}}active{{/if}}" id={{id}} data-event={{eventName}} data-property="{{property}}" data-tooltip="{{localize tooltip}}">
+		<a class="combatant-control {{#if (lookup ../combatant property)}}active{{/if}}" id={{id}} data-event={{eventName}} data-property="{{property}}" data-tooltip="{{localize tooltip}}">
 			<i class="fas {{icon}}"></i></a>
 	{{/each}}
 {{/inline}}
