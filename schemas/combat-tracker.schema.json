@@ -67,7 +67,7 @@
           "visibility": {
             "type": "string",
             "description": "The player the control is visible to. Default: 'all'",
-            "enum": ["gm", "owner", "all"]
+            "enum": ["gm", "all"]
           }
         },
         "required": ["eventName", "icon",  "label"],

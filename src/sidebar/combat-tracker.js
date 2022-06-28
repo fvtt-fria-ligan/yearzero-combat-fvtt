@@ -14,13 +14,15 @@ export default class YearZeroCombatTracker extends CombatTracker {
     const { controls } = await YearZeroCombatTracker.#getConfig();
     let index = 3;
 
-    controls.forEach(({ eventName, icon, label }) => {
+    controls.forEach(({ eventName, icon, label, visibility }) => {
       const combat = game.combat;
       const combatants = combat.combatants;
+      const condition = visibility === 'gm' ? game.user.isGM : true;
 
       contextMenu.splice(index, -1, {
         icon: `<i class="fas ${icon}"></i>`,
         name: game.i18n.localize(label),
+        condition,
         callback: li =>
           YearZeroCombatTracker.#callHook({
             combat,
