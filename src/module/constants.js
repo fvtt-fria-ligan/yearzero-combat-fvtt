@@ -15,5 +15,4 @@ export const CARD_STACK = {
 export const SETTINGS_KEYS = {
   AUTODRAW: 'autoDraw',
   MIGRATION_VERSION: 'moduleMigrationVersion',
-  SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
 };
