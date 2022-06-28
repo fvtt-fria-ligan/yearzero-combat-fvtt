@@ -14,5 +14,4 @@ export const CARD_STACK = {
 /** @enum {string} */
 export const SETTINGS_KEYS = {
   MIGRATION_VERSION: 'moduleMigrationVersion',
-  SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
 };
