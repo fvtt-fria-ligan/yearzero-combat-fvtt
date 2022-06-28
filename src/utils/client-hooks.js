@@ -1,7 +1,7 @@
 import { MODULE_NAME, CARD_STACK } from '@module/constants';
 
 /**
- * A static class (cannot be instantiated) with utility methods
+ * An abstract class (cannot be instantiated) with utility methods
  * to customize
  * @static
  */
@@ -18,6 +18,11 @@ export class YearZeroCombatHook {
   static setSourceForInitiativeDeckPreset(src = '') {
     if (typeof src !== 'string') throw new Error('Source path to the Initiative Deck preset JSON must be a String');
     CONFIG.Cards.presets.initiative.src = src;
+  }
+
+  static setSourceForCombatTrackerPreset(src = '') {
+    if (typeof src !== 'string') throw new Error('Source path to the Combat Tracker preset JSON must be a String');
+    CONFIG.YZE_COMBAT.CombatTracker.src = src;
   }
 }
 

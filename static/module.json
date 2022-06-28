@@ -43,7 +43,7 @@
   "readme": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/blob/main/README.md",
   "changelog": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/blob/main/CHANGELOG.md",
   "license": "LICENSE.txt",
-  "socket": false,
+  "socket": true,
   "manifest": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/latest/download/system.json",
   "download": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/download/latest/yearzero-combat-fvtt.zip",
   "flags": {

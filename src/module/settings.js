@@ -28,20 +28,4 @@ export function registerSystemSettings() {
     type: String,
     default: '',
   });
-
-  game.settings.register(MODULE_NAME, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS, {
-    name: 'SETTINGS.SlowAndFastActionsN',
-    hint: 'SETTINGS.SlowAndFastActionsL',
-    scope: 'world',
-    config: true,
-    type: Boolean,
-    default: true,
-    onChange: debouncedReload,
-  });
 }
-
-/**
- * Refreshes the Foundry window.
- * (Triggered by some settings with property `onChange`.)
- */
-const debouncedReload = foundry.utils.debounce(() => window.location.reload(), 100);
