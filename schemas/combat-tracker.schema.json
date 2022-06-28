@@ -14,6 +14,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "description": "The buttons to be displayed on each combatant in the combat tracker.",
         "properties": {
           "eventName": {
             "type": "string",
@@ -45,12 +46,40 @@
         "additionalProperties": false
       }
     },
+    "controls": {
+      "type": "array",
+      "description": "The controls added to the contextmenu of a combatant in the combat tracker.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "eventName": {
+            "type": "string",
+            "description": "The name of the event to trigger when the control is clicked. Note: The eventName will be prepended with 'yze-combat.' to prevent conflicts with other events. E.g. 'Hooks.on('yze-combat.foo', ...)'"
+          },
+          "icon": {
+            "type": "string",
+            "description": "The icon to display on the control. E.g. 'fa-bolt'"
+          },
+          "label": {
+            "type": "string",
+            "description": "The text to display on the control"
+          },
+          "visibility": {
+            "type": "string",
+            "description": "The player the control is visible to. Default: 'all'",
+            "enum": ["gm", "owner", "all"]
+          }
+        },
+        "required": ["eventName", "icon",  "label"],
+        "additionalProperties": false
+      }
+    },
     "sort": {
       "type": "string",
       "description": "The order in which to display the combatants. Default: 'ascending'",
       "enum": ["ascending", "descending"]
     }
   },
-  "required": ["buttons", "$schema"],
+  "required": ["buttons", "controls", "$schema"],
   "additionalProperties": false
 }

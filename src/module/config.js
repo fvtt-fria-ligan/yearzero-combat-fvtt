@@ -20,9 +20,7 @@ export const YZEC = {};
  * <div>{{{config.Icons.buttons.xxx}}}</div>
  */
 YZEC.CombatTracker = {
-  config: {
-    src: `modules/${MODULE_NAME}/sidebar/combat-tracker.config.json`,
-  },
+  src: `modules/${MODULE_NAME}/sidebar/combat-tracker.config.json`,
 };
 
 YZEC.Icons = {

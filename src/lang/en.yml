@@ -5,3 +5,4 @@ YZEC.NoInitiativeDeckDiscardPileFound: No discard pile found, creating a new one
 YZEC.WARNING.InvalidDeckType: You can only draw initiative cards from a deck
 YZEC.CombatTracker.fastAction: Fast Action
 YZEC.CombatTracker.slowAction: Slow Action
+YZEC.CombatTracker.duplicate: Duplicate
