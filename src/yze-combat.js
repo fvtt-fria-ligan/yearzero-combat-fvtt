@@ -65,17 +65,22 @@ Hooks.once('ready', async () => {
 
   console.log('YZEC | READY!');
 
-
   // TODO Remove this example before merge
 
-  // This listens for a message from the client called when the user clicks a button in the combat tracker.
+  // This listens for a message from the client called when the user clicks the slow button in the combat tracker.
   Hooks.on(`${MODULE_NAME}.slow-action-button-clicked`, data => {
     console.log('YZEC | Event', data);
     // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
     data.emit({ forGmOnly: 'secret lover' });
   });
+  // This listens for a message from the client called when the user clicks the Duplicate button in the combat tracker.
+  Hooks.on(`${MODULE_NAME}.combat-tracker-duplicate-clicked`, data => {
+    console.log('YZEC | Event', data);
+    // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
+    data.emit({ forGmOnly: 'secret lover' });
+  });
   // This listens for a message from any client that sends the socket event.
-  game.socket.on(`module.${MODULE_NAME}`, ({ data, options:{ forGmOnly } }) => {
+  game.socket.on(`module.${MODULE_NAME}`, ({ data, options: { forGmOnly } }) => {
     console.log('YZEC | Socket', game.user.isGM ? `hello, ${forGmOnly}` : 'hello regular player', data);
   });
 });
@@ -83,3 +88,6 @@ Hooks.once('ready', async () => {
 /* ------------------------------------------ */
 /*  Foundry VTT Hooks (Other)                 */
 /* ------------------------------------------ */
+
+// Appends the configured context menu buttons to the combatant context menu.
+Hooks.on('getCombatTrackerEntryContext', YearZeroCombatTracker.appendControlsToContextMenu);

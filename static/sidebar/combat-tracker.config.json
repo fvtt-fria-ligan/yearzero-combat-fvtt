@@ -17,5 +17,13 @@
       "tooltip": "YZEC.CombatTracker.slowAction",
       "visibility": "owner"
     }
+  ],
+  "controls": [
+    {
+      "eventName": "combat-tracker-duplicate-clicked",
+      "icon": "fa-clone",
+      "label": "YZEC.CombatTracker.duplicate",
+      "visibility": "owner"
+    }
   ]
 }

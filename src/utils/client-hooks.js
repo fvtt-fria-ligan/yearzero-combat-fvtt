@@ -22,7 +22,7 @@ export class YearZeroCombatHook {
 
   static setSourceForCombatTrackerPreset(src = '') {
     if (typeof src !== 'string') throw new Error('Source path to the Combat Tracker preset JSON must be a String');
-    CONFIG.YZE_COMBAT.CombatTracker.config.src = src;
+    CONFIG.YZE_COMBAT.CombatTracker.src = src;
   }
 }
 
