@@ -17,10 +17,7 @@ export function getCanvas() {
  * @returns {Cards}
  */
 export function getInitiativeDeck(strict = false) {
-  return game.cards.get(
-    game.settings.get(MODULE_NAME, CARD_STACK.INITIATIVE_DECK),
-    { strict },
-  );
+  return game.cards.get(game.settings.get(MODULE_NAME, CARD_STACK.INITIATIVE_DECK), { strict });
 }
 
 /**
@@ -29,8 +26,10 @@ export function getInitiativeDeck(strict = false) {
  * @returns {CardsPile}
  */
 export function getInitiativeDeckDiscardPile(strict = false) {
-  return game.cards.get(
-    game.settings.get(MODULE_NAME, CARD_STACK.DISCARD_PILE),
-    { strict },
-  );
+  return game.cards.get(game.settings.get(MODULE_NAME, CARD_STACK.DISCARD_PILE), { strict });
+}
+
+export function duplciateCombatant(combatant) {
+  const clone = deepClone(combatant);
+  return clone;
 }

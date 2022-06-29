@@ -24,6 +24,30 @@ export default class YearZeroCombatant extends Combatant {
     return this.getFlag('yze-combat', 'slowAction');
   }
 
+  async setDrawSize(drawSize) {
+    return this.setFlag('yze-combat', 'drawSize', drawSize);
+  }
+
+  get drawSize() {
+    return this.getFlag('yze-combat', 'drawSize');
+  }
+
+  async setKeepSize(keepSize) {
+    return this.setFlag('yze-combat', 'keepSize', keepSize);
+  }
+
+  get keepSize() {
+    return this.getFlag('yze-combat', 'keepSize');
+  }
+
+  async setKeepState(keepState) {
+    return this.setFlag('yze-combat', 'keepState', keepState);
+  }
+
+  get keepState() {
+    return this.getFlag('yze-combat', 'keepState');
+  }
+
   /**
    *
    * @param {Combatant} target    the combatant with which this combatant will swap a card

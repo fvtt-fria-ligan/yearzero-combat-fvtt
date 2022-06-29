@@ -1,6 +1,7 @@
 // eslint-disable-next-line max-len
 /** @typedef {import('@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/combat').InitiativeOptions} InitiativeOptions */
-import { getInitiativeDeck, getInitiativeDeckDiscardPile } from '../utils/client-hooks';
+import { duplciateCombatant, getInitiativeDeck, getInitiativeDeckDiscardPile } from '../utils/client-hooks';
+
 
 export default class YearZeroCombat extends Combat {
   // TODO https://gitlab.com/peginc/swade/-/blob/develop/src/module/documents/SwadeCombat.ts
@@ -28,25 +29,48 @@ export default class YearZeroCombat extends Combat {
     for (const id of ids) {
       const combatant = this.combatants.get(id, true);
       if (combatant.isDefeated) continue;
-      const drawSize = 1;
-      // TODO add hooks for more than one card to be drawn
-      // let card;
+      const drawSize = combatant.drawSize;
+      const keepSize = combatant.keepSize;
+      const keepState = combatant.keepState;
       const cards = await initiativeDeck.draw(drawSize);
-      // TODO add logic for how we handle multiple cards
-      const card = cards[0];
-      const flags = {
-        cardValue: card.data.value,
-        // cardString: card.data.name, // here if we need it!
-      };
-      const initiative = card?.data.value;
-      combatant.data.update({ initiative: initiative, 'flags.yze-combat': flags });
+      if(keepSize > 1) {
+        if(keepState === 'best') {
+          cards.sort((a, b) => a.data.value - b.data.value);
+        }
+        else if(keepState === 'worst') {
+          cards.sort((a, b) => b.data.value - a.data.value);
+        }
+        cards.splice(keepSize);
+      }
+
+      const cardImage = [];
+      const cardName = [];
+      const clones = [];
+      if (cards.length > 1) {
+        cards.forEach(card => {
+          const clone = duplciateCombatant(combatant);
+          clone.setCardValue(card.data.value);
+          cardImage.push(card.face.img);
+          cardName.push(card.data.name);
+          clones.push(clone);
+        });
+      }
+      else {
+        const card = cards[0];
+        const initiative = card?.data.value;
+        combatant.setCardValue(initiative);
+        cardImage.push(card.face.img);
+        cardName.push(card.data.name);
+      }
 
       const template = `
       <section class="initiative-card">
       <div class="initiative-card-container">
-      <img class="initiative-card-image" src="${card?.face?.img}" />
+      ${cardImage.map(img => `<img class="initiative-card-image" src="${img}" />`).join(' ')}
       </div>
-      <h4 class="result-text result-text-card">${card?.name}</h4>
+      <div class="initiative-card-name-container">
+      ${cardName.map(card => `<div class="result-text result-text-card">${card}</div>`).join(' ')}
+      </div>
       </section>`;
 
       const messageData = mergeObject(
@@ -69,6 +93,7 @@ export default class YearZeroCombat extends Combat {
     await CONFIG.ChatMessage.documentClass.createDocuments(messages);
 
     const combatants = ids.map(id => this.combatants.get(id, { strict: true }));
+    // TODO update the combat with the new combatants if we duplicated them
 
     // Return the updated Combat
     return this;
@@ -103,9 +128,43 @@ export default class YearZeroCombat extends Combat {
     return initiativeDeck.drawInitiative(discardPile, qty);
   }
 
-  // not sure we need this
-  async pickCard() {
-    // TODO
+  // present a dialog asking to define how many cards to draw
+  // ask the user to choose how many cards to keep
+  // ask the user if they keep best or worse 
+  // draw the cards based on their input
+  async setDrawQty(combatant) {
+    const template = 'modules/yze-combat/templates/combat/set-draw-qty.hbs';
+    const html = await renderTemplate(template, { data: { combatant: combatant } });
+    const buttons = {
+      draw: {
+        label: game.i18n.format('YZE.Combat.Draw'),
+        // eslint-disable-next-line no-shadow
+        callback: async html => {
+          const qty = html.find('input[name="qty"]').value;
+          const keep = html.find('input[name="keep"]').value;
+          const keepState = html.find('input[name="keepState"]').value;
+          // here is where we set those flags then we want to drawInitiative
+          const cards = await this.drawCard(qty, keep);
+          combatant.setDrawQty(qty, keep, keepState);
+          combatant.setCards(cards);
+        },
+      },
+    };
+
+    const dialog = new Dialog({
+      title: game.i18n.format('YZE.Combat.Initiative.DrawQty'),
+      content: html,
+      buttons: buttons,
+      default: {
+        qty: 1,
+        keep: 1,
+        keepState: 'best',
+      },
+      close: async () => {
+        // draw the cards happens on the drawInitiative should not be needed here
+      },
+    });
+    dialog.render(true);
   }
 
   /**
@@ -120,7 +179,7 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async resetAll() {
-    // TODO
+    // TODO set all combatants to have no initiative
   }
 
   /** @override */
@@ -134,7 +193,7 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async nextTurn() {
-    // TODO
+    // TODO advance the turn to the next combatant
   }
 
   /** @override */
