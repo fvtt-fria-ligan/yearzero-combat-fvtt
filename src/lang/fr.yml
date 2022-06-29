@@ -4,4 +4,4 @@ YZEC.NoInitiativeDeckFound: Aucun deck d'initiative trouvé, création d'un nouv
 YZEC.NoInitiativeDeckDiscardPileFound: Aucune pile de défausse trouvée, création d'une nouvelle ...
 YZEC.WARNING.InvalidDeckType: Vous ne pouvez piocher des cartes d'initiative que depuis un deck
 YZE.Combat.Initiative.NotEnoughCards: Pas assez de cartes dans le paquet pour piocher l'initiative
-YZE.Combat.Initiative.Draw: La carte d'initiative de !
+YZE.Combat.Initiative.Draw: La carte d'initiative de {name} !
