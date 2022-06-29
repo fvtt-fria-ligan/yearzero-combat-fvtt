@@ -54,7 +54,7 @@ export default class YearZeroCombat extends Combat {
           speaker: {
             scene: game.scenes?.active?.id,
             actor: combatant.actor ? combatant.actor.id : null,
-            alias: `${combatant.token.name} ${game.i18n.localize('YZE.Combat.Initiative.Draw')}`,
+            alias: game.i18n.format('YZE.Combat.Initiative.Draw', { name: combatant.token.name }),
           },
           whisper: combatant.token?.data.hidden || combatant.hidden ? game?.users?.filter(user => user.isGM) : [],
           content: template,
