@@ -48,6 +48,14 @@ export default class YearZeroCombatant extends Combatant {
     return this.getFlag('yze-combat', 'keepState');
   }
 
+  async setDrawTimes(drawTimes) {
+    return this.setFlag('yze-combat', 'keepState', drawTimes);
+  }
+
+  get drawTimes() {
+    return this.getFlag('yze-combat', 'drawTimes');
+  }
+
   /**
    *
    * @param {Combatant} target    the combatant with which this combatant will swap a card

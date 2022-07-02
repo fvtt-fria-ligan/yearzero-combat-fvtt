@@ -28,4 +28,12 @@ export function registerSystemSettings() {
     type: String,
     default: '',
   });
+
+  game.settings.register(MODULE_NAME, 'autoDraw', {
+    name: 'Default Inititive Draw Mode',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+  });
 }
