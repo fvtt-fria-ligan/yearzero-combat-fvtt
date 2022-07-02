@@ -40,7 +40,7 @@ export default class YearZeroCombat extends Combat {
    *
    * @param { messageOptions } options - the message options to use
    * @param { ids } ids - the ids of all the combatants in the combat
-   * @override 
+   * @override
    **/
   async rollInitiative(ids, options) {
     ids = typeof ids === 'string' ? [ids] : ids;
@@ -94,7 +94,7 @@ export default class YearZeroCombat extends Combat {
         else {
           const chosenCards = this.selectCards(combatant, cards);
           cards.splice(chosenCards.length);
-          for(let j = 0; j < chosenCards.length; j++) {
+          for (let j = 0; j < chosenCards.length; j++) {
             cards.splice(j, 1, chosenCards[j]);
           }
         }
@@ -226,9 +226,38 @@ export default class YearZeroCombat extends Combat {
   async selectCards(combatant, cards) {
     const template = 'modules/yze-combat/templates/combat/select-cards.hbs';
     const html = await renderTemplate(template, { data: { combatant: combatant, cards: cards } });
-    const keep = combatant.keep;
+    const keep = [];
+    const buttons = {
+      ok: {
+        icon: '<i class="fas fa-check"></i>',
+        label: game.i18n.format('YZE.OK'),
+        // eslint-disable-next-line no-shadow
+        callback: html => {
+          const chosenCards = html.findAll('input[type="checkbox"]:checked');
+          const chosenCardsIds = chosenCards.map(card => card.data.id);
+          chosenCardsIds.forEach(id => {
+            keep.push(cards.find(card => card.id === id));
+          });
+        },
+      },
+    };
 
-    return;
+    return new Promise(resolve => {
+      new Dialog({
+        title: game.i18n.format('YZE.Combat.SelectCard', {
+          name: combatant.token.name,
+        }),
+        content: html,
+        buttons: buttons,
+        default: 'ok',
+        close: async () => {
+          if (!keep) {
+            keep.push(cards[0]);
+          }
+          resolve(keep);
+        },
+      }).render(true);
+    });
   }
 
   /**

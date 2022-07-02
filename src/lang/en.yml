@@ -3,5 +3,9 @@ YZEC.InitiativeDeckDiscardPileName: Initiative Cards Discard Pile
 YZEC.NoInitiativeDeckFound: No initiative deck found, creating a new one...
 YZEC.NoInitiativeDeckDiscardPileFound: No discard pile found, creating a new one...
 YZEC.WARNING.InvalidDeckType: You can only draw initiative cards from a deck
-YZE.Combat.Initiative.Draw: {name}'s Initiative Card!
+YZE.Combat.Initiative.Draw: {name}/'s Initiative Card!
 YZE.Combat.Initiative.NotEnoughCards: Not Enough Cards in the Deck to Draw Initiative
+YZE.Combat.Draw: Set Draw
+YZE.Combat.Initiative.DrawQty: How many Cards to Draw
+YZE.OK: Okay
+YZE.Combat.SelectCard: Choose Card(s) to Keep
