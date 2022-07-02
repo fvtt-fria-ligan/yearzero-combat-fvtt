@@ -272,7 +272,14 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async resetAll() {
-    // TODO set all combatants to have no initiative
+    for (const combatant of this.combatants) {
+      const update = this._getInitResetUpdate(combatant);
+      if (update) combatant.data.update(update);
+    }
+    return this.update(
+      { turn: 0, combatants: this.combatants.toObject() },
+      { diff: false },
+    );
   }
 
   /** @override */
@@ -284,19 +291,6 @@ export default class YearZeroCombat extends Combat {
     return super.startCombat();
   }
 
-  /** @override */
-  async nextTurn() {
-    // TODO advance the turn to the next combatant
-  }
-
-  /** @override */
-  async nextRound() {
-    // TODO reset fast and slow actions for each combatant
-  }
-
-  // _getInitResetUpdate() {}
-  // _handleStartOfTurnExpirations() {}
-  // _handleEndOfTurnExpirations() {}
 
   async playInitiativeSound() {
     const data = {
