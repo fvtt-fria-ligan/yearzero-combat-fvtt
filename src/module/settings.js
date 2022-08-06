@@ -29,6 +29,15 @@ export function registerSystemSettings() {
     default: '',
   });
 
+  game.settings.register(MODULE_NAME, SETTINGS_KEYS.AUTODRAW, {
+    name: 'SETTINGS.AutoDrawN',
+    hint: 'SETTINGS.AutoDrawH',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+  });
+
   game.settings.register(MODULE_NAME, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS, {
     name: 'SETTINGS.SlowAndFastActionsN',
     hint: 'SETTINGS.SlowAndFastActionsL',
