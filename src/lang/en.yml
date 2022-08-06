@@ -3,9 +3,11 @@ YZEC.InitiativeDeckDiscardPileName: Initiative Cards Discard Pile
 YZEC.NoInitiativeDeckFound: No initiative deck found, creating a new one...
 YZEC.NoInitiativeDeckDiscardPileFound: No discard pile found, creating a new one...
 YZEC.WARNING.InvalidDeckType: You can only draw initiative cards from a deck
-YZE.Combat.Initiative.Draw: {name}/'s Initiative Card!
-YZE.Combat.Initiative.NotEnoughCards: Not Enough Cards in the Deck to Draw Initiative
-YZE.Combat.Draw: Set Draw
-YZE.Combat.Initiative.DrawQty: How many Cards to Draw
-YZE.OK: Okay
-YZE.Combat.SelectCard: Choose Card(s) to Keep
+YZEC.Combat.Initiative.Draw: \{name\}'s Initiative Card!
+YZEC.Combat.Initiative.NotEnoughCards: Not Enough Cards in the Deck to Draw Initiative
+YZEC.Combat.Draw: Set Draw
+YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
+YZEC.OK: Okay
+YZEC.Combat.SelectCard: Choose Card(s) to Keep
+SETTINGS.SlowAndFastActionsN: Enable Slow & Fast Actions
+SETTINGS.SlowAndFastActionsL: Whether to show additional buttons for Slow & Fast Actions in the Combat Tracker.

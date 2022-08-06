@@ -1,16 +1,16 @@
 // ? scope: world (gm), client (player)
 // ? config: true (visible)
 
-import { CARD_STACK, MODULE_NAME } from './constants.js';
+import { CARD_STACK, MODULE_NAME, SETTINGS_KEYS } from './constants.js';
 
 export function registerSystemSettings() {
 
-  game.settings.register(MODULE_NAME, 'moduleMigrationVersion', {
+  game.settings.register(MODULE_NAME, SETTINGS_KEYS.MIGRATION_VERSION, {
     name: 'Module Migration Version',
     scope: 'world',
     config: false,
     type: String,
-    default: '',
+    default: '0.0.0',
   });
 
   game.settings.register(MODULE_NAME, CARD_STACK.INITIATIVE_DECK, {
@@ -35,5 +35,22 @@ export function registerSystemSettings() {
     config: true,
     type: Boolean,
     default: true,
+    onChange: debouncedReload,
+  });
+
+  game.settings.register(MODULE_NAME, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS, {
+    name: 'SETTINGS.SlowAndFastActionsN',
+    hint: 'SETTINGS.SlowAndFastActionsL',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    onChange: debouncedReload,
   });
 }
+
+/**
+ * Refreshes the Foundry window.
+ * (Triggered by some settings with property `onChange`.)
+ */
+const debouncedReload = foundry.utils.debounce(() => window.location.reload(), 100);

@@ -18,6 +18,7 @@ import { MODULE_NAME } from '@module/constants';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
 import { setupModule } from '@module/setup';
+import { YearZeroCombatHook } from '@utils/client-hooks';
 import YearZeroCards from './combat/cards';
 import YearZeroCombat from './combat/combat';
 import YearZeroCombatant from './combat/combatant';
@@ -29,9 +30,6 @@ import YearZeroCombatTracker from './sidebar/combat-tracker';
 
 Hooks.once('init', () => {
   logger.log('YZEC | Initializing the Year Zero Combat Module');
-
-  // TODO Hooks.call('yzeCombatInit');
-  // TODO Hooks.call('yzeCombatReady');
 
   // Records configuration values.
   CONFIG.YZE_COMBAT = YZEC;
@@ -47,6 +45,8 @@ Hooks.once('init', () => {
   };
   CONFIG.ui.combat = YearZeroCombatTracker;
 
+  Hooks.call('yzeCombatInit', YearZeroCombatHook);
+
   // registerSheets();
   initializeHandlebars();
   registerSystemSettings();
@@ -60,6 +60,9 @@ Hooks.once('ready', async () => {
   if (game.user.isGM) {
     await setupModule();
   }
+
+  // TODO Hooks.call('yzeCombatReady');
+
   console.log('YZEC | READY!');
 });
 

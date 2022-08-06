@@ -1,5 +1,4 @@
 /* eslint-disable no-shadow */
-import path from 'node:path';
 import gulp from 'gulp';
 import chalk from 'chalk';
 import yaml from 'gulp-yaml';
@@ -223,7 +222,7 @@ async function bumpVersion(cb) {
 /*  Scripts                                   */
 /* ------------------------------------------ */
 
-const execBuild = gulp.parallel(buildSource, pipeTemplates, pipeStatics);
+const execBuild = gulp.parallel(buildSource, pipeTemplates, pipeTranslations, pipeStatics);
 
 export const clean = cleanDist;
 export const build = gulp.series(clean, execBuild);
