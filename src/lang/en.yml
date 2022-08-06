@@ -10,4 +10,8 @@ YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
 YZEC.OK: Okay
 YZEC.Combat.SelectCard: Choose Card(s) to Keep
 SETTINGS.SlowAndFastActionsN: Enable Slow & Fast Actions
-SETTINGS.SlowAndFastActionsL: Whether to show additional buttons for Slow & Fast Actions in the Combat Tracker.
+SETTINGS.SlowAndFastActionsL: >-
+  Whether to show additional buttons for Slow & Fast Actions in the Combat
+  Tracker.
+SETTINGS.AutoDrawN: Default Initiative Draw Mode
+SETTINGS.AutoDrawH: Whether to automatically draw initiative cards.
