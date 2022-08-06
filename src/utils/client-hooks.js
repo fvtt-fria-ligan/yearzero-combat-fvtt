@@ -50,7 +50,7 @@ export function getInitiativeDeckDiscardPile(strict = false) {
   return game.cards.get(game.settings.get(MODULE_NAME, CARD_STACK.DISCARD_PILE), { strict });
 }
 
-export function duplciateCombatant(combatant) {
+export function duplicateCombatant(combatant) {
   const clone = deepClone(combatant);
   return clone;
 }

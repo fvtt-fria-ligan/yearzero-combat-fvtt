@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-len
 /** @typedef {import('@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/combat').InitiativeOptions} InitiativeOptions */
-import { duplciateCombatant, getInitiativeDeck, getInitiativeDeckDiscardPile } from '../utils/client-hooks';
+import { duplicateCombatant, getInitiativeDeck, getInitiativeDeckDiscardPile } from '../utils/client-hooks';
 
 export default class YearZeroCombat extends Combat {
   // TODO https://gitlab.com/peginc/swade/-/blob/develop/src/module/documents/SwadeCombat.ts
@@ -62,7 +62,7 @@ export default class YearZeroCombat extends Combat {
     }
 
     if (totalKeep > initiativeDeck.availableCards.length) {
-      const message = game.i18n.format('YZE.Combat.Initiative.NotEnoughCards', {
+      const message = game.i18n.format('YZEC.Combat.Initiative.NotEnoughCards', {
         count: totalKeep,
         available: initiativeDeck.availableCards.length,
       });
@@ -100,7 +100,7 @@ export default class YearZeroCombat extends Combat {
         }
         if (cards.length > 1) {
           cards.forEach(card => {
-            const clone = duplciateCombatant(combatant);
+            const clone = duplicateCombatant(combatant);
             clone.setCardValue(card.data.value);
             cardImage.push(card.face.img);
             cardName.push(card.data.name);
@@ -131,7 +131,7 @@ export default class YearZeroCombat extends Combat {
           speaker: {
             scene: game.scenes?.active?.id,
             actor: combatant.actor ? combatant.actor.id : null,
-            alias: game.i18n.format('YZE.Combat.Initiative.Draw', { name: combatant.token.name }),
+            alias: game.i18n.format('YZEC.Combat.Initiative.Draw', { name: combatant.token.name }),
           },
           whisper: combatant.token?.data.hidden || combatant.hidden ? game?.users?.filter(user => user.isGM) : [],
           content: template,
@@ -185,7 +185,7 @@ export default class YearZeroCombat extends Combat {
     const html = await renderTemplate(template, { data: { combatant: combatant } });
     const buttons = {
       draw: {
-        label: game.i18n.format('YZE.Combat.Draw'),
+        label: game.i18n.format('YZEC.Combat.Draw'),
         // eslint-disable-next-line no-shadow
         callback: async html => {
           const qty = html.find('input[name="qty"]').value;
@@ -200,7 +200,7 @@ export default class YearZeroCombat extends Combat {
     };
 
     const dialog = new Dialog({
-      title: game.i18n.format('YZE.Combat.Initiative.DrawQty'),
+      title: game.i18n.format('YZEC.Combat.Initiative.DrawQty'),
       content: html,
       buttons: buttons,
       default: {
@@ -230,7 +230,7 @@ export default class YearZeroCombat extends Combat {
     const buttons = {
       ok: {
         icon: '<i class="fas fa-check"></i>',
-        label: game.i18n.format('YZE.OK'),
+        label: game.i18n.format('YZEC.OK'),
         // eslint-disable-next-line no-shadow
         callback: html => {
           const chosenCards = html.findAll('input[type="checkbox"]:checked');
@@ -244,7 +244,7 @@ export default class YearZeroCombat extends Combat {
 
     return new Promise(resolve => {
       new Dialog({
-        title: game.i18n.format('YZE.Combat.SelectCard', {
+        title: game.i18n.format('YZEC.Combat.SelectCard', {
           name: combatant.token.name,
         }),
         content: html,
