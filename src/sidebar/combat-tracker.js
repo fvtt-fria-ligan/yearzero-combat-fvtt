@@ -11,12 +11,19 @@ export default class YearZeroCombatTracker extends CombatTracker {
   }
 
   static async appendControlsToContextMenu(_, contextMenu) {
+    // The combat tracker will initialize context menus regardless of there being a combat active
+    if (!game.combat) return;
+
+    // Scoped consts
+    const combat = game.combat;
+    const combatants = combat.combatants;
     const { controls } = await YearZeroCombatTracker.#getConfig();
+
+    // This is the base index at which the controls will be inserted.
+    // The preceding controls will (in a vanilla scenario) be the "Attack" and "End Turn" buttons.
     let index = 3;
 
     controls.forEach(({ eventName, icon, label, visibility }) => {
-      const combat = game.combat;
-      const combatants = combat.combatants;
       const condition = visibility === 'gm' ? game.user.isGM : true;
 
       contextMenu.splice(index, -1, {

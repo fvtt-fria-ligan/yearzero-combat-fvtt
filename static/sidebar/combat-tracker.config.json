@@ -23,7 +23,7 @@
       "eventName": "combat-tracker-duplicate-clicked",
       "icon": "fa-clone",
       "label": "YZEC.CombatTracker.duplicate",
-      "visibility": "owner"
+      "visibility": "all"
     }
   ]
 }

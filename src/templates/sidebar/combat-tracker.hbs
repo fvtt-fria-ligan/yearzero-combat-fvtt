@@ -1,12 +1,13 @@
 {{! Defines a partial that is used below to iterate over various button contexts}}
 {{#*inline "buttonPartial"}}
 	{{#each buttons}}
-		<a class="combatant-control {{#if (lookup ../combatant property)}}active{{/if}}" id={{id}} data-event={{eventName}} data-property="{{property}}" data-tooltip="{{localize tooltip}}">
+		<a class="combatant-control {{#if (lookup ../combatant property)}}active{{/if}}" id={{id}} data-event={{eventName}}
+			data-property="{{property}}" data-tooltip="{{localize tooltip}}">
 			<i class="fas {{icon}}"></i></a>
 	{{/each}}
 {{/inline}}
 
-<section class="tab sidebar-tab directory flexcol" id="combat" data-tab="combat">
+<section class="tab sidebar-tab directory flexcol combat-sidebar" id="combat" data-tab="combat">
 	<header id="combat-round">
 		{{#if user.isGM}}
 			<nav class="encounters flexrow">
@@ -15,12 +16,12 @@
 				</a>
 				{{#if combatCount}}
 					<a class="combat-cycle" title="{{localize 'COMBAT.EncounterPrevious'}}"
-						{{#if previousId}}data-combat-id="{{previousId}}" {{else}}disabled{{/if}}>
+						{{#if previousId}}data-document-id="{{previousId}}" {{else}}disabled{{/if}}>
 						<i class="fas fa-caret-left"></i>
 					</a>
 					<h4 class="encounter">{{localize "COMBAT.Encounter"}} {{currentIndex}} / {{combatCount}}</h4>
-					<a class="combat-cycle" title="{{localize 'COMBAT.EncounterNext'}}" {{#if nextId}}data-combat-id="{{nextId}}"
-						{{else}}disabled{{/if}}>
+					<a class="combat-cycle" title="{{localize 'COMBAT.EncounterNext'}}"
+						{{#if nextId}}data-document-id="{{nextId}}" {{else}}disabled{{/if}}>
 						<i class="fas fa-caret-right"></i>
 					</a>
 				{{/if}}
@@ -44,13 +45,13 @@
 			{{/if}}
 
 			{{#if combatCount}}
-				{{#if combat.data.round}}
-					<h3 class="encounter-title">{{localize 'COMBAT.Round'}} {{combat.data.round}}</h3>
+				{{#if combat.round}}
+					<h3 class="encounter-title noborder">{{localize 'COMBAT.Round'}} {{combat.round}}</h3>
 				{{else}}
-					<h3 class="encounter-title">{{localize 'COMBAT.NotStarted'}}</h3>
+					<h3 class="encounter-title noborder">{{localize 'COMBAT.NotStarted'}}</h3>
 				{{/if}}
 			{{else}}
-				<h3 class="encounter-title">{{localize "COMBAT.None"}}</h3>
+				<h3 class="encounter-title noborder">{{localize "COMBAT.None"}}</h3>
 			{{/if}}
 
 			{{#if user.isGM}}
@@ -85,10 +86,17 @@
 							{{> buttonPartial combatant=this buttons=../buttons.gmButtons}}
 							<a class="combatant-control {{#if this.hidden}}active{{/if}}" title="{{localize 'COMBAT.ToggleVis'}}"
 								data-control="toggleHidden">
-								<i class="fas fa-eye-slash"></i></a>
+								<i class="fas fa-eye-slash"></i>
+							</a>
 							<a class="combatant-control {{#if this.defeated}}active{{/if}}" title="{{localize 'COMBAT.ToggleDead'}}"
 								data-control="toggleDefeated">
-								<i class="fas fa-skull"></i></a>
+								<i class="fas fa-skull"></i>
+							</a>
+						{{/if}}
+						{{#if this.canPing}}
+							<a class="combatant-control" title="{{localize 'COMBAT.PingCombatant'}}" data-control="pingCombatant">
+								<i class="fa-solid fa-bullseye-arrow"></i>
+							</a>
 						{{/if}}
 						<div class="token-effects">
 							{{#each this.effects}}
