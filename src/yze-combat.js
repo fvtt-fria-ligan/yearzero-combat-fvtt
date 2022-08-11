@@ -74,7 +74,7 @@ Hooks.once('ready', async () => {
     data.emit({ forGmOnly: 'secret lover' });
   });
   // This listens for a message from the client called when the user clicks the Duplicate button in the combat tracker.
-  Hooks.on(`${MODULE_NAME}.combat-tracker-duplicate-clicked`, data => {
+  Hooks.on(`${MODULE_NAME}.combat-tracker-duplicate-button-clicked`, data => {
     console.log('YZEC | Event', data);
     // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
     data.emit({ forGmOnly: 'secret lover' });

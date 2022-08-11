@@ -20,7 +20,7 @@
   ],
   "controls": [
     {
-      "eventName": "combat-tracker-duplicate-clicked",
+      "eventName": "combat-tracker-duplicate-button-clicked",
       "icon": "fa-clone",
       "label": "YZEC.CombatTracker.duplicate",
       "visibility": "all"
