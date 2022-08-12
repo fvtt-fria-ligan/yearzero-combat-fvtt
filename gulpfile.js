@@ -16,7 +16,7 @@ const production = process.env.NODE_ENV === 'production';
 const sourceDirectory = './src';
 const distDirectory = './dist';
 const templateExt = 'hbs';
-const staticFiles = ['cards', 'module.json', 'LICENSE'];
+const staticFiles = ['cards', 'LICENSE', 'module.json', 'sidebar'];
 const getDownloadURL = version =>
   `https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/download/v${version}/yze-combat_v${version}.zip`;
 const packageJson = JSON.parse(fs.readFileSync('package.json'));

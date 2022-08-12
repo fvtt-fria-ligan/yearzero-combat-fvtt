@@ -18,7 +18,7 @@ npm-debug.log
 pathconfig
 jtmConfig.json
 /*.lock
-static/lang/foundry/
+src/lang/foundry
 
 # Distribution Files
 /dist

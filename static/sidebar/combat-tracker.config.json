@@ -1,0 +1,29 @@
+{
+  "$schema": "../../schemas/combat-tracker.schema.json",
+  "buttons": [
+    {
+      "eventName": "fast-action-button-clicked",
+      "icon": "fa-forward",
+      "id": "fast-action-button",
+      "property": "fast",
+      "tooltip": "YZEC.CombatTracker.fastAction",
+      "visibility": "owner"
+    },
+    {
+      "eventName": "slow-action-button-clicked",
+      "icon": "fa-play",
+      "id": "slow-action-button",
+      "property": "slow",
+      "tooltip": "YZEC.CombatTracker.slowAction",
+      "visibility": "owner"
+    }
+  ],
+  "controls": [
+    {
+      "eventName": "combat-tracker-duplicate-button-clicked",
+      "icon": "fa-clone",
+      "label": "YZEC.CombatTracker.duplicate",
+      "visibility": "all"
+    }
+  ]
+}
