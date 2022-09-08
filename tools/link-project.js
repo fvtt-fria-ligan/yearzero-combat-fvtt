@@ -10,7 +10,7 @@ let DATAPATH;
 let PKG;
 
 try {
-  DATAPATH = readFileSync(`./${FILENAME}`, 'utf-8');
+  DATAPATH = readFileSync(`./${FILENAME}`, 'utf-8').trim();
   const temp = readFileSync(MODULEPATH);
   PKG = JSON.parse(temp);
 }
