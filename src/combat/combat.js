@@ -292,14 +292,13 @@ export default class YearZeroCombat extends Combat {
   }
 
 
-  async playInitiativeSound() {
+  playInitiativeSound() {
     const data = {
-      // TODO src of sound
-      // src: 'modules/yze-combat/assets/sounds/initiative.wav'
+      src: 'modules/yze-combat/assets/sounds/card-flip.wav',
       volume: 0.75,
       autoplay: true,
       loop: false,
     };
-    AudioHelper.playSound(data);
+    return AudioHelper.play(data);
   }
 }
