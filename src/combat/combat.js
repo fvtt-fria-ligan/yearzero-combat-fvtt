@@ -42,7 +42,7 @@ export default class YearZeroCombat extends Combat {
    * @param { ids } ids - the ids of all the combatants in the combat
    * @override
    **/
-  async rollInitiative(ids, options) {
+  async rollInitiative(ids, options = {}) {
     ids = typeof ids === 'string' ? [ids] : ids;
     const initiativeDeck = getInitiativeDeck(true);
     const { messageOptions } = options;
@@ -52,7 +52,7 @@ export default class YearZeroCombat extends Combat {
     const updatedCombatants = [];
 
     const totalKeep = ids.reduce((acc, id) => {
-      const combatant = this.this.combatants.get(id, true);
+      const combatant = this.combatants.get(id, true);
       return acc + combatant.keepSize * combatant.drawTimes;
     }, 0);
 
@@ -117,20 +117,21 @@ export default class YearZeroCombat extends Combat {
         }
       }
       const template = `
-      <section class="initiative-card">
-      <div class="initiative-card-container">
-      ${cardImage.map(img => `<img class="initiative-card-image" src="${img}" />`).join(' ')}
-      </div>
-      <div class="initiative-card-name-container">
-      ${cardName.map(card => `<div class="result-text result-text-card">${card}</div>`).join(' ')}
-      </div>
-      </section>`;
+<section class="initiative-card">
+  <div class="initiative-card-container">
+    ${cardImage.map(img => `<img class="initiative-card-image" src="${img}"/>`).join(' ')}
+  </div>
+  <div class="initiative-card-name-container">
+    ${cardName.map(card => `<div class="result-text result-text-card">${card}</div>`).join(' ')}
+  </div>
+</section>`;
 
       const messageData = mergeObject(
         {
           speaker: {
             scene: game.scenes?.active?.id,
             actor: combatant.actor ? combatant.actor.id : null,
+            token: combatant.token?.id,
             alias: game.i18n.format('YZEC.Combat.Initiative.Draw', { name: combatant.token.name }),
           },
           whisper: combatant.token?.hidden || combatant.hidden ? game?.users?.filter(user => user.isGM) : [],
@@ -140,7 +141,7 @@ export default class YearZeroCombat extends Combat {
       );
       chatMessages.push(messageData);
     }
-    await this.update({ combatants: updatedCombatants.toObject() }, { diff: false });
+    await this.update({ combatants: updatedCombatants }, { diff: false });
     this.playInitiativeSound();
     await CONFIG.ChatMessage.documentClass.createDocuments(chatMessages);
 
