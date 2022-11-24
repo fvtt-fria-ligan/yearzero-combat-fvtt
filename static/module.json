@@ -1,11 +1,13 @@
 {
-  "name": "yze-combat",
+  "id": "yze-combat",
   "title": "Year Zero Engine Combat",
   "description": "WIP / Initiative deck.",
   "version": "0.1.0",
-  "minimumCoreVersion": 9,
-  "compatibleCoreVersion": 9,
-  "author": "Stefouch",
+  "compatibility": {
+    "minimum": 10,
+    "verified": "10.290",
+    "maximum": 11
+  },
   "authors": [
     {
       "name": "Stefouch",
