@@ -3,7 +3,7 @@
  */
 
 /** @enum {string} */
-export const MODULE_NAME = 'yze-combat';
+export const MODULE_ID = 'yze-combat';
 
 /** @enum {string} */
 export const CARD_STACK = {

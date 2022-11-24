@@ -1,4 +1,4 @@
-import { MODULE_NAME, CARD_STACK } from '@module/constants';
+import { MODULE_ID, CARD_STACK } from '@module/constants';
 
 /**
  * An abstract class (cannot be instantiated) with utility methods
@@ -43,7 +43,7 @@ export function getCanvas() {
  * @returns {Cards}
  */
 export function getInitiativeDeck(strict = false) {
-  return game.cards.get(game.settings.get(MODULE_NAME, CARD_STACK.INITIATIVE_DECK), { strict });
+  return game.cards.get(game.settings.get(MODULE_ID, CARD_STACK.INITIATIVE_DECK), { strict });
 }
 
 /**
@@ -52,7 +52,7 @@ export function getInitiativeDeck(strict = false) {
  * @returns {CardsPile}
  */
 export function getInitiativeDeckDiscardPile(strict = false) {
-  return game.cards.get(game.settings.get(MODULE_NAME, CARD_STACK.DISCARD_PILE), { strict });
+  return game.cards.get(game.settings.get(MODULE_ID, CARD_STACK.DISCARD_PILE), { strict });
 }
 
 export function duplicateCombatant(combatant) {

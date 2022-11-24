@@ -1,4 +1,4 @@
-import { MODULE_NAME } from './constants.js';
+import { MODULE_ID } from './constants.js';
 
 /**
  * The Year Zero Engine Combat configuration.
@@ -20,7 +20,7 @@ export const YZEC = {};
  * <div>{{{config.Icons.buttons.xxx}}}</div>
  */
 YZEC.CombatTracker = {
-  src: `modules/${MODULE_NAME}/sidebar/combat-tracker.config.json`,
+  src: `modules/${MODULE_ID}/sidebar/combat-tracker.config.json`,
 };
 
 YZEC.Icons = {

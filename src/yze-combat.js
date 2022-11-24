@@ -13,7 +13,7 @@
  */
 
 import { YZEC } from '@module/config';
-import { MODULE_NAME } from '@module/constants';
+import { MODULE_ID } from '@module/constants';
 // import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
@@ -39,7 +39,7 @@ Hooks.once('init', () => {
   CONFIG.Cards.presets = {
     initiative: {
       label: 'YZEC.InitiativeDeckPreset',
-      src: `modules/${MODULE_NAME}/cards/initiative-deck.json`,
+      src: `modules/${MODULE_ID}/cards/initiative-deck.json`,
       type: 'deck',
     },
   };
@@ -68,19 +68,19 @@ Hooks.once('ready', async () => {
   // TODO Remove this example before merge
 
   // This listens for a message from the client called when the user clicks the slow button in the combat tracker.
-  Hooks.on(`${MODULE_NAME}.slow-action-button-clicked`, data => {
+  Hooks.on(`${MODULE_ID}.slow-action-button-clicked`, data => {
     console.log('YZEC | Event', data);
     // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
     data.emit({ forGmOnly: 'secret lover' });
   });
   // This listens for a message from the client called when the user clicks the Duplicate button in the combat tracker.
-  Hooks.on(`${MODULE_NAME}.combat-tracker-duplicate-button-clicked`, data => {
+  Hooks.on(`${MODULE_ID}.combat-tracker-duplicate-button-clicked`, data => {
     console.log('YZEC | Event', data);
     // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
     data.emit({ forGmOnly: 'secret lover' });
   });
   // This listens for a message from any client that sends the socket event.
-  game.socket.on(`module.${MODULE_NAME}`, ({ data, options: { forGmOnly } }) => {
+  game.socket.on(`module.${MODULE_ID}`, ({ data, options: { forGmOnly } }) => {
     console.log('YZEC | Socket', game.user.isGM ? `hello, ${forGmOnly}` : 'hello regular player', data);
   });
 });

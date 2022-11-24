@@ -1,11 +1,11 @@
 // ? scope: world (gm), client (player)
 // ? config: true (visible)
 
-import { CARD_STACK, MODULE_NAME, SETTINGS_KEYS } from './constants.js';
+import { CARD_STACK, MODULE_ID, SETTINGS_KEYS } from './constants.js';
 
 export function registerSystemSettings() {
 
-  game.settings.register(MODULE_NAME, SETTINGS_KEYS.MIGRATION_VERSION, {
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.MIGRATION_VERSION, {
     name: 'Module Migration Version',
     scope: 'world',
     config: false,
@@ -13,7 +13,7 @@ export function registerSystemSettings() {
     default: '0.0.0',
   });
 
-  game.settings.register(MODULE_NAME, CARD_STACK.INITIATIVE_DECK, {
+  game.settings.register(MODULE_ID, CARD_STACK.INITIATIVE_DECK, {
     name: 'Initiative Deck ID',
     scope: 'world',
     config: false,
@@ -21,7 +21,7 @@ export function registerSystemSettings() {
     default: '',
   });
 
-  game.settings.register(MODULE_NAME, CARD_STACK.DISCARD_PILE, {
+  game.settings.register(MODULE_ID, CARD_STACK.DISCARD_PILE, {
     name: 'Initiative Deck Discard Pile ID',
     scope: 'world',
     config: false,
@@ -29,7 +29,7 @@ export function registerSystemSettings() {
     default: '',
   });
 
-  game.settings.register(MODULE_NAME, SETTINGS_KEYS.AUTODRAW, {
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.AUTODRAW, {
     name: 'SETTINGS.AutoDrawN',
     hint: 'SETTINGS.AutoDrawH',
     scope: 'world',

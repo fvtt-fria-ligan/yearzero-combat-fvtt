@@ -1,4 +1,4 @@
-import { MODULE_NAME } from '@module/constants';
+import { MODULE_ID } from '@module/constants';
 
 export default class YearZeroCombatTracker extends CombatTracker {
   // TODO https://gitlab.com/peginc/swade/-/blob/develop/src/module/sidebar/SwadeCombatTracker.ts
@@ -6,7 +6,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      template: `modules/${MODULE_NAME}/templates/sidebar/combat-tracker.hbs`,
+      template: `modules/${MODULE_ID}/templates/sidebar/combat-tracker.hbs`,
     });
   }
 
@@ -91,7 +91,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
       }
       catch (error) {
         console.error(error);
-        throw new Error(`${MODULE_NAME}: Failed to get combat tracker config`);
+        throw new Error(`${MODULE_ID}: Failed to get combat tracker config`);
       }
     }
   }
@@ -99,11 +99,11 @@ export default class YearZeroCombatTracker extends CombatTracker {
   // Calls the CombatTracker hook with the given event data.
   static #callHook(data) {
     data.emit = options =>
-      game.socket.emit(`module.${MODULE_NAME}`, {
+      game.socket.emit(`module.${MODULE_ID}`, {
         data,
         options,
       });
-    Hooks.call(`${MODULE_NAME}.${data.event}`, data);
+    Hooks.call(`${MODULE_ID}.${data.event}`, data);
   }
 
   /* @private methods */
