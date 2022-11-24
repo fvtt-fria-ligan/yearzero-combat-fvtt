@@ -7,6 +7,10 @@ import { MODULE_ID } from './constants.js';
  */
 export const YZEC = {};
 
+YZEC.CombatTracker = {
+  src: `modules/${MODULE_ID}/sidebar/combat-tracker.config.json`,
+};
+
 /* ------------------------------------------ */
 /*  Icons                                     */
 /* ------------------------------------------ */
@@ -17,12 +21,8 @@ export const YZEC = {};
  * @example
  * // Handlebars template (howto)
  * // Note: { } x3
- * <div>{{{config.Icons.buttons.xxx}}}</div>
+ * <div>{{{@root.config.Icons.buttons.xxx}}}</div>
  */
-YZEC.CombatTracker = {
-  src: `modules/${MODULE_ID}/sidebar/combat-tracker.config.json`,
-};
-
 YZEC.Icons = {
   // tabs: {
   //   bio: '<i class="fas fa-align-left"></i>',

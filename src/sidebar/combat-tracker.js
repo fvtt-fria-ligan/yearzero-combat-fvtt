@@ -138,6 +138,6 @@ export default class YearZeroCombatTracker extends CombatTracker {
   #setTurnProperties(data, turn) {
     const { id } = turn;
     const combatant = data.combat.combatants.get(id);
-    return combatant.data.flags['yze-combat'] ?? {};
+    return combatant.flags['yze-combat'] ?? {};
   }
 }

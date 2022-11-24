@@ -82,7 +82,7 @@ export default class YearZeroCombatant extends Combatant {
         .tokens?.controlled.map(t => t.id)
         .indexOf(tokenID) ?? 0;
     const sortValue = tokenIndex + combatants;
-    this.data.update({
+    this.updateSource({
       flags: {
         'yze-combat': {
           cardValue: sortValue,

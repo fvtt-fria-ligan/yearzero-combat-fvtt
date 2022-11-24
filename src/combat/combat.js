@@ -83,10 +83,10 @@ export default class YearZeroCombat extends Combat {
         if (game.settings.get('autoDraw')) {
           if (keepSize > 1) {
             if (keepState === 'best') {
-              cards.sort((a, b) => a.data.value - b.data.value);
+              cards.sort((a, b) => a.value - b.value);
             }
             else if (keepState === 'worst') {
-              cards.sort((a, b) => b.data.value - a.data.value);
+              cards.sort((a, b) => b.value - a.value);
             }
             cards.splice(keepSize);
           }
@@ -101,18 +101,18 @@ export default class YearZeroCombat extends Combat {
         if (cards.length > 1) {
           cards.forEach(card => {
             const clone = duplicateCombatant(combatant);
-            clone.setCardValue(card.data.value);
+            clone.setCardValue(card.value);
             cardImage.push(card.face.img);
-            cardName.push(card.data.name);
+            cardName.push(card.name);
             updatedCombatants.push(clone);
           });
         }
         else {
           const card = cards[0];
-          const initiative = card?.data.value;
+          const initiative = card?.value;
           combatant.setCardValue(initiative);
           cardImage.push(card.face.img);
-          cardName.push(card.data.name);
+          cardName.push(card.name);
           updatedCombatants.push(combatant);
         }
       }
@@ -133,7 +133,7 @@ export default class YearZeroCombat extends Combat {
             actor: combatant.actor ? combatant.actor.id : null,
             alias: game.i18n.format('YZEC.Combat.Initiative.Draw', { name: combatant.token.name }),
           },
-          whisper: combatant.token?.data.hidden || combatant.hidden ? game?.users?.filter(user => user.isGM) : [],
+          whisper: combatant.token?.hidden || combatant.hidden ? game?.users?.filter(user => user.isGM) : [],
           content: template,
         },
         messageOptions,
@@ -234,7 +234,7 @@ export default class YearZeroCombat extends Combat {
         // eslint-disable-next-line no-shadow
         callback: html => {
           const chosenCards = html.findAll('input[type="checkbox"]:checked');
-          const chosenCardsIds = chosenCards.map(card => card.data.id);
+          const chosenCardsIds = chosenCards.map(card => card.id);
           chosenCardsIds.forEach(id => {
             keep.push(cards.find(card => card.id === id));
           });
@@ -267,14 +267,14 @@ export default class YearZeroCombat extends Combat {
    */
   findCard(cardValue) {
     const initiativeDeck = getInitiativeDeck(true);
-    return initiativeDeck.cards.find(value => value.data.value === cardValue);
+    return initiativeDeck.cards.find(c => c.value === cardValue);
   }
 
   /** @override */
   async resetAll() {
     for (const combatant of this.combatants) {
       const update = this._getInitResetUpdate(combatant);
-      if (update) combatant.data.update(update);
+      if (update) combatant.update(update);
     }
     return this.update(
       { turn: 0, combatants: this.combatants.toObject() },

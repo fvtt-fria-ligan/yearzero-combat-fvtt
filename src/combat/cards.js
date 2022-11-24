@@ -16,7 +16,7 @@ export default class YearZeroCards extends Cards {
    */
   async drawInitiative(to, qty = 1, drawMode = foundry.CONST.CARD_DRAW_MODES.TOP) {
     // Exits early if invalid deck type.
-    if (this.data.type !== 'deck') {
+    if (this.type !== 'deck') {
       const msg = game.i18n.localize('YZEC.WARNING.InvalidDeckType');
       throw new TypeError(msg);
     }
