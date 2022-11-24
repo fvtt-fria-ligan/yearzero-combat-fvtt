@@ -13,7 +13,7 @@
  */
 
 import { YZEC } from '@module/config';
-import { MODULE_ID } from '@module/constants';
+import { HOOKS_KEYS, MODULE_ID } from '@module/constants';
 // import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
@@ -45,7 +45,7 @@ Hooks.once('init', () => {
   };
   CONFIG.ui.combat = YearZeroCombatTracker;
 
-  Hooks.call('yzeCombatInit', YearZeroCombatHook);
+  Hooks.call(HOOKS_KEYS.COMBAT_INIT, YearZeroCombatHook);
 
   // registerSheets();
   initializeHandlebars();

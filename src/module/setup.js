@@ -7,7 +7,7 @@ export async function setupModule() {
 
 /**
  * Sets the initiative deck or its discard pile.
- * @param {string} stackType `initiativeDeck` or `initiativeDeckDiscardPile`
+ * @param {'initiativeDeck'|'initiativeDeckDiscardPile'} stackType
  * @returns {Cards|CardsPile}
  * @async
  */

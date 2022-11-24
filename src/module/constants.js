@@ -16,3 +16,8 @@ export const SETTINGS_KEYS = {
   AUTODRAW: 'autoDraw',
   MIGRATION_VERSION: 'moduleMigrationVersion',
 };
+
+/** @enum {string} */
+export const HOOKS_KEYS = {
+  COMBAT_INIT: 'yzeCombatInit',
+};
