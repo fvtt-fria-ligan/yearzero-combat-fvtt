@@ -1,64 +1,65 @@
+import { MODULE_ID } from '@module/constants';
 import { getCanvas } from '../utils/client-hooks';
+
 export default class YearZeroCombatant extends Combatant {
   async setCardValue(cardValue) {
-    return this.setFlag('yze-combat', 'cardValue', cardValue);
+    return this.setFlag(MODULE_ID, 'cardValue', cardValue);
   }
 
   get cardValue() {
-    return this.getFlag('yze-combat', 'cardValue');
+    return this.getFlag(MODULE_ID, 'cardValue');
   }
 
   get cardString() {
-    return this.getFlag('yze-combat', 'cardString');
+    return this.getFlag(MODULE_ID, 'cardString');
   }
 
   async setCardString(cardString) {
-    return this.setFlag('yze-combat', 'cardString', cardString);
+    return this.setFlag(MODULE_ID, 'cardString', cardString);
   }
 
   get fastAction() {
-    return this.getFlag('yze-combat', 'fastAction');
+    return this.getFlag(MODULE_ID, 'fastAction');
   }
 
   get slowAction() {
-    return this.getFlag('yze-combat', 'slowAction');
+    return this.getFlag(MODULE_ID, 'slowAction');
   }
 
   async setDrawSize(drawSize) {
-    return this.setFlag('yze-combat', 'drawSize', drawSize);
+    return this.setFlag(MODULE_ID, 'drawSize', drawSize);
   }
 
   get drawSize() {
-    return this.getFlag('yze-combat', 'drawSize');
+    return this.getFlag(MODULE_ID, 'drawSize');
   }
 
   async setKeepSize(keepSize) {
-    return this.setFlag('yze-combat', 'keepSize', keepSize);
+    return this.setFlag(MODULE_ID, 'keepSize', keepSize);
   }
 
   get keepSize() {
-    return this.getFlag('yze-combat', 'keepSize');
+    return this.getFlag(MODULE_ID, 'keepSize');
   }
 
   async setKeepState(keepState) {
-    return this.setFlag('yze-combat', 'keepState', keepState);
+    return this.setFlag(MODULE_ID, 'keepState', keepState);
   }
 
   get keepState() {
-    return this.getFlag('yze-combat', 'keepState');
+    return this.getFlag(MODULE_ID, 'keepState');
   }
 
   async setDrawTimes(drawTimes) {
-    return this.setFlag('yze-combat', 'keepState', drawTimes);
+    return this.setFlag(MODULE_ID, 'keepState', drawTimes);
   }
 
   get drawTimes() {
-    return this.getFlag('yze-combat', 'drawTimes');
+    return this.getFlag(MODULE_ID, 'drawTimes');
   }
 
   /**
-   *
-   * @param {Combatant} target    the combatant with which this combatant will swap a card
+   * @param {Combatant} target The combatant with which this combatant will swap a card
    */
   // TODO  recalculate the turn order on complettion
   async swapInitiativeCard(target) {
@@ -84,7 +85,7 @@ export default class YearZeroCombatant extends Combatant {
     const sortValue = tokenIndex + combatants;
     this.updateSource({
       flags: {
-        'yze-combat': {
+        [MODULE_ID]: {
           cardValue: sortValue,
         },
       },

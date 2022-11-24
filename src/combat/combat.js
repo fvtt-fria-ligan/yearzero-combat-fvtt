@@ -1,5 +1,7 @@
 // eslint-disable-next-line max-len
 /** @typedef {import('@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/combat').InitiativeOptions} InitiativeOptions */
+
+import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { duplicateCombatant, getInitiativeDeck, getInitiativeDeckDiscardPile } from '../utils/client-hooks';
 
 export default class YearZeroCombat extends Combat {
@@ -80,7 +82,7 @@ export default class YearZeroCombat extends Combat {
 
       for (let i = 0; i < drawTimes; i++) {
         const cards = await initiativeDeck.draw(drawSize);
-        if (game.settings.get('autoDraw')) {
+        if (game.settings.get(SETTINGS_KEYS.AUTODRAW)) {
           if (keepSize > 1) {
             if (keepState === 'best') {
               cards.sort((a, b) => a.value - b.value);
@@ -182,7 +184,7 @@ export default class YearZeroCombat extends Combat {
   // ask the user if they keep best or worse
   // draw the cards based on their input
   async setDrawQty(combatant) {
-    const template = 'modules/yze-combat/templates/combat/set-draw-qty.hbs';
+    const template = `modules/${MODULE_ID}/templates/combat/set-draw-qty.hbs`;
     const html = await renderTemplate(template, { data: { combatant: combatant } });
     const buttons = {
       draw: {
@@ -225,7 +227,7 @@ export default class YearZeroCombat extends Combat {
    * @async
    * */
   async selectCards(combatant, cards) {
-    const template = 'modules/yze-combat/templates/combat/select-cards.hbs';
+    const template = `modules/${MODULE_ID}/templates/combat/select-cards.hbs`;
     const html = await renderTemplate(template, { data: { combatant: combatant, cards: cards } });
     const keep = [];
     const buttons = {
@@ -292,10 +294,9 @@ export default class YearZeroCombat extends Combat {
     return super.startCombat();
   }
 
-
   playInitiativeSound() {
     const data = {
-      src: 'modules/yze-combat/assets/sounds/card-flip.wav',
+      src: `modules/${MODULE_ID}/assets/sounds/card-flip.wav`,
       volume: 0.75,
       autoplay: true,
       loop: false,

@@ -59,7 +59,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
       origin: btn,
     };
     YearZeroCombatTracker.#callHook(eventData);
-    combatant.setFlag('yze-combat', property, !combatant.getFlag('yze-combat', property));
+    combatant.setFlag(MODULE_ID, property, !combatant.getFlag(MODULE_ID, property));
   }
 
   /** @override */
@@ -138,6 +138,6 @@ export default class YearZeroCombatTracker extends CombatTracker {
   #setTurnProperties(data, turn) {
     const { id } = turn;
     const combatant = data.combat.combatants.get(id);
-    return combatant.flags['yze-combat'] ?? {};
+    return combatant.flags[MODULE_ID] ?? {};
   }
 }
