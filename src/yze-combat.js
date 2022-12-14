@@ -19,9 +19,9 @@ import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
 import { setupModule } from '@module/setup';
 import { YearZeroCombatHook } from '@utils/client-hooks';
-import YearZeroCards from './combat/cards';
-import YearZeroCombat from './combat/combat';
-import YearZeroCombatant from './combat/combatant';
+import YearZeroCards from '@combat/cards';
+import YearZeroCombat from '@combat/combat';
+import YearZeroCombatant from '@combat/combatant';
 import YearZeroCombatTracker from './sidebar/combat-tracker';
 
 /* ------------------------------------------ */

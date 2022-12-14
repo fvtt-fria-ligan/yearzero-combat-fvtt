@@ -12,6 +12,12 @@ export const CARD_STACK = {
 };
 
 /** @enum {string} */
+export const CARDS_DRAW_KEEP_STATES = {
+  BEST: 'best',
+  WORST: 'worst',
+};
+
+/** @enum {string} */
 export const SETTINGS_KEYS = {
   AUTODRAW: 'autoDraw',
   MIGRATION_VERSION: 'moduleMigrationVersion',

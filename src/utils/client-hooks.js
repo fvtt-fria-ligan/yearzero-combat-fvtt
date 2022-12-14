@@ -1,4 +1,5 @@
 import { MODULE_ID, CARD_STACK } from '@module/constants';
+import YearZeroCombatant from '@combat/combatant';
 
 /**
  * An abstract class (cannot be instantiated) with utility methods
@@ -55,7 +56,13 @@ export function getInitiativeDeckDiscardPile(strict = false) {
   return game.cards.get(game.settings.get(MODULE_ID, CARD_STACK.DISCARD_PILE), { strict });
 }
 
+/**
+ * @param {Combatant} combatant 
+ */
 export function duplicateCombatant(combatant) {
-  const clone = deepClone(combatant);
+  // const clone = deepClone(combatant);
+  const data = combatant.toObject();
+  data.flags[MODULE_ID].copyOf = combatant.id;
+  const clone = new YearZeroCombatant(data);
   return clone;
 }

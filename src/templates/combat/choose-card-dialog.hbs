@@ -1,0 +1,16 @@
+<form autocomplete="off">
+  <ul class="card-dialog">
+    {{#each cards}}
+      <li class="card">
+        <label for="{{id}}">
+          <input
+            type="checkbox"
+            name="card"
+            id="{{id}}"
+            data-card-id="{{id}}"
+          />
+        </label>
+      </li>
+    {{/each}}
+  </ul>
+</form>

@@ -1,22 +1,29 @@
-import { MODULE_ID } from '@module/constants';
+import { CARDS_DRAW_KEEP_STATES, MODULE_ID } from '@module/constants';
 import { getCanvas } from '../utils/client-hooks';
 
 export default class YearZeroCombatant extends Combatant {
-  async setCardValue(cardValue) {
-    return this.setFlag(MODULE_ID, 'cardValue', cardValue);
-  }
+
+  /* ------------------------------------------ */
+  /*  Properties                                */
+  /* ------------------------------------------ */
 
   get cardValue() {
     return this.getFlag(MODULE_ID, 'cardValue');
   }
 
-  get cardString() {
-    return this.getFlag(MODULE_ID, 'cardString');
+  async setCardValue(cardValue) {
+    return this.setFlag(MODULE_ID, 'cardValue', cardValue);
   }
 
-  async setCardString(cardString) {
-    return this.setFlag(MODULE_ID, 'cardString', cardString);
+  get cardDescription() {
+    return this.getFlag(MODULE_ID, 'cardDescription');
   }
+
+  async setCardDescription(cardDescription) {
+    return this.setFlag(MODULE_ID, 'cardDescription', cardDescription);
+  }
+
+  /* ------------------------------------------ */
 
   get fastAction() {
     return this.getFlag(MODULE_ID, 'fastAction');
@@ -26,36 +33,107 @@ export default class YearZeroCombatant extends Combatant {
     return this.getFlag(MODULE_ID, 'slowAction');
   }
 
+  /* ------------------------------------------ */
+
+  /**
+   * The quantity of initiative cards to draw.
+   * @type {number}
+   * @default 1
+   * @readonly
+   */
+  get drawSize() {
+    return this.getFlag(MODULE_ID, 'drawSize') ?? 1;
+  }
+
   async setDrawSize(drawSize) {
     return this.setFlag(MODULE_ID, 'drawSize', drawSize);
   }
 
-  get drawSize() {
-    return this.getFlag(MODULE_ID, 'drawSize');
+  /**
+   * The quantity of Initiative cards to keep.
+   * @type {number}
+   * @default 1
+   * @readonly
+   */
+  get keepSize() {
+    return this.getFlag(MODULE_ID, 'keepSize') ?? 1;
   }
 
   async setKeepSize(keepSize) {
     return this.setFlag(MODULE_ID, 'keepSize', keepSize);
   }
 
-  get keepSize() {
-    return this.getFlag(MODULE_ID, 'keepSize');
+  /**
+   * Card keeping behavior.
+   * @type {CARDS_DRAW_KEEP_STATES}
+   * @default CARDS_DRAW_KEEP_STATES.BEST
+   * @readonly
+   */
+  get keepState() {
+    return this.getFlag(MODULE_ID, 'keepState') ?? CARDS_DRAW_KEEP_STATES.BEST;
   }
 
   async setKeepState(keepState) {
     return this.setFlag(MODULE_ID, 'keepState', keepState);
   }
 
-  get keepState() {
-    return this.getFlag(MODULE_ID, 'keepState');
+  /* ------------------------------------------ */
+
+  get groupId() {
+    return this.getFlag(MODULE_ID, 'groupId');
   }
 
-  async setDrawTimes(drawTimes) {
-    return this.setFlag(MODULE_ID, 'keepState', drawTimes);
+  async setGroupId(groupId) {
+    return this.setFlag(MODULE_ID, 'groupId', groupId);
   }
 
-  get drawTimes() {
-    return this.getFlag(MODULE_ID, 'drawTimes');
+  async unsetGroupId() {
+    return this.unsetFlag(MODULE_ID, 'groupId');
+  }
+
+  get isGroupLeader() {
+    return this.getFlag(MODULE_ID, 'isGroupLeader');
+  }
+
+  async setIsGroupLeader(isGroupLeader) {
+    return this.setFlag(MODULE_ID, 'isGroupLeader', isGroupLeader);
+  }
+
+  async unsetIsGroupLeader() {
+    return this.unsetFlag(MODULE_ID, 'isGroupLeader');
+  }
+
+  /* ------------------------------------------ */
+
+  get skipTurn() {
+    return this.getFlag(MODULE_ID, 'skipTurn');
+  }
+
+  async setSkipTurn(skipTurn) {
+    return this.setFlag(MODULE_ID, 'skipTurn', skipTurn);
+  }
+
+  /* ------------------------------------------ */
+
+  // get drawTimes() {
+  //   return this.getFlag(MODULE_ID, 'drawTimes') ?? 1;
+  // }
+
+  // async setDrawTimes(drawTimes) {
+  //   return this.setFlag(MODULE_ID, 'keepState', drawTimes);
+  // }
+
+  /* ------------------------------------------ */
+  /*  Utility Methods                           */
+  /* ------------------------------------------ */
+
+  /**
+   * Gets the total number of cards to draw for this combatant.
+   * @returns {number}
+   */
+  getNumberOfCardsToDraw() {
+    // TODO add talents here, if any.
+    return this.drawSize;
   }
 
   /**
@@ -64,10 +142,14 @@ export default class YearZeroCombatant extends Combatant {
    */
   // TODO  recalculate the turn order on complettion
   async swapInitiativeCard(target) {
-    const combatantCard = this.cardValue();
-    this.setCardValue(target.cardValue());
-    target.setCardValue(combatantCard);
+    const combatantCard = this.cardValue;
+    await this.setCardValue(target.cardValue);
+    await target.setCardValue(combatantCard);
   }
+
+  /* ------------------------------------------ */
+  /*  Combatant Creation                        */
+  /* ------------------------------------------ */
 
   /**
    * @param {CombatantDataConstructorData} data
@@ -79,10 +161,9 @@ export default class YearZeroCombatant extends Combatant {
     await super._preCreate(data, options, user);
     const combatants = game?.combat?.combatants.size ?? 0;
     const tokenId = data.tokenId instanceof TokenDocument ? data.tokenId.id : data.tokenId;
-    const tokenIndex =
-      getCanvas()
-        .tokens?.controlled.map(t => t.id)
-        .indexOf(tokenId) ?? 0;
+    const tokenIndex = getCanvas()
+      .tokens?.controlled.map(t => t.id)
+      .indexOf(tokenId) ?? 0;
     const sortValue = tokenIndex + combatants;
     this.updateSource({
       flags: {
