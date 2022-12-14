@@ -40,7 +40,7 @@ export function getCanvas() {
 /**
  * Gets the initiative deck.
  * @param {boolean} [strict=false] Whether to throw an error if not found
- * @returns {Cards}
+ * @returns {import('../combat/cards').default}
  */
 export function getInitiativeDeck(strict = false) {
   return game.cards.get(game.settings.get(MODULE_ID, CARD_STACK.INITIATIVE_DECK), { strict });

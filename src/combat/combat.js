@@ -40,10 +40,11 @@ export default class YearZeroCombat extends Combat {
    *
    * finally return the combat (this)
    *
-   * @param { messageOptions } options - the message options to use
-   * @param { ids } ids - the ids of all the combatants in the combat
+   * @param {string|string[]}  ids  The IDs of all the combatants in the combat
+   * @param {Object} [options]                Additional options
+   * @param {Object} [options.messageOptions] The message options to use
    * @override
-   **/
+   */
   async rollInitiative(ids, options = {}) {
     ids = typeof ids === 'string' ? [ids] : ids;
     const initiativeDeck = getInitiativeDeck(true);
@@ -59,8 +60,8 @@ export default class YearZeroCombat extends Combat {
     }, 0);
 
     if (totalKeep > initiativeDeck.availableCards.length) {
-      initiativeDeck.recall();
-      initiativeDeck.shuffle();
+      await initiativeDeck.recall();
+      await initiativeDeck.shuffle();
     }
 
     if (totalKeep > initiativeDeck.availableCards.length) {
@@ -75,14 +76,14 @@ export default class YearZeroCombat extends Combat {
     for (const id of ids) {
       const combatant = this.combatants.get(id, true);
       if (combatant.isDefeated) continue;
-      const keepState = combatant.keepState;
-      const drawSize = combatant.drawSize;
-      const drawTimes = combatant.drawTimes;
-      const keepSize = combatant.keepSize;
+      const keepState = combatant.keepState || 'best';
+      const drawSize = combatant.drawSize || 1;
+      const drawTimes = combatant.drawTimes || 1;
+      const keepSize = combatant.keepSize || 1;
 
       for (let i = 0; i < drawTimes; i++) {
-        const cards = await initiativeDeck.draw(drawSize);
-        if (game.settings.get(SETTINGS_KEYS.AUTODRAW)) {
+        const cards = await this.drawCard(drawSize);
+        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.AUTODRAW)) {
           if (keepSize > 1) {
             if (keepState === 'best') {
               cards.sort((a, b) => a.value - b.value);
@@ -94,7 +95,7 @@ export default class YearZeroCombat extends Combat {
           }
         }
         else {
-          const chosenCards = this.selectCards(combatant, cards);
+          const chosenCards = await this.selectCards(combatant, cards);
           cards.splice(chosenCards.length);
           for (let j = 0; j < chosenCards.length; j++) {
             cards.splice(j, 1, chosenCards[j]);
@@ -151,16 +152,13 @@ export default class YearZeroCombat extends Combat {
   }
 
   /**
-   *
-   * sort the combatants by initiative order low to high
-   *
-   * @param {combatant} a
-   * @param {combatant} b
-   *
-   * @override */
+   * Sorts the combatants by initiative ascending order (low to high).
+   * @param {Combatant} a
+   * @param {Combatant} b
+   * @override
+   */
   _sortCombatants(a, b) {
     if (!a || !b) return 0;
-
     if (a.cardValue < b.cardValue) return 1;
     if (a.cardValue > b.cardValue) return -1;
     return 0;
@@ -170,26 +168,27 @@ export default class YearZeroCombat extends Combat {
    * Draws cards from the Initiative Deck.
    * @param {number} [qty=1] Quantity of cards to draw
    * @returns {Promise.<Cards[]>}
-   * @async
    */
   async drawCard(qty = 1) {
-    /** @type {import('./cards').default} */
     const initiativeDeck = getInitiativeDeck(true);
     const discardPile = getInitiativeDeckDiscardPile(true);
     return initiativeDeck.drawInitiative(discardPile, qty);
   }
 
-  // present a dialog asking to define how many cards to draw
-  // ask the user to choose how many cards to keep
-  // ask the user if they keep best or worse
-  // draw the cards based on their input
+  /**
+   * Shows a dialog asking how many cards to draw:
+   * - Ask the user to choose how many cards to keep
+   * - Ask the user if they keep best or worse
+   * - Draw the cards based on their input
+   * @param {Combatant} combatant
+   * @returns {Promise.<void>}
+   */
   async setDrawQty(combatant) {
     const template = `modules/${MODULE_ID}/templates/combat/set-draw-qty.hbs`;
-    const html = await renderTemplate(template, { data: { combatant: combatant } });
+    const content = await renderTemplate(template, { data: { combatant: combatant } });
     const buttons = {
       draw: {
-        label: game.i18n.format('YZEC.Combat.Draw'),
-        // eslint-disable-next-line no-shadow
+        label: game.i18n.localize('YZEC.Combat.Draw'),
         callback: async html => {
           const qty = html.find('input[name="qty"]').value;
           const keep = html.find('input[name="keep"]').value;
@@ -202,20 +201,33 @@ export default class YearZeroCombat extends Combat {
       },
     };
 
-    const dialog = new Dialog({
-      title: game.i18n.format('YZEC.Combat.Initiative.DrawQty'),
-      content: html,
-      buttons: buttons,
+    return Dialog.wait({
+      title: game.i18n.localize('YZEC.Combat.Initiative.DrawQty'),
+      content,
+      buttons,
       default: {
         qty: 1,
         keep: 1,
         keepState: 'best',
       },
-      close: async () => {
-        // draw the cards happens on the drawInitiative should not be needed here
-      },
+      // Draw the cards happens on the drawInitiative should not be needed here.
+      // close: async () => {},
     });
-    dialog.render(true);
+
+    // const dialog = new Dialog({
+    //   title: game.i18n.localize('YZEC.Combat.Initiative.DrawQty'),
+    //   content: html,
+    //   buttons: buttons,
+    //   default: {
+    //     qty: 1,
+    //     keep: 1,
+    //     keepState: 'best',
+    //   },
+    //   close: async () => {
+    //     // draw the cards happens on the drawInitiative should not be needed here
+    //   },
+    // });
+    // dialog.render(true);
   }
 
   /**
@@ -223,18 +235,17 @@ export default class YearZeroCombat extends Combat {
    * dialog and ask if they want to keep the cards.
    * allow them to select which cards to keep.
    * @param {Combatant} combatant
+   * @param {Cards[]}   cards
    * @returns {Promise.<void>}
-   * @async
-   * */
+   */
   async selectCards(combatant, cards) {
     const template = `modules/${MODULE_ID}/templates/combat/select-cards.hbs`;
-    const html = await renderTemplate(template, { data: { combatant: combatant, cards: cards } });
+    const content = await renderTemplate(template, { data: { combatant: combatant, cards: cards } });
     const keep = [];
     const buttons = {
       ok: {
         icon: '<i class="fas fa-check"></i>',
         label: game.i18n.format('YZEC.OK'),
-        // eslint-disable-next-line no-shadow
         callback: html => {
           const chosenCards = html.findAll('input[type="checkbox"]:checked');
           const chosenCardsIds = chosenCards.map(card => card.id);
@@ -245,27 +256,39 @@ export default class YearZeroCombat extends Combat {
       },
     };
 
-    return new Promise(resolve => {
-      new Dialog({
-        title: game.i18n.format('YZEC.Combat.SelectCard', {
-          name: combatant.token.name,
-        }),
-        content: html,
-        buttons: buttons,
-        default: 'ok',
-        close: async () => {
-          if (!keep) {
-            keep.push(cards[0]);
-          }
-          resolve(keep);
-        },
-      }).render(true);
+    return Dialog.wait({
+      title: game.i18n.format('YZEC.Combat.SelectCard', {
+        name: combatant.token.name,
+      }),
+      content,
+      buttons,
+      default: 'ok',
+      close: async () => {
+        if (!keep) keep.push(cards[0]);
+        return keep;
+      },
     });
+
+    // return new Promise(resolve => {
+    //   new Dialog({
+    //     title: game.i18n.format('YZEC.Combat.SelectCard', {
+    //       name: combatant.token.name,
+    //     }),
+    //     content: html,
+    //     buttons: buttons,
+    //     default: 'ok',
+    //     close: async () => {
+    //       if (!keep) {
+    //         keep.push(cards[0]);
+    //       }
+    //       resolve(keep);
+    //     },
+    //   }).render(true);
+    // });
   }
 
   /**
-   * find a specific card in the deck
-   *
+   * Finds a specific card in the deck.
    * @param {number} cardValue
    */
   findCard(cardValue) {

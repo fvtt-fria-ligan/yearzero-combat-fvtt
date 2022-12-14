@@ -59,6 +59,7 @@ export default class YearZeroCombatant extends Combatant {
   }
 
   /**
+   * Swaps initiative cards between two combatants.
    * @param {Combatant} target The combatant with which this combatant will swap a card
    */
   // TODO  recalculate the turn order on complettion
@@ -69,19 +70,19 @@ export default class YearZeroCombatant extends Combatant {
   }
 
   /**
-   * @override
    * @param {CombatantDataConstructorData} data
-   * @param {DocumentModificationOptions} options
-   * @param {User} user
+   * @param {DocumentModificationOptions}  options
+   * @param {string} user
+   * @override
    */
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
     const combatants = game?.combat?.combatants.size ?? 0;
-    const tokenID = data.tokenId instanceof TokenDocument ? data.tokenId.id : data.tokenId;
+    const tokenId = data.tokenId instanceof TokenDocument ? data.tokenId.id : data.tokenId;
     const tokenIndex =
       getCanvas()
         .tokens?.controlled.map(t => t.id)
-        .indexOf(tokenID) ?? 0;
+        .indexOf(tokenId) ?? 0;
     const sortValue = tokenIndex + combatants;
     this.updateSource({
       flags: {
