@@ -69,10 +69,11 @@ export default class YearZeroCombat extends Combat {
       const cards = await this.drawCards(cardsToDraw);
       cards.sort((a, b) => a.value - b.value);
 
+      // FIXME DEBUG
       if (cards.length !== cardsToDraw) console.warn('Something went wrong: Incorrect number of cards drawn');
 
       if (cards.length > 1) {
-        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.AUTODRAW)) {
+        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
           switch (combatant.keepState) {
             default:
             case CARDS_DRAW_KEEP_STATES.BEST:
@@ -151,6 +152,8 @@ export default class YearZeroCombat extends Combat {
     // Creates multiple chat messages.
     if (!skipMessage) {
       this._playInitiativeSound(); // No need to await
+    }
+    if (!skipMessage && game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_MESSAGING)) {
       await CONFIG.ChatMessage.documentClass.createDocuments(messages);
     }
 
@@ -237,21 +240,6 @@ export default class YearZeroCombat extends Combat {
   /* ------------------------------------------ */
 
   /**
-   * Sorts the combatants by initiative ascending order (low to high).
-   * @param {YearZeroCombatant} a
-   * @param {YearZeroCombatant} b
-   * @override
-   */
-  _sortCombatants(a, b) {
-    if (!a || !b) return 0;
-    if (a.cardValue < b.cardValue) return 1;
-    if (a.cardValue > b.cardValue) return -1;
-    return 0;
-  }
-
-  /* ------------------------------------------ */
-
-  /**
    * Draws cards from the Initiative deck.
    * @param {number} [qty=1] Quantity of cards to draw
    * @returns {Promise.<Card[]>}
@@ -285,7 +273,7 @@ export default class YearZeroCombat extends Combat {
      * @see {@link https://foundryvtt.com/api/classes/client.Dialog.html#wait}
      */
     return Dialog.wait({
-      title: `${combatant.name}: Choose a Card`,
+      title: `${combatant.name}: ${game.i18n.localize('YZEC.Combat.Initiative.ChooseCard')}`,
       content, buttons,
       default: 'ok',
       close: html => {
@@ -358,62 +346,62 @@ export default class YearZeroCombat extends Combat {
 
   /* ------------------------------------------ */
 
-  /**
-   * For a draw of cards show the user the results in a
-   * dialog and ask if they want to keep the cards.
-   * allow them to select which cards to keep.
-   * @param {YearZeroCombatant} combatant
-   * @param {Cards[]}   cards
-   * @returns {Promise.<void>}
-   */
-  async selectCards(combatant, cards) {
-    const template = `modules/${MODULE_ID}/templates/combat/select-cards.hbs`;
-    const content = await renderTemplate(template, { data: { combatant: combatant, cards: cards } });
-    const keep = [];
-    const buttons = {
-      ok: {
-        icon: '<i class="fas fa-check"></i>',
-        label: game.i18n.format('YZEC.OK'),
-        callback: html => {
-          const chosenCards = html.findAll('input[type="checkbox"]:checked');
-          const chosenCardsIds = chosenCards.map(card => card.id);
-          chosenCardsIds.forEach(id => {
-            keep.push(cards.find(card => card.id === id));
-          });
-        },
-      },
-    };
+  // /**
+  //  * For a draw of cards show the user the results in a
+  //  * dialog and ask if they want to keep the cards.
+  //  * allow them to select which cards to keep.
+  //  * @param {YearZeroCombatant} combatant
+  //  * @param {Cards[]}   cards
+  //  * @returns {Promise.<void>}
+  //  */
+  // async selectCards(combatant, cards) {
+  //   const template = `modules/${MODULE_ID}/templates/combat/select-cards.hbs`;
+  //   const content = await renderTemplate(template, { data: { combatant: combatant, cards: cards } });
+  //   const keep = [];
+  //   const buttons = {
+  //     ok: {
+  //       icon: '<i class="fas fa-check"></i>',
+  //       label: game.i18n.format('YZEC.OK'),
+  //       callback: html => {
+  //         const chosenCards = html.findAll('input[type="checkbox"]:checked');
+  //         const chosenCardsIds = chosenCards.map(card => card.id);
+  //         chosenCardsIds.forEach(id => {
+  //           keep.push(cards.find(card => card.id === id));
+  //         });
+  //       },
+  //     },
+  //   };
 
-    return Dialog.wait({
-      title: game.i18n.format('YZEC.Combat.SelectCard', {
-        name: combatant.token.name,
-      }),
-      content,
-      buttons,
-      default: 'ok',
-      close: async () => {
-        if (!keep) keep.push(cards[0]);
-        return keep;
-      },
-    });
+  //   return Dialog.wait({
+  //     title: game.i18n.format('YZEC.Combat.SelectCard', {
+  //       name: combatant.token.name,
+  //     }),
+  //     content,
+  //     buttons,
+  //     default: 'ok',
+  //     close: async () => {
+  //       if (!keep) keep.push(cards[0]);
+  //       return keep;
+  //     },
+  //   });
 
-    // return new Promise(resolve => {
-    //   new Dialog({
-    //     title: game.i18n.format('YZEC.Combat.SelectCard', {
-    //       name: combatant.token.name,
-    //     }),
-    //     content: html,
-    //     buttons: buttons,
-    //     default: 'ok',
-    //     close: async () => {
-    //       if (!keep) {
-    //         keep.push(cards[0]);
-    //       }
-    //       resolve(keep);
-    //     },
-    //   }).render(true);
-    // });
-  }
+  //   // return new Promise(resolve => {
+  //   //   new Dialog({
+  //   //     title: game.i18n.format('YZEC.Combat.SelectCard', {
+  //   //       name: combatant.token.name,
+  //   //     }),
+  //   //     content: html,
+  //   //     buttons: buttons,
+  //   //     default: 'ok',
+  //   //     close: async () => {
+  //   //       if (!keep) {
+  //   //         keep.push(cards[0]);
+  //   //       }
+  //   //       resolve(keep);
+  //   //     },
+  //   //   }).render(true);
+  //   // });
+  // }
 
   /* ------------------------------------------ */
 
@@ -431,11 +419,35 @@ export default class YearZeroCombat extends Combat {
   /* Overridden Base Methods                    */
   /* ------------------------------------------ */
 
+  /**
+   * Sorts the combatants by initiative ascending order (low to high).
+   * @param {YearZeroCombatant} a
+   * @param {YearZeroCombatant} b
+   * @override
+   */
+  _sortCombatants(a, b) {
+    if (!a || !b) return 0;
+    // Sorts by card value:
+    if (a.flags[MODULE_ID] && a.flags[MODULE_ID]) {
+      if (a.cardValue < b.cardValue) return 1;
+      if (a.cardValue > b.cardValue) return -1;
+      return 0;
+    }
+    // Sorts by name otherwise:
+    else {
+      const cn = a.name.localeCompare(b.name);
+      if (cn !== 0) return cn;
+      return a.id.localeCompare(b.id);
+    }
+  }
+
+  /* ------------------------------------------ */
+
   /** @override */
   async resetAll() {
     for (const combatant of this.combatants) {
       const update = this._getInitResetUpdate(combatant);
-      if (update) combatant.update(update);
+      if (update) combatant.updateSource(update);
     }
     return this.update(
       { turn: 0, combatants: this.combatants.toObject() },
@@ -447,11 +459,15 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async startCombat() {
-    // TODO duplicates
-    const combatantsIds = this.combatants
-      .filter(combatant => !combatant.isDefeated && combatant.initiative === null)
-      .map(combatant => combatant.id);
-    await this.rollInitiative(combatantsIds);
+    // Duplicate actors if needed.
+    for (const combatant of this.combatants) {
+      //
+    }
+    // Draws initiative for everyone.
+    const ids = this.combatants
+      .filter(c => !c.isDefeated && c.initiative === null)
+      .map(c => c.id);
+    await this.rollInitiative(ids);
     return super.startCombat();
   }
 

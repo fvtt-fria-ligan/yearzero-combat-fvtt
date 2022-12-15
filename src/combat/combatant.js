@@ -1,4 +1,4 @@
-import { CARDS_DRAW_KEEP_STATES, MODULE_ID } from '@module/constants';
+import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { getCanvas } from '../utils/client-hooks';
 
 export default class YearZeroCombatant extends Combatant {
@@ -137,14 +137,24 @@ export default class YearZeroCombatant extends Combatant {
   }
 
   /**
+   * Gets the speed value of this character
+   * @returns {number=}
+   */
+  getSpeed() {
+    const key = game.settings.get(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE);
+    const speed = foundry.utils.getProperty(this.actor, key) || 1;
+    return speed;
+  }
+
+  /**
    * Swaps initiative cards between two combatants.
    * @param {Combatant} target The combatant with which this combatant will swap a card
    */
   // TODO  recalculate the turn order on complettion
   async swapInitiativeCard(target) {
-    const combatantCard = this.cardValue;
+    const combatantCardValue = this.cardValue;
     await this.setCardValue(target.cardValue);
-    await target.setCardValue(combatantCard);
+    await target.setCardValue(combatantCardValue);
   }
 
   /* ------------------------------------------ */

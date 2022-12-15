@@ -1,11 +1,18 @@
-SETTINGS.SlowAndFastActionsN: Enable Slow & Fast Actions
-SETTINGS.SlowAndFastActionsL: >-
+SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
+SETTINGS.SlowAndFastActionsHint: >-
   Whether to show additional buttons for Slow & Fast Actions in the Combat
   Tracker.
-SETTINGS.AutoDrawN: Default Initiative Draw Mode
-SETTINGS.AutoDrawH: Whether to automatically draw initiative cards.
+SETTINGS.InitiativeDeck: Initiative Deck ID
+SETTINGS.InitiativeDeckHint: xxx
+SETTINGS.DiscardPile: Discard Pile ID
+SETTINGS.DiscardPileHint: xxx
+SETTINGS.InitiativeMessaging: Send Initiative Messages
+SETTINGS.InitiativeMessagingHint: xxx
+SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
+SETTINGS.ActorSpeedAttributeHint: xxx
 YZEC.Combat.Initiative.Draw: \{name\}'s Initiative Card!
 YZEC.Combat.Initiative.NotEnoughCards: Not Enough Cards in the Deck to Draw Initiative
+YZEC.Combat.Initiative.ChooseCard: Choose a Card
 YZEC.Combat.Draw: Set Draw
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
 YZEC.Combat.SelectCard: Choose Card(s) to Keep
@@ -18,3 +25,5 @@ YZEC.OK: Okay
 YZEC.NoInitiativeDeckFound: No initiative deck found, creating a new one...
 YZEC.NoInitiativeDeckDiscardPileFound: No discard pile found, creating a new one...
 YZEC.WARNING.InvalidDeckType: You can only draw initiative cards from a deck
+SETTINGS.AutoDraw: Default Initiative Draw Mode
+SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards.

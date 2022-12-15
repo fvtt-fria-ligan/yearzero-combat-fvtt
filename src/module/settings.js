@@ -14,27 +14,47 @@ export function registerSystemSettings() {
   });
 
   game.settings.register(MODULE_ID, CARD_STACK.INITIATIVE_DECK, {
-    name: 'Initiative Deck ID',
+    name: 'SETTINGS.InitiativeDeck',
+    hint: 'SETTINGS.InitiativeDeckHint',
     scope: 'world',
-    config: false,
+    config: true,
     type: String,
     default: '',
   });
 
   game.settings.register(MODULE_ID, CARD_STACK.DISCARD_PILE, {
-    name: 'Initiative Deck Discard Pile ID',
+    name: 'SETTINGS.DiscardPile',
+    hint: 'SETTINGS.DiscardPileHint',
     scope: 'world',
-    config: false,
+    config: true,
     type: String,
     default: '',
   });
 
-  game.settings.register(MODULE_ID, SETTINGS_KEYS.AUTODRAW, {
-    name: 'SETTINGS.AutoDrawN',
-    hint: 'SETTINGS.AutoDrawH',
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW, {
+    name: 'SETTINGS.AutoDraw',
+    hint: 'SETTINGS.AutoDrawHint',
     scope: 'world',
     config: true,
     type: Boolean,
     default: true,
+  });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_MESSAGING, {
+    name: 'SETTINGS.InitiativeMessaging',
+    hint: 'SETTINGS.InitiativeMessagingHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+  });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE, {
+    name: 'SETTINGS.ActorSpeedAttribute',
+    hint: 'SETTINGS.ActorSpeedAttributeHint',
+    scope: 'world',
+    config: true,
+    type: String,
+    default: '',
   });
 }

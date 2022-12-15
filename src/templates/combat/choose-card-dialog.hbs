@@ -4,11 +4,15 @@
       <li class="card">
         <label for="{{id}}">
           <input
-            type="checkbox"
+            type="radio"
             name="card"
-            id="{{id}}"
+            id="card_{{id}}"
             data-card-id="{{id}}"
           />
+          <figure{{#if (eq @index 1)}} class="high-card"{{/if}}>
+            <div class="indicator"><i class="fas fa-star"></i></div>
+            <figcaption>{{name}}</figcaption>
+          </figure>
         </label>
       </li>
     {{/each}}

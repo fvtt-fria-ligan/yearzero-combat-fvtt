@@ -19,8 +19,10 @@ export const CARDS_DRAW_KEEP_STATES = {
 
 /** @enum {string} */
 export const SETTINGS_KEYS = {
-  AUTODRAW: 'autoDraw',
   MIGRATION_VERSION: 'moduleMigrationVersion',
+  ACTOR_SPEED_ATTRIBUTE: 'actorSpeedAttribute',
+  INITIATIVE_AUTODRAW: 'initAutoDraw',
+  INITIATIVE_MESSAGING: 'initMessaging',
 };
 
 /** @enum {string} */

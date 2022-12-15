@@ -10,5 +10,5 @@ SETTINGS.SlowAndFastActionsN: Activer les Actions Rapides et Lentes
 SETTINGS.SlowAndFastActionsL: >-
   Affiche des boutons supplémentaires dans l'onglet combat pour les actions
   rapides et lentes.
-SETTINGS.AutoDrawH: Pioche automatiquement les cartes d'initiative.
-SETTINGS.AutoDrawN: Mode de pioche d'initiative par défaut
+SETTINGS.AutoDraw: Mode de pioche d'initiative par défaut
+SETTINGS.AutoDrawHint: Pioche automatiquement les cartes d'initiative.
