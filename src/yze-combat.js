@@ -18,11 +18,12 @@ import { HOOKS_KEYS, MODULE_ID } from '@module/constants';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
 import { setupModule } from '@module/setup';
-import { YearZeroCombatHook } from '@utils/client-hooks';
+import YearZeroCombatHook from '@utils/client-hooks';
 import YearZeroCards from '@combat/cards';
 import YearZeroCombat from '@combat/combat';
 import YearZeroCombatant from '@combat/combatant';
 import YearZeroCombatTracker from './sidebar/combat-tracker';
+import { tokenOnHoverIn, tokenOnHoverOut } from '@combat/duplicate-combatant';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */
@@ -44,6 +45,9 @@ Hooks.once('init', () => {
     },
   };
   CONFIG.ui.combat = YearZeroCombatTracker;
+
+  Token.prototype._onHoverIn = tokenOnHoverIn;
+  Token.prototype._onHoverOut = tokenOnHoverOut;
 
   Hooks.call(HOOKS_KEYS.COMBAT_INIT, YearZeroCombatHook);
 

@@ -3,7 +3,7 @@
 /** @typedef {import('./combatant').default} YearZeroCombatant */
 
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { duplicateCombatant, getInitiativeDeck, getInitiativeDeckDiscardPile } from '../utils/client-hooks';
+import { duplicateCombatant, getInitiativeDeck, getInitiativeDeckDiscardPile } from '@utils/utils';
 
 export default class YearZeroCombat extends Combat {
 
@@ -297,52 +297,52 @@ export default class YearZeroCombat extends Combat {
    * @param {YearZeroCombatant} combatant
    * @returns {Promise.<void>}
    */
-  async setDrawQty(combatant) {
-    const template = `modules/${MODULE_ID}/templates/combat/set-draw-qty.hbs`;
-    const content = await renderTemplate(template, { data: { combatant: combatant } });
-    const buttons = {
-      draw: {
-        label: game.i18n.localize('YZEC.Combat.Draw'),
-        callback: async html => {
-          const qty = html.find('input[name="qty"]').value;
-          const keep = html.find('input[name="keep"]').value;
-          const keepState = html.find('input[name="keepState"]').value;
-          // here is where we set those flags then we want to drawInitiative
-          const cards = await this.drawCards(qty, keep);
-          combatant.setDrawQty(qty, keep, keepState);
-          combatant.setCards(cards);
-        },
-      },
-    };
+  // async setDrawQty(combatant) {
+  //   const template = `modules/${MODULE_ID}/templates/combat/set-draw-qty.hbs`;
+  //   const content = await renderTemplate(template, { data: { combatant: combatant } });
+  //   const buttons = {
+  //     draw: {
+  //       label: game.i18n.localize('YZEC.Combat.Draw'),
+  //       callback: async html => {
+  //         const qty = html.find('input[name="qty"]').value;
+  //         const keep = html.find('input[name="keep"]').value;
+  //         const keepState = html.find('input[name="keepState"]').value;
+  //         // here is where we set those flags then we want to drawInitiative
+  //         const cards = await this.drawCards(qty, keep);
+  //         combatant.setDrawQty(qty, keep, keepState);
+  //         combatant.setCards(cards);
+  //       },
+  //     },
+  //   };
 
-    // return Dialog.wait({
-    //   title: game.i18n.localize('YZEC.Combat.Initiative.DrawQty'),
-    //   content,
-    //   buttons,
-    //   default: {
-    //     qty: 1,
-    //     keep: 1,
-    //     keepState: 'best',
-    //   },
-    //   // Draw the cards happens on the drawInitiative should not be needed here.
-    //   // close: async () => {},
-    // });
+  // return Dialog.wait({
+  //   title: game.i18n.localize('YZEC.Combat.Initiative.DrawQty'),
+  //   content,
+  //   buttons,
+  //   default: {
+  //     qty: 1,
+  //     keep: 1,
+  //     keepState: 'best',
+  //   },
+  //   // Draw the cards happens on the drawInitiative should not be needed here.
+  //   // close: async () => {},
+  // });
 
-    const dialog = new Dialog({
-      title: game.i18n.localize('YZEC.Combat.Initiative.DrawQty'),
-      content,
-      buttons: buttons,
-      default: {
-        qty: 1,
-        keep: 1,
-        keepState: 'best',
-      },
-      close: async () => {
-        // draw the cards happens on the drawInitiative should not be needed here
-      },
-    });
-    dialog.render(true);
-  }
+  // const dialog = new Dialog({
+  //   title: game.i18n.localize('YZEC.Combat.Initiative.DrawQty'),
+  //   content,
+  //   buttons: buttons,
+  //   default: {
+  //     qty: 1,
+  //     keep: 1,
+  //     keepState: 'best',
+  //   },
+  //   close: async () => {
+  //     // draw the cards happens on the drawInitiative should not be needed here
+  //   },
+  // });
+  // dialog.render(true);
+  // }
 
   /* ------------------------------------------ */
 
@@ -429,8 +429,8 @@ export default class YearZeroCombat extends Combat {
     if (!a || !b) return 0;
     // Sorts by card value:
     if (a.flags[MODULE_ID] && a.flags[MODULE_ID]) {
-      if (a.cardValue < b.cardValue) return 1;
-      if (a.cardValue > b.cardValue) return -1;
+      if (a.cardValue < b.cardValue) return -1;
+      if (a.cardValue > b.cardValue) return 1;
       return 0;
     }
     // Sorts by name otherwise:
@@ -446,8 +446,7 @@ export default class YearZeroCombat extends Combat {
   /** @override */
   async resetAll() {
     for (const combatant of this.combatants) {
-      const update = this._getInitResetUpdate(combatant);
-      if (update) combatant.updateSource(update);
+      await combatant.resetInitiative();
     }
     return this.update(
       { turn: 0, combatants: this.combatants.toObject() },
@@ -461,7 +460,11 @@ export default class YearZeroCombat extends Combat {
   async startCombat() {
     // Duplicate actors if needed.
     for (const combatant of this.combatants) {
-      //
+      const speed = combatant.getSpeedFromActor();
+      if (speed > 1) {
+        const clone = duplicateCombatant(combatant);
+        this.combatants.set(clone.id, clone);
+      }
     }
     // Draws initiative for everyone.
     const ids = this.combatants

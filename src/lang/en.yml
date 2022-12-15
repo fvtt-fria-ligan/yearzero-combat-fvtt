@@ -1,29 +1,37 @@
+
+SETTINGS.AutoDraw: Enable Automatic Initiative Draw Mode
+SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards.
 SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
 SETTINGS.SlowAndFastActionsHint: >-
-  Whether to show additional buttons for Slow & Fast Actions in the Combat
-  Tracker.
+  Whether to show additional buttons for Slow & Fast Actions in the Combat Tracker.
 SETTINGS.InitiativeDeck: Initiative Deck ID
-SETTINGS.InitiativeDeckHint: xxx
+SETTINGS.InitiativeDeckHint: >-
+  ID or name of the Initiative deck from which
+  to draw initiative cards.
 SETTINGS.DiscardPile: Discard Pile ID
-SETTINGS.DiscardPileHint: xxx
+SETTINGS.DiscardPileHint: >-
+  ID or name of the Discard pile where to put
+  the drawn initiative cards.
 SETTINGS.InitiativeMessaging: Send Initiative Messages
-SETTINGS.InitiativeMessagingHint: xxx
+SETTINGS.InitiativeMessagingHint: >-
+  Whether to display chat messages when an initiative card
+  is drawn.
 SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
-SETTINGS.ActorSpeedAttributeHint: xxx
-YZEC.Combat.Initiative.Draw: \{name\}'s Initiative Card!
+SETTINGS.ActorSpeedAttributeHint: >-
+  The property path in the actor's data to the attribute
+  that defines how many initiative cards are kept (speed) by
+  the combatant (e.g. system.speed.value).
+YZEC.Combat.Initiative.Draw: "{name}'s Initiative Card"
 YZEC.Combat.Initiative.NotEnoughCards: Not Enough Cards in the Deck to Draw Initiative
 YZEC.Combat.Initiative.ChooseCard: Choose a Card
-YZEC.Combat.Draw: Set Draw
+YZEC.Combat.SetDraw: Set Draw
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
-YZEC.Combat.SelectCard: Choose Card(s) to Keep
-YZEC.CombatTracker.fastAction: Fast Action
-YZEC.CombatTracker.slowAction: Slow Action
-YZEC.CombatTracker.duplicate: Duplicate Combatant
+YZEC.CombatTracker.FastAction: Fast Action
+YZEC.CombatTracker.SlowAction: Slow Action
+YZEC.CombatTracker.DuplicateCombatant: Duplicate Combatant
 YZEC.InitiativeDeckName: Initiative Deck
 YZEC.InitiativeDeckDiscardPileName: Initiative Cards Discard Pile
 YZEC.OK: Okay
 YZEC.NoInitiativeDeckFound: No initiative deck found, creating a new one...
 YZEC.NoInitiativeDeckDiscardPileFound: No discard pile found, creating a new one...
 YZEC.WARNING.InvalidDeckType: You can only draw initiative cards from a deck
-SETTINGS.AutoDraw: Default Initiative Draw Mode
-SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards.

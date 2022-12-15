@@ -1,12 +1,9 @@
-import { MODULE_ID, CARD_STACK } from '@module/constants';
-import YearZeroCombatant from '@combat/combatant';
-
 /**
  * An abstract class (cannot be instantiated) with utility methods
  * to customize
  * @static
  */
-export class YearZeroCombatHook {
+export default class YearZeroCombatHook {
   constructor() {
     throw new SyntaxError('This class cannot be instantiated!');
   }
@@ -25,44 +22,4 @@ export class YearZeroCombatHook {
     if (typeof src !== 'string') throw new Error('Source path to the Combat Tracker preset JSON must be a String');
     CONFIG.YZE_COMBAT.CombatTracker.src = src;
   }
-}
-
-/**
- * Gets the canvas (if ready).
- * @returns {Canvas}
- */
-export function getCanvas() {
-  if (canvas instanceof Canvas && canvas.ready) {
-    return canvas;
-  }
-  throw new Error('No Canvas available');
-}
-
-/**
- * Gets the initiative deck.
- * @param {boolean} [strict=false] Whether to throw an error if not found
- * @returns {import('../combat/cards').default}
- */
-export function getInitiativeDeck(strict = false) {
-  return game.cards.get(game.settings.get(MODULE_ID, CARD_STACK.INITIATIVE_DECK), { strict });
-}
-
-/**
- * Gets the discard pile of the initiative deck.
- * @param {boolean} [strict=false] Whether to throw an error if not found
- * @returns {CardsPile}
- */
-export function getInitiativeDeckDiscardPile(strict = false) {
-  return game.cards.get(game.settings.get(MODULE_ID, CARD_STACK.DISCARD_PILE), { strict });
-}
-
-/**
- * @param {Combatant} combatant 
- */
-export function duplicateCombatant(combatant) {
-  // const clone = deepClone(combatant);
-  const data = combatant.toObject();
-  data.flags[MODULE_ID].copyOf = combatant.id;
-  const clone = new YearZeroCombatant(data);
-  return clone;
 }

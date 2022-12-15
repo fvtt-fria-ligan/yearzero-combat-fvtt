@@ -1,5 +1,5 @@
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { getCanvas } from '../utils/client-hooks';
+import { getCanvas } from '@utils/utils';
 
 export default class YearZeroCombatant extends Combatant {
 
@@ -55,13 +55,13 @@ export default class YearZeroCombatant extends Combatant {
    * @default 1
    * @readonly
    */
-  get keepSize() {
-    return this.getFlag(MODULE_ID, 'keepSize') ?? 1;
-  }
+  // get keepSize() {
+  //   return this.getFlag(MODULE_ID, 'keepSize') ?? 1;
+  // }
 
-  async setKeepSize(keepSize) {
-    return this.setFlag(MODULE_ID, 'keepSize', keepSize);
-  }
+  // async setKeepSize(keepSize) {
+  //   return this.setFlag(MODULE_ID, 'keepSize', keepSize);
+  // }
 
   /**
    * Card keeping behavior.
@@ -75,6 +75,32 @@ export default class YearZeroCombatant extends Combatant {
 
   async setKeepState(keepState) {
     return this.setFlag(MODULE_ID, 'keepState', keepState);
+  }
+
+  /* ------------------------------------------ */
+
+  /**
+   * Number of times the actor should be duplicated when combat starts.
+   * @type {number}
+   * @default 1
+   * @readonly
+   */
+  get speed() {
+    return this.getFlag(MODULE_ID, 'speed') || 1;
+  }
+
+  async setSpeed(speed) {
+    return this.setFlag(MODULE_ID, 'speed', speed);
+  }
+
+  /**
+   * Gets the speed value from the combatant's actor.
+   * @returns {number}
+   */
+  getSpeedFromActor() {
+    const key = game.settings.get(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE);
+    const speed = foundry.utils.getProperty(this.actor, key) || 1;
+    return speed;
   }
 
   /* ------------------------------------------ */
@@ -136,14 +162,14 @@ export default class YearZeroCombatant extends Combatant {
     return this.drawSize;
   }
 
-  /**
-   * Gets the speed value of this character
-   * @returns {number=}
-   */
-  getSpeed() {
-    const key = game.settings.get(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE);
-    const speed = foundry.utils.getProperty(this.actor, key) || 1;
-    return speed;
+  async resetInitiative() {
+    return this.updateSource({
+      initiative: null,
+      [`flags.${MODULE_ID}`]: {
+        cardValue: null,
+        cardDescription: '',
+      },
+    });
   }
 
   /**

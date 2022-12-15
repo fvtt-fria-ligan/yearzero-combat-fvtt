@@ -14,7 +14,8 @@ export async function setupModule() {
 async function setupCards(stackType) {
   // Gets the deck/pile.
   const cardStackId = game.settings.get(MODULE_ID, stackType);
-  const cardStack = game.cards.get(cardStackId);
+  let cardStack = game.cards.get(cardStackId);
+  if (!cardStack) cardStack = game.cards.getName(cardStackId);
 
   // Exits early if the deck/pile exists.
   if (cardStack) return cardStack;
