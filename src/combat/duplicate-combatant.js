@@ -1,3 +1,10 @@
+export async function combatTrackerOnToggleDefeatedStatus(combatant) {
+  const isDefeated = combatant.isDefeated;
+  for (const c of _getCombatantsSharingToken(combatant)) {
+    await c.update({ defeated: isDefeated });
+  }
+}
+
 export async function tokenOnHoverIn(event, options) {
   const combatant = this.combatant;
   if (combatant) {

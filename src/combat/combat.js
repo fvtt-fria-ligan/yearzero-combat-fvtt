@@ -67,12 +67,13 @@ export default class YearZeroCombat extends Combat {
       /** @type {Card} */
       let card;
       const cards = await this.drawCards(cardsToDraw);
-      cards.sort((a, b) => a.value - b.value);
 
       // FIXME DEBUG
       if (cards.length !== cardsToDraw) console.warn('Something went wrong: Incorrect number of cards drawn');
 
       if (cards.length > 1) {
+        cards.sort((a, b) => a.value - b.value);
+
         if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
           switch (combatant.keepState) {
             default:
@@ -111,24 +112,14 @@ export default class YearZeroCombat extends Combat {
 
       // Prepares the messages.
       const template = `modules/${MODULE_ID}/templates/chat/draw-initiative-chatcard.hbs`;
-      const content = await renderTemplate(template, {
-        img: card.currentFace.img,
-        name: card.name,
-        description: card.description,
-      });
-      // <section class="initiative-draw">
-      //   <div class="action-card-filter-container">
-      //     <img class="result-image" src="${card?.currentFace?.img}">
-      //   </div>
-      //   <h4 class="result-text result-text-card">${card?.name}</h4>
-      // </section>`;
+      const content = await renderTemplate(template, { card });
 
       const speakerData = {
         scene: game.scenes?.active?.id,
         actor: combatant.actor?.id,
         token: combatant.token?.id,
         alias: game.i18n.format('YZEC.Combat.Initiative.Draw', {
-          name: combatant.token?.name ?? 'XXX',
+          name: combatant.token?.name ?? '???',
         }),
       };
 
@@ -413,6 +404,19 @@ export default class YearZeroCombat extends Combat {
   findCard(cardValue) {
     const initiativeDeck = getInitiativeDeck(true);
     return initiativeDeck.cards.find(c => c.value === cardValue);
+  }
+
+  /* ------------------------------------------ */
+
+  /**
+   * Duplicates a combatant
+   * @param {Combatant} combatant Combatant to duplicate
+   * @param {number}   [qty=1]    Number of times to duplicate it
+   * @returns {Promise.<Combatant[]>}
+   */
+  async duplicateCombatant(combatant, qty = 1) {
+    const combatants = new Array(qty).fill(combatant);
+    return this.createEmbeddedDocuments('Combatant', combatants);
   }
 
   /* ------------------------------------------ */

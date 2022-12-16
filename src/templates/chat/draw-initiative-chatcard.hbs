@@ -1,11 +1,13 @@
-<div class="initiative-draw">
-	<div class="card-filter-container">
-		<img class="card-image" src="{{img}}"/>
+{{#with card}}
+	<div class="initiative-draw">
+		<div class="card-filter-container">
+			<img class="card-image" src="{{currentFace.img}}"/>
+		</div>
+		<div class="card-details">
+			<h4 class="card-name">{{name}}</h4>
+			{{#if description}}
+				<p class="notes">{{description}}</p>
+			{{/if}}
+		</div>
 	</div>
-	<div class="card-details">
-		<h4 class="card-name">{{name}}</h4>
-		{{#if description}}
-			<p class="notes">{{description}}</p>
-		{{/if}}
-	</div>
-</div>
+{{/with}}
