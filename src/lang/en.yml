@@ -16,6 +16,10 @@ SETTINGS.InitiativeMessaging: Send Initiative Messages
 SETTINGS.InitiativeMessagingHint: >-
   Whether to display chat messages when an initiative card
   is drawn.
+SETTINGS.InitiativeResetDeckOnCombatStart: Reset the Initiative Deck
+SETTINGS.InitiativeResetDeckOnCombatStartHint: >-
+  Whether to recall and shuffle all the initiative cards
+  when starting a new combat.
 SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
 SETTINGS.ActorSpeedAttributeHint: >-
   The property path in the actor's data to the attribute
@@ -23,6 +27,7 @@ SETTINGS.ActorSpeedAttributeHint: >-
   the combatant (e.g. system.speed.value).
 YZEC.Combat.Initiative.Draw: "{name}'s Initiative Card"
 YZEC.Combat.Initiative.NotEnoughCards: Not Enough Cards in the Deck to Draw Initiative
+YZEC.Combat.Initiative.ResetDeck: Shuffled all the discarded initiative cards back into the deck
 YZEC.Combat.Initiative.ChooseCard: Choose a Card
 YZEC.Combat.SetDraw: Set Draw
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw

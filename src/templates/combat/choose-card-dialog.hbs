@@ -2,15 +2,18 @@
   <ul class="card-dialog">
     {{#each cards}}
       <li class="card">
-        <label for="{{id}}">
+        <label for="card_{{id}}">
           <input
             type="radio"
             name="card"
             id="card_{{id}}"
             data-card-id="{{id}}"
           />
-          <figure{{#if (eq @index 1)}} class="high-card"{{/if}}>
-            <div class="indicator"><i class="fas fa-star"></i></div>
+          <figure{{#if (eq value ../bestCard)}} class="high-card"{{/if}}>
+            <div class="indicator">
+              {{{@root.config.Icons.bestCard}}}
+            </div>
+            <img src="{{currentFace.img}}"/>
             <figcaption>{{name}}</figcaption>
           </figure>
         </label>

@@ -2,8 +2,10 @@
 /** @typedef {import('@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/combat').InitiativeOptions} InitiativeOptions */
 /** @typedef {import('./combatant').default} YearZeroCombatant */
 
+import { YZEC } from '@module/config';
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { duplicateCombatant, getInitiativeDeck, getInitiativeDeckDiscardPile } from '@utils/utils';
+import { getInitiativeDeck, getInitiativeDeckDiscardPile } from '@utils/utils';
+import { duplicateCombatant, getCombatantsSharingToken } from './duplicate-combatant';
 
 export default class YearZeroCombat extends Combat {
 
@@ -59,8 +61,7 @@ export default class YearZeroCombat extends Combat {
       const cardsToDraw = combatant.getNumberOfCardsToDraw();
       if (cardsToDraw > initiativeDeck.availableCards.length) {
         ui.notifications.info('YZEC.Combat.Initiative.NotEnoughCards', { localize: true });
-        await initiativeDeck.recall();
-        await initiativeDeck.shuffle();
+        await this.resetInitiativeDeck();
       }
 
       // Draws the cards.
@@ -149,83 +150,6 @@ export default class YearZeroCombat extends Combat {
     }
 
     return this;
-
-    //     for (const id of ids) {
-    //       const combatant = this.combatants.get(id, true);
-    //       if (combatant.isDefeated) continue;
-    //       const keepState = combatant.keepState || 'best';
-    //       const drawSize = combatant.drawSize || 1;
-    //       const drawTimes = combatant.drawTimes || 1;
-    //       const keepSize = combatant.keepSize || 1;
-
-    //       for (let i = 0; i < drawTimes; i++) {
-    //         const cards = await this.drawCard(drawSize);
-    //         if (game.settings.get(MODULE_ID, SETTINGS_KEYS.AUTODRAW)) {
-    //           if (keepSize > 1) {
-    //             if (keepState === 'best') {
-    //               cards.sort((a, b) => a.value - b.value);
-    //             }
-    //             else if (keepState === 'worst') {
-    //               cards.sort((a, b) => b.value - a.value);
-    //             }
-    //             cards.splice(keepSize);
-    //           }
-    //         }
-    //         else {
-    //           const chosenCards = await this.selectCards(combatant, cards);
-    //           cards.splice(chosenCards.length);
-    //           for (let j = 0; j < chosenCards.length; j++) {
-    //             cards.splice(j, 1, chosenCards[j]);
-    //           }
-    //         }
-    //         if (cards.length > 1) {
-    //           cards.forEach(card => {
-    //             const clone = duplicateCombatant(combatant);
-    //             clone.setCardValue(card.value);
-    //             cardImage.push(card.face.img);
-    //             cardName.push(card.name);
-    //             updatedCombatants.push(clone);
-    //           });
-    //         }
-    //         else {
-    //           const card = cards[0];
-    //           const initiative = card?.value;
-    //           combatant.setCardValue(initiative);
-    //           cardImage.push(card.face.img);
-    //           cardName.push(card.name);
-    //           updatedCombatants.push(combatant);
-    //         }
-    //       }
-    //       const template = `
-    // <section class="initiative-card">
-    //   <div class="initiative-card-container">
-    //     ${cardImage.map(img => `<img class="initiative-card-image" src="${img}"/>`).join(' ')}
-    //   </div>
-    //   <div class="initiative-card-name-container">
-    //     ${cardName.map(card => `<div class="result-text result-text-card">${card}</div>`).join(' ')}
-    //   </div>
-    // </section>`;
-
-    //       const messageData = mergeObject(
-    //         {
-    //           speaker: {
-    //             scene: game.scenes?.active?.id,
-    //             actor: combatant.actor ? combatant.actor.id : null,
-    //             token: combatant.token?.id,
-    //             alias: game.i18n.format('YZEC.Combat.Initiative.Draw', { name: combatant.token.name }),
-    //           },
-    //           whisper: combatant.token?.hidden || combatant.hidden ? game?.users?.filter(user => user.isGM) : [],
-    //           content: template,
-    //         },
-    //         messageOptions,
-    //       );
-    //       chatMessages.push(messageData);
-    //     }
-    //     await this.update({ combatants: updatedCombatants }, { diff: false });
-    //     this.playInitiativeSound();
-    //     await CONFIG.ChatMessage.documentClass.createDocuments(chatMessages);
-
-    //     return this;
   }
 
   /* ------------------------------------------ */
@@ -245,18 +169,27 @@ export default class YearZeroCombat extends Combat {
 
   /**
    * Picks an initiative card for a combatant.
-   * @param {Cards[]}           cards     (Already sorted)
+   * @param {Cards[]}           cards          (Already sorted)
    * @param {YearZeroCombatant} combatant
+   * @param {number}           [bestCardValue] Value of the best card
    * @returns {Promise.<Card>}
    */
-  async chooseCard(cards, combatant) {
+  async chooseCard(cards, combatant, bestCardValue) {
     const template = `modules/${MODULE_ID}/templates/combat/choose-card-dialog.hbs`;
-    const content = await renderTemplate(template, { cards });
+    const content = await renderTemplate(template, {
+      cards,
+      bestCard: bestCardValue ?? cards[0].value,
+      config: YZEC,
+    });
     const buttons = {
       ok: {
         icon: '<i class="fas fa-check"></i>',
         label: 'OK',
-        // callback: () => {},
+        callback: html => {
+          const choice = html.find('input[name=card]:checked');
+          const cardId = choice.data('card-id');
+          return cards.find(c => c.id === cardId);
+        },
       },
     };
 
@@ -267,11 +200,8 @@ export default class YearZeroCombat extends Combat {
       title: `${combatant.name}: ${game.i18n.localize('YZEC.Combat.Initiative.ChooseCard')}`,
       content, buttons,
       default: 'ok',
-      close: html => {
-        const choice = html.find('input[name=card]:checked');
-        const cardId = choice.data('card-id');
-        return cards.find(c => c.id === cardId);
-      },
+      // Default value returned
+      close: () => cards.find(c => c.value === bestCardValue) ?? cards[0],
     }, {
       classes: ['dialog', MODULE_ID, game.system.id],
     }, {});
@@ -409,14 +339,14 @@ export default class YearZeroCombat extends Combat {
   /* ------------------------------------------ */
 
   /**
-   * Duplicates a combatant
-   * @param {Combatant} combatant Combatant to duplicate
-   * @param {number}   [qty=1]    Number of times to duplicate it
-   * @returns {Promise.<Combatant[]>}
+   * Recalls all the discarded initiative cards
+   * and shuffles them back into the initiative deck.
    */
-  async duplicateCombatant(combatant, qty = 1) {
-    const combatants = new Array(qty).fill(combatant);
-    return this.createEmbeddedDocuments('Combatant', combatants);
+  async resetInitiativeDeck() {
+    const initiativeDeck = getInitiativeDeck(true);
+    await initiativeDeck.recall();
+    await initiativeDeck.shuffle();
+    ui.notifications.info('YZEC.Combat.Initiative.ResetDeck', { localize: true });
   }
 
   /* ------------------------------------------ */
@@ -432,7 +362,7 @@ export default class YearZeroCombat extends Combat {
   _sortCombatants(a, b) {
     if (!a || !b) return 0;
     // Sorts by card value:
-    if (a.flags[MODULE_ID] && a.flags[MODULE_ID]) {
+    if (a.flags[MODULE_ID] && b.flags[MODULE_ID]) {
       if (a.cardValue < b.cardValue) return -1;
       if (a.cardValue > b.cardValue) return 1;
       return 0;
@@ -462,17 +392,21 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async startCombat() {
-    // Duplicate actors if needed.
+    // Duplicate actors if their speed > 1.
     for (const combatant of this.combatants) {
       const speed = combatant.getSpeedFromActor();
       if (speed > 1) {
-        const clone = duplicateCombatant(combatant);
-        this.combatants.set(clone.id, clone);
+        const duplicatas = getCombatantsSharingToken(combatant);
+        const copyQty = speed - duplicatas.length;
+        if (copyQty > 0) await duplicateCombatant(combatant, copyQty);
       }
     }
-    // Draws initiative for everyone.
+    // Draws initiative for each combatant.
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
+      await this.resetInitiativeDeck();
+    }
     const ids = this.combatants
-      .filter(c => !c.isDefeated && c.initiative === null)
+      .filter(c => !c.isDefeated && c.initiative == null)
       .map(c => c.id);
     await this.rollInitiative(ids);
     return super.startCombat();

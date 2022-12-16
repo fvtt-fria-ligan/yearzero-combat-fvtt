@@ -40,6 +40,15 @@ export function registerSystemSettings() {
     default: true,
   });
 
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START, {
+    name: 'SETTINGS.InitiativeResetDeckOnCombatStart',
+    hint: 'SETTINGS.InitiativeResetDeckOnCombatStartHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+  });
+
   game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_MESSAGING, {
     name: 'SETTINGS.InitiativeMessaging',
     hint: 'SETTINGS.InitiativeMessagingHint',

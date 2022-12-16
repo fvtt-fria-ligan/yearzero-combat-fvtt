@@ -24,6 +24,7 @@ YZEC.CombatTracker = {
  * <div>{{{@root.config.Icons.buttons.xxx}}}</div>
  */
 YZEC.Icons = {
+  bestCard: '<i class="fas fa-star"></i>',
   // tabs: {
   //   bio: '<i class="fas fa-align-left"></i>',
   //   combat: '<i class="fas fa-fist-raised"></i>',

@@ -23,7 +23,7 @@ import YearZeroCards from '@combat/cards';
 import YearZeroCombat from '@combat/combat';
 import YearZeroCombatant from '@combat/combatant';
 import YearZeroCombatTracker from './sidebar/combat-tracker';
-import { tokenOnHoverIn, tokenOnHoverOut } from '@combat/duplicate-combatant';
+import { combatTrackerOnToggleDefeatedStatus, tokenOnHoverIn, tokenOnHoverOut } from '@combat/duplicate-combatant';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */
@@ -46,14 +46,17 @@ Hooks.once('init', () => {
   };
   CONFIG.ui.combat = YearZeroCombatTracker;
 
+  // Fixes base methods (mainly for duplicate combatants support).
   Token.prototype._onHoverIn = tokenOnHoverIn;
   Token.prototype._onHoverOut = tokenOnHoverOut;
-
-  Hooks.call(HOOKS_KEYS.COMBAT_INIT, YearZeroCombatHook);
+  CombatTracker.prototype._onToggleDefeatedStatus = combatTrackerOnToggleDefeatedStatus;
 
   // registerSheets();
   initializeHandlebars();
   registerSystemSettings();
+
+  // Calls the configuration hook.
+  Hooks.call(HOOKS_KEYS.COMBAT_INIT, YearZeroCombatHook);
 });
 
 /* ------------------------------------------ */
