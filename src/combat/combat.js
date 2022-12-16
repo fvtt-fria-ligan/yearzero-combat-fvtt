@@ -4,7 +4,7 @@
 
 import { YZEC } from '@module/config';
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { getInitiativeDeck, getInitiativeDeckDiscardPile } from '@utils/utils';
+import { getInitiativeDeck, getInitiativeDeckDiscardPile, resetInitiativeDeck } from '@utils/utils';
 import { duplicateCombatant, getCombatantsSharingToken } from './duplicate-combatant';
 import { removeActions } from './slow-and-fast-actions';
 
@@ -23,34 +23,7 @@ export default class YearZeroCombat extends Combat {
     const messages = [];
     const skipMessage = false;
     const initiativeDeck = getInitiativeDeck(true);
-    const chatRollMode = game.settings.get('core', 'rollMode');
-
-    //     ids = typeof ids === 'string' ? [ids] : ids;
-    //     const initiativeDeck = getInitiativeDeck(true);
-    //     const { messageOptions } = options;
-    //     const chatMessages = [];
-    //     const cardImage = [];
-    //     const cardName = [];
-    //     const updatedCombatants = [];
-
-    //     const totalKeep = ids.reduce((acc, id) => {
-    //       const combatant = this.combatants.get(id, true);
-    //       return acc + combatant.keepSize * combatant.drawTimes;
-    //     }, 0);
-
-    //     if (totalKeep > initiativeDeck.availableCards.length) {
-    //       await initiativeDeck.recall();
-    //       await initiativeDeck.shuffle();
-    //     }
-
-    //     if (totalKeep > initiativeDeck.availableCards.length) {
-    //       const message = game.i18n.format('YZEC.Combat.Initiative.NotEnoughCards', {
-    //         count: totalKeep,
-    //         available: initiativeDeck.availableCards.length,
-    //       });
-    //       ui.notifications.warn(message);
-    //       return this;
-    //     }
+    // const chatRollMode = game.settings.get('core', 'rollMode');
 
     // Iterates over each combatant.
     for (const id of ids) {
@@ -64,7 +37,7 @@ export default class YearZeroCombat extends Combat {
       const cardsToDraw = combatant.getNumberOfCardsToDraw();
       if (cardsToDraw > initiativeDeck.availableCards.length) {
         ui.notifications.info('YZEC.Combat.Initiative.NotEnoughCards', { localize: true });
-        await this.resetInitiativeDeck();
+        await resetInitiativeDeck();
       }
 
       // Draws the cards.
@@ -76,7 +49,10 @@ export default class YearZeroCombat extends Combat {
       if (cards.length !== cardsToDraw) console.warn('Something went wrong: Incorrect number of cards drawn');
 
       if (cards.length > 1) {
-        cards.sort((a, b) => a.value - b.value);
+        cards.sort((a, b) => {
+          const n = game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_SORT_ORDER) || 1;
+          return (a.value - b.value) * n;
+        });
 
         if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
           switch (combatant.keepState) {
@@ -289,19 +265,6 @@ export default class YearZeroCombat extends Combat {
   }
 
   /* ------------------------------------------ */
-
-  /**
-   * Recalls all the discarded initiative cards
-   * and shuffles them back into the initiative deck.
-   */
-  async resetInitiativeDeck() {
-    const initiativeDeck = getInitiativeDeck(true);
-    await initiativeDeck.recall();
-    await initiativeDeck.shuffle();
-    ui.notifications.info('YZEC.Combat.Initiative.ResetDeck', { localize: true });
-  }
-
-  /* ------------------------------------------ */
   /* Overridden Base Methods                    */
   /* ------------------------------------------ */
 
@@ -315,8 +278,9 @@ export default class YearZeroCombat extends Combat {
     if (!a || !b) return 0;
     // Sorts by card value:
     if (a.flags[MODULE_ID] && b.flags[MODULE_ID]) {
-      if (a.cardValue < b.cardValue) return -1;
-      if (a.cardValue > b.cardValue) return 1;
+      const n = game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_SORT_ORDER) || 1;
+      if (a.cardValue < b.cardValue) return -n;
+      if (a.cardValue > b.cardValue) return +n;
       return 0;
     }
     // Sorts by name otherwise:
@@ -358,7 +322,7 @@ export default class YearZeroCombat extends Combat {
 
     // Draws initiative for each combatant.
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
-      await this.resetInitiativeDeck();
+      await resetInitiativeDeck();
     }
     const ids = this.combatants
       .filter(c => !c.isDefeated && c.initiative == null)
@@ -377,6 +341,24 @@ export default class YearZeroCombat extends Combat {
         await removeActions(combatant.token);
       }
     }
+  }
+
+  /* ------------------------------------------ */
+
+  /** @override */
+  async nextRound() {
+    for (const combatant of this.combatants) {
+      await combatant.updateSource({
+        [`flags.${MODULE_ID}.-=fastAction`]: null,
+        [`flags.${MODULE_ID}.-=slowAction`]: null,
+      });
+      await removeActions(combatant.token);
+    }
+    await this.update(
+      { combatants: this.combatants.toObject() },
+      { diff: false },
+    );
+    return super.nextRound();
   }
 
   /* ------------------------------------------ */

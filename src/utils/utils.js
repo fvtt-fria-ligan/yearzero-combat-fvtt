@@ -34,3 +34,15 @@ export function getInitiativeDeckDiscardPile(strict = false) {
   if (!pile) pile = game.cards.getName(id, { strict });
   return pile;
 }
+
+/**
+ * Recalls all the discarded initiative cards
+ * and shuffles them back into the initiative deck.
+ * @param {boolean} [chatNotification=false] Whether to send a chat notification.
+ */
+export async function resetInitiativeDeck(chatNotification = false) {
+  const initiativeDeck = getInitiativeDeck(true);
+  await initiativeDeck.recall({ chatNotification });
+  await initiativeDeck.shuffle({ chatNotification });
+  ui.notifications.info('YZEC.Combat.Initiative.ResetDeck', { localize: true });
+}

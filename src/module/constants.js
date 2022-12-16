@@ -26,10 +26,12 @@ export const CARDS_DRAW_KEEP_STATES = {
 /** @enum {string} */
 export const SETTINGS_KEYS = {
   /** @type {'moduleMigrationVersion'} */ MIGRATION_VERSION: 'moduleMigrationVersion',
+  /** @type {'actorDrawSizeAttribute'} */ ACTOR_DRAWSIZE_ATTRIBUTE: 'actorDrawSizeAttribute',
   /** @type {'actorSpeedAttribute'} */ ACTOR_SPEED_ATTRIBUTE: 'actorSpeedAttribute',
   /** @type {'initAutoDraw'} */ INITIATIVE_AUTODRAW: 'initAutoDraw',
   /** @type {'initMessaging'} */ INITIATIVE_MESSAGING: 'initMessaging',
   /** @type {'initResetDeckOnCombatStart'} */ INITIATIVE_RESET_DECK_ON_START: 'initResetDeckOnCombatStart',
+  /** @type {'initSortOrder'} */ INITIATIVE_SORT_ORDER: 'initSortOrder',
   /** @type {'duplicateCombatantOnCombatStart'} */ DUPLICATE_COMBATANTS_ON_START: 'duplicateCombatantOnCombatStart',
   /** @type {'slowAndFastAction'} */ SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
 };

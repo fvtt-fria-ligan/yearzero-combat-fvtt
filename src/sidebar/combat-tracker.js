@@ -1,6 +1,9 @@
 import { YZEC } from '@module/config';
 import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { duplicateCombatant } from '@combat/duplicate-combatant';
+import { combatTrackerOnToggleDefeatedStatus, duplicateCombatant } from '@combat/duplicate-combatant';
+import { resetInitiativeDeck } from '@utils/utils';
+
+/** @typedef {import('@combat/combatant').default} YearZeroCombatant */
 
 export default class YearZeroCombatTracker extends CombatTracker {
 
@@ -76,8 +79,39 @@ export default class YearZeroCombatTracker extends CombatTracker {
       event: eventName,
       origin: btn,
     };
-    await combatant.setFlag(MODULE_ID, property, !combatant.getFlag(MODULE_ID, property));
+    if (property) {
+      await combatant.setFlag(MODULE_ID, property, !combatant.getFlag(MODULE_ID, property));
+    }
     YearZeroCombatTracker.#callHook(eventData);
+  }
+
+  /* ------------------------------------------ */
+
+  /**
+   * @param {YearZeroCombatant} combatant
+   * @override
+   */
+  async _onToggleDefeatedStatus(combatant) {
+    await combatTrackerOnToggleDefeatedStatus(combatant);
+
+    // Changes the group leader.
+    if (combatant.isGroupLeader) {
+      const newLeader = await this.viewed.combatants.find(f => f.groupId === combatant.id && !f.isDefeated);
+      await newLeader.update({
+        [`flags.${MODULE_ID}`]: {
+          '-=groupId': null,
+          isGroupLeader: true,
+        },
+      });
+      const followers = await this.#getFollowers(combatant);
+      for (const follower of followers) {
+        await follower.setGroupId(newLeader.id);
+      }
+      await combatant.unsetIsGroupLeader();
+    }
+    if (combatant.groupId) {
+      await combatant.unsetGroupId();
+    }
   }
 
   /* ------------------------------------------ */
@@ -95,6 +129,47 @@ export default class YearZeroCombatTracker extends CombatTracker {
       turns,
       buttons,
     };
+  }
+
+  /* ------------------------------------------ */
+  /*  Event Listeners                           */
+  /* ------------------------------------------ */
+
+  /**
+   * @param {JQuery.<HTMLElement>} html
+   * @override
+   */
+  activateListeners(html) {
+    super.activateListeners(html);
+
+    html.find('.combat-control[data-control=resetDeck]').on('click', this._onResetInitiativeDeck);
+
+    // Makes combatants draggable for the GM.
+    html.find('#combat-tracker li.combatant').each((i, li) => {
+      const id = li.dataset.combatantId;
+      const combatant = this.viewed?.combatants.get(id, { strict: true });
+      if (combatant?.actor.isOwner || game.user.isGM) {
+        // Adds draggable attribute and drag listeners.
+        li.setAttribute('draggable', true);
+        li.classList.add('draggable');
+        // On dragStart:
+        li.addEventListener('dragstart', this._onDragStart, false);
+        // On dragOver:
+        li.addEventListener('dragover', ev =>
+          $(ev.target).closest('li.combatant').addClass('dropTarget'),
+        );
+        // On dragLeave:
+        li.addEventListener('dragLeave', ev =>
+          $(ev.target).closest('li.combatant').removeClass('dropTarget'),
+        );
+      }
+    });
+  }
+  /* ------------------------------------------ */
+
+  _onResetInitiativeDeck(event) {
+    event.preventDefault();
+    return resetInitiativeDeck();
   }
 
   /* ------------------------------------------ */
@@ -175,6 +250,8 @@ export default class YearZeroCombatTracker extends CombatTracker {
     return sortedButtons;
   }
 
+  /* ------------------------------------------ */
+
   /**
    * Sets the turn's properties for the template.
    * @param {*} data
@@ -184,6 +261,15 @@ export default class YearZeroCombatTracker extends CombatTracker {
   #setTurnProperties(data, turn) {
     const { id } = turn;
     const combatant = data.combat.combatants.get(id);
-    return combatant.flags[MODULE_ID] ?? {};
+    return {
+      ...combatant.flags[MODULE_ID],
+      emptyInit: !!combatant.groupId || turn.defeated,
+    };
+  }
+
+  /* ------------------------------------------ */
+
+  #getFollowers(combatant) {
+    return game.combat.combatants.filter(f => f.groupId === combatant.id);
   }
 }

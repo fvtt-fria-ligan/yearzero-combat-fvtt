@@ -29,8 +29,16 @@ export default class YearZeroCombatant extends Combatant {
     return this.getFlag(MODULE_ID, 'fastAction');
   }
 
+  async setFastAction(action) {
+    return this.setFlag(MODULE_ID, 'fastAction', action);
+  }
+
   get slowAction() {
     return this.getFlag(MODULE_ID, 'slowAction');
+  }
+
+  async setSlowAction(action) {
+    return this.setFlag(MODULE_ID, 'slowAction', action);
   }
 
   /* ------------------------------------------ */
@@ -49,19 +57,7 @@ export default class YearZeroCombatant extends Combatant {
     return this.setFlag(MODULE_ID, 'drawSize', drawSize);
   }
 
-  /**
-   * The quantity of Initiative cards to keep.
-   * @type {number}
-   * @default 1
-   * @readonly
-   */
-  // get keepSize() {
-  //   return this.getFlag(MODULE_ID, 'keepSize') ?? 1;
-  // }
-
-  // async setKeepSize(keepSize) {
-  //   return this.setFlag(MODULE_ID, 'keepSize', keepSize);
-  // }
+  /* ------------------------------------------ */
 
   /**
    * Card keeping behavior.
@@ -75,32 +71,6 @@ export default class YearZeroCombatant extends Combatant {
 
   async setKeepState(keepState) {
     return this.setFlag(MODULE_ID, 'keepState', keepState);
-  }
-
-  /* ------------------------------------------ */
-
-  /**
-   * Number of times the actor should be duplicated when combat starts.
-   * @type {number}
-   * @default 1
-   * @readonly
-   */
-  get speed() {
-    return this.getFlag(MODULE_ID, 'speed') || 1;
-  }
-
-  async setSpeed(speed) {
-    return this.setFlag(MODULE_ID, 'speed', speed);
-  }
-
-  /**
-   * Gets the speed value from the combatant's actor.
-   * @returns {number}
-   */
-  getSpeedFromActor() {
-    const key = game.settings.get(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE);
-    const speed = foundry.utils.getProperty(this.actor, key) || 1;
-    return Number(speed);
   }
 
   /* ------------------------------------------ */
@@ -130,27 +100,31 @@ export default class YearZeroCombatant extends Combatant {
   }
 
   /* ------------------------------------------ */
-
-  get skipTurn() {
-    return this.getFlag(MODULE_ID, 'skipTurn');
-  }
-
-  async setSkipTurn(skipTurn) {
-    return this.setFlag(MODULE_ID, 'skipTurn', skipTurn);
-  }
-
-  /* ------------------------------------------ */
-
-  // get drawTimes() {
-  //   return this.getFlag(MODULE_ID, 'drawTimes') ?? 1;
-  // }
-
-  // async setDrawTimes(drawTimes) {
-  //   return this.setFlag(MODULE_ID, 'keepState', drawTimes);
-  // }
-
-  /* ------------------------------------------ */
   /*  Utility Methods                           */
+  /* ------------------------------------------ */
+
+  /**
+   * Gets the speed value from the combatant's actor.
+   * @returns {number}
+   */
+  getSpeedFromActor() {
+    const key = game.settings.get(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE);
+    const speed = foundry.utils.getProperty(this.actor, key) || 1;
+    return Number(speed);
+  }
+
+  /* ------------------------------------------ */
+
+  /**
+   * Gets the draw size value from the combatant's actor.
+   * @returns {number}
+   */
+  getDrawSizeFromActor() {
+    const key = game.settings.get(MODULE_ID, SETTINGS_KEYS.ACTOR_DRAWSIZE_ATTRIBUTE);
+    const drawSize = foundry.utils.getProperty(this.actor, key) || 1;
+    return Number(drawSize);
+  }
+
   /* ------------------------------------------ */
 
   /**
@@ -162,15 +136,21 @@ export default class YearZeroCombatant extends Combatant {
     return this.drawSize;
   }
 
+  /* ------------------------------------------ */
+
   async resetInitiative() {
     return this.updateSource({
       initiative: null,
       [`flags.${MODULE_ID}`]: {
         cardValue: null,
         cardDescription: '',
+        '-=fastAction': null,
+        '-=slowAction': null,
       },
     });
   }
+
+  /* ------------------------------------------ */
 
   /**
    * Swaps initiative cards between two combatants.
@@ -205,6 +185,7 @@ export default class YearZeroCombatant extends Combatant {
       flags: {
         [MODULE_ID]: {
           cardValue: sortValue,
+          drawSize: this.getDrawSizeFromActor(),
         },
       },
     });

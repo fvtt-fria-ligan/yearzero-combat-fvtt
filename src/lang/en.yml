@@ -1,5 +1,13 @@
 COMBAT.RollsInitiative: '{name} draws an initiative card!'
-SETTINGS.AutoDraw: Enable Automatic Initiative Draw Mode
+SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
+SETTINGS.ActorSpeedAttributeHint: >-
+  The property key in the actor's data to the attribute that defines how many
+  initiative cards are kept (speed) by the combatant (e.g. system.speed.value).
+SETTINGS.ActorDrawSizeAttribute: Actor's Draw Size Attribute
+SETTINGS.ActorDrawSizeAttributeHint: >-
+  The property key in the actor's data to the attribute that defines how many
+  initiative cards are drawn by the combatant (e.g. system.reflexes.value).
+SETTINGS.AutoDraw: Automatic Initiative Draw
 SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards.
 SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
 SETTINGS.SlowAndFastActionsHint: >-
@@ -17,10 +25,10 @@ SETTINGS.InitiativeResetDeckOnCombatStart: Reset the Initiative Deck
 SETTINGS.InitiativeResetDeckOnCombatStartHint: >-
   Whether to recall and shuffle all the initiative cards when starting a new
   combat.
-SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
-SETTINGS.ActorSpeedAttributeHint: >-
-  The property path in the actor's data to the attribute that defines how many
-  initiative cards are kept (speed) by the combatant (e.g. system.speed.value).
+SETTINGS.InitiativeSortOrder: Initiative Sort Order
+SETTINGS.InitiativeSortOrderHint: Default sort order for initiative.
+SETTINGS.InitiativeSortOrderAscending: Ascending (Lowest first)
+SETTINGS.InitiativeSortOrderDescending: Descending (Highest first)
 YZEC.Combat.Initiative.ChooseCard: Choose a Card
 YZEC.Combat.Initiative.Draw: '{name}''s Initiative'
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw

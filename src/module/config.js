@@ -12,20 +12,20 @@ YZEC.CombatTracker = {
   DefaultCombatantControls: {
     slowAndFastActions: [
       {
-        'eventName': 'fast-action-button-clicked',
-        'icon': 'fa-forward',
-        'id': 'fast-action-button',
-        'property': 'fastAction',
-        'tooltip': 'YZEC.CombatTracker.FastAction',
-        'visibility': 'owner',
+        eventName: 'fast-action-button-clicked',
+        icon: 'fa-forward',
+        id: 'fast-action-button',
+        property: 'fastAction',
+        label: 'YZEC.CombatTracker.FastAction',
+        visibility: 'owner',
       },
       {
-        'eventName': 'slow-action-button-clicked',
-        'icon': 'fa-play',
-        'id': 'slow-action-button',
-        'property': 'slowAction',
-        'tooltip': 'YZEC.CombatTracker.SlowAction',
-        'visibility': 'owner',
+        eventName: 'slow-action-button-clicked',
+        icon: 'fa-play',
+        id: 'slow-action-button',
+        property: 'slowAction',
+        label: 'YZEC.CombatTracker.SlowAction',
+        visibility: 'owner',
       },
     ],
   },
@@ -63,6 +63,7 @@ YZEC.StatusEffects = {
  * <div>{{{@root.config.Icons.buttons.xxx}}}</div>
  */
 YZEC.Icons = {
+  cards: '<i class="fa-solid fa-cards"></i>',
   bestCard: '<i class="fas fa-star"></i>',
   duplicate: '<i class="fas fa-clone"></i>',
   // tabs: {

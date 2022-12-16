@@ -31,6 +31,19 @@ export function registerSystemSettings() {
     default: '',
   });
 
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_SORT_ORDER, {
+    name: 'SETTINGS.InitiativeSortOrder',
+    hint: 'SETTINGS.InitiativeSortOrderHint',
+    scope: 'world',
+    config: true,
+    type: Number,
+    choices: {
+      1: 'SETTINGS.InitiativeSortOrderAscending',
+      [-1]: 'SETTINGS.InitiativeSortOrderDescending',
+    },
+    default: 1,
+  });
+
   game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW, {
     name: 'SETTINGS.AutoDraw',
     hint: 'SETTINGS.AutoDrawHint',
@@ -80,6 +93,15 @@ export function registerSystemSettings() {
   game.settings.register(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE, {
     name: 'SETTINGS.ActorSpeedAttribute',
     hint: 'SETTINGS.ActorSpeedAttributeHint',
+    scope: 'world',
+    config: true,
+    type: String,
+    default: '',
+  });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.ACTOR_DRAWSIZE_ATTRIBUTE, {
+    name: 'SETTINGS.ActorDrawSizeAttribute',
+    hint: 'SETTINGS.ActorDrawSizeAttributeHint',
     scope: 'world',
     config: true,
     type: String,
