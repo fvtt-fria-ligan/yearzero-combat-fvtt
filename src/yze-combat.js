@@ -13,7 +13,7 @@
  */
 
 import { YZEC } from '@module/config';
-import { HOOKS_KEYS, MODULE_ID } from '@module/constants';
+import { HOOKS_KEYS, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 // import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
@@ -23,6 +23,7 @@ import YearZeroCards from '@combat/cards';
 import YearZeroCombat from '@combat/combat';
 import YearZeroCombatant from '@combat/combatant';
 import YearZeroCombatTracker from './sidebar/combat-tracker';
+import { addSlowAndFastStatusEffects } from '@combat/slow-and-fast-actions';
 import { combatTrackerOnToggleDefeatedStatus, tokenOnHoverIn, tokenOnHoverOut } from '@combat/duplicate-combatant';
 
 /* ------------------------------------------ */
@@ -66,6 +67,9 @@ Hooks.once('init', () => {
 Hooks.once('ready', async () => {
   if (game.user.isGM) {
     await setupModule();
+  }
+  if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
+    addSlowAndFastStatusEffects();
   }
 
   // TODO Hooks.call('yzeCombatReady');

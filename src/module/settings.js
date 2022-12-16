@@ -58,6 +58,25 @@ export function registerSystemSettings() {
     default: true,
   });
 
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS, {
+    name: 'SETTINGS.SlowAndFastActions',
+    hint: 'SETTINGS.SlowAndFastActionsHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.DUPLICATE_COMBATANTS_ON_START, {
+    name: 'SETTINGS.DuplicateCombatantsOnCombatStart',
+    hint: 'SETTINGS.DuplicateCombatantsOnCombatStartHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+  });
+
   game.settings.register(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE, {
     name: 'SETTINGS.ActorSpeedAttribute',
     hint: 'SETTINGS.ActorSpeedAttributeHint',

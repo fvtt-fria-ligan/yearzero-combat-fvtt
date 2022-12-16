@@ -1,7 +1,8 @@
-import { MODULE_ID } from '@module/constants';
+import { YZEC } from '@module/config';
+import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
+import { duplicateCombatant } from '@combat/duplicate-combatant';
 
 export default class YearZeroCombatTracker extends CombatTracker {
-  // TODO https://gitlab.com/peginc/swade/-/blob/develop/src/module/sidebar/SwadeCombatTracker.ts
 
   /** @override */
   static get defaultOptions() {
@@ -9,6 +10,8 @@ export default class YearZeroCombatTracker extends CombatTracker {
       template: `modules/${MODULE_ID}/templates/sidebar/combat-tracker.hbs`,
     });
   }
+
+  /* ------------------------------------------ */
 
   static async appendControlsToContextMenu(_, contextMenu) {
     // The combat tracker will initialize context menus regardless of there being a combat active
@@ -23,7 +26,20 @@ export default class YearZeroCombatTracker extends CombatTracker {
     // The preceding controls will (in a vanilla scenario) be the "Attack" and "End Turn" buttons.
     let index = 3;
 
-    controls.forEach(({ eventName, icon, label, visibility }) => {
+    // Adds "Duplicate Combatant" context menu entry.
+    contextMenu.splice(index, -1, {
+      icon: YZEC.Icons.duplicate,
+      name: game.i18n.localize('YZEC.CombatTracker.DuplicateCombatant'),
+      condition: game.user.isGM,
+      callback: li => {
+        const combatant = combatants.get(li.data('combatant-id'));
+        return duplicateCombatant(combatant);
+      },
+    });
+    index++;
+
+    // Adds other context menu entries from the configuration.
+    for (const { eventName, icon, label, visibility } of controls) {
       const condition = visibility === 'gm' ? game.user.isGM : true;
 
       contextMenu.splice(index, -1, {
@@ -37,12 +53,14 @@ export default class YearZeroCombatTracker extends CombatTracker {
             event: eventName,
           }),
       });
-
-      index += 1;
-    });
+      index++;
+    };
     return contextMenu;
   }
 
+  /* ------------------------------------------ */
+
+  /** @override */
   async _onCombatantControl(event) {
     super._onCombatantControl(event);
     const btn = event.currentTarget;
@@ -58,9 +76,11 @@ export default class YearZeroCombatTracker extends CombatTracker {
       event: eventName,
       origin: btn,
     };
+    await combatant.setFlag(MODULE_ID, property, !combatant.getFlag(MODULE_ID, property));
     YearZeroCombatTracker.#callHook(eventData);
-    combatant.setFlag(MODULE_ID, property, !combatant.getFlag(MODULE_ID, property));
   }
+
+  /* ------------------------------------------ */
 
   /** @override */
   async getData(options) {
@@ -77,17 +97,30 @@ export default class YearZeroCombatTracker extends CombatTracker {
     };
   }
 
-  /* @private static methods */
+  /* ------------------------------------------ */
+  /*  Private Static Methods                    */
+  /* ------------------------------------------ */
 
-  // Gets the config object by fetching a JSON file defined in the CONFIG object.
+  /**
+   * Gets the config object by fetching a JSON file defined in the CONFIG object.
+   */
   static async #getConfig() {
     const { config } = CONFIG.YZE_COMBAT.CombatTracker;
-    if (config && typeof config === 'object') return config;
+    if (typeof config === 'object') return config;
     else {
       try {
         const { src } = CONFIG.YZE_COMBAT.CombatTracker;
-        CONFIG.YZE_COMBAT.CombatTracker.config = await foundry.utils.fetchJsonWithTimeout(src);
-        return CONFIG.YZE_COMBAT.CombatTracker.config;
+        const cfg = await foundry.utils.fetchJsonWithTimeout(src);
+
+        if (!cfg.buttons) cfg.buttons = [];
+        if (!cfg.controls) cfg.controls = [];
+
+        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
+          cfg.buttons.unshift(...YZEC.CombatTracker.DefaultCombatantControls.slowAndFastActions);
+        }
+
+        CONFIG.YZE_COMBAT.CombatTracker.config = cfg;
+        return cfg;
       }
       catch (error) {
         console.error(error);
@@ -95,6 +128,8 @@ export default class YearZeroCombatTracker extends CombatTracker {
       }
     }
   }
+
+  /* ------------------------------------------ */
 
   // Calls the CombatTracker hook with the given event data.
   static #callHook(data) {
@@ -106,11 +141,17 @@ export default class YearZeroCombatTracker extends CombatTracker {
     Hooks.call(`${MODULE_ID}.${data.event}`, data);
   }
 
-  /* @private methods */
+  /* ------------------------------------------ */
+  /*  Private Methods                           */
+  /* ------------------------------------------ */
 
-  // Gets the combat tracker buttons transformed for the template.
+  /**
+   * Gets the combat tracker buttons transformed for the template.
+   * @returns {Promise.<Object[]>}
+   */
   async #getButtonConfig() {
     const { buttons } = await YearZeroCombatTracker.#getConfig();
+
     const sortedButtons = buttons.reduce(
       (acc, button) => {
         const { visibility, ...buttonConfig } = button;
@@ -134,7 +175,12 @@ export default class YearZeroCombatTracker extends CombatTracker {
     return sortedButtons;
   }
 
-  // Sets the turn's properties for the template.
+  /**
+   * Sets the turn's properties for the template.
+   * @param {*} data
+   * @param {*} turn
+   * @returns {Promise.<any>}
+   */
   #setTurnProperties(data, turn) {
     const { id } = turn;
     const combatant = data.combat.combatants.get(id);

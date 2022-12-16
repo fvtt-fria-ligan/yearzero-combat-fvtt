@@ -1,42 +1,38 @@
-
+COMBAT.RollsInitiative: '{name} draws an initiative card!'
 SETTINGS.AutoDraw: Enable Automatic Initiative Draw Mode
 SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards.
 SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
 SETTINGS.SlowAndFastActionsHint: >-
-  Whether to show additional buttons for Slow & Fast Actions in the Combat Tracker.
+  Whether to show additional buttons for Slow & Fast Actions in the Combat
+  Tracker.
 SETTINGS.InitiativeDeck: Initiative Deck ID
-SETTINGS.InitiativeDeckHint: >-
-  ID or name of the Initiative deck from which
-  to draw initiative cards.
+SETTINGS.InitiativeDeckHint: ID or name of the Initiative deck from which to draw initiative cards.
 SETTINGS.DiscardPile: Discard Pile ID
-SETTINGS.DiscardPileHint: >-
-  ID or name of the Discard pile where to put
-  the drawn initiative cards.
+SETTINGS.DiscardPileHint: ID or name of the Discard pile where to put the drawn initiative cards.
+SETTINGS.DuplicateCombatantsOnCombatStart: Duplicate Combatants
+SETTINGS.DuplicateCombatantsOnCombatStartHint: Whether to duplicate combatants who have extra speed.
 SETTINGS.InitiativeMessaging: Send Initiative Messages
-SETTINGS.InitiativeMessagingHint: >-
-  Whether to display chat messages when an initiative card
-  is drawn.
+SETTINGS.InitiativeMessagingHint: Whether to display chat messages when an initiative card is drawn.
 SETTINGS.InitiativeResetDeckOnCombatStart: Reset the Initiative Deck
 SETTINGS.InitiativeResetDeckOnCombatStartHint: >-
-  Whether to recall and shuffle all the initiative cards
-  when starting a new combat.
+  Whether to recall and shuffle all the initiative cards when starting a new
+  combat.
 SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
 SETTINGS.ActorSpeedAttributeHint: >-
-  The property path in the actor's data to the attribute
-  that defines how many initiative cards are kept (speed) by
-  the combatant (e.g. system.speed.value).
-YZEC.Combat.Initiative.Draw: "{name}'s Initiative Card"
-YZEC.Combat.Initiative.NotEnoughCards: Not Enough Cards in the Deck to Draw Initiative
-YZEC.Combat.Initiative.ResetDeck: Shuffled all the discarded initiative cards back into the deck
+  The property path in the actor's data to the attribute that defines how many
+  initiative cards are kept (speed) by the combatant (e.g. system.speed.value).
 YZEC.Combat.Initiative.ChooseCard: Choose a Card
-YZEC.Combat.SetDraw: Set Draw
+YZEC.Combat.Initiative.Draw: '{name}''s Initiative'
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
+YZEC.Combat.Initiative.NotEnoughCards: Not enough cards in the initiative deck
+YZEC.Combat.Initiative.ResetDeck: Shuffled all the discarded initiative cards back into the deck
+YZEC.Combat.SetDraw: Set Draw
 YZEC.CombatTracker.FastAction: Fast Action
 YZEC.CombatTracker.SlowAction: Slow Action
 YZEC.CombatTracker.DuplicateCombatant: Duplicate Combatant
 YZEC.InitiativeDeckName: Initiative Deck
 YZEC.InitiativeDeckDiscardPileName: Initiative Cards Discard Pile
-YZEC.OK: Okay
+YZEC.OK: OK
 YZEC.NoInitiativeDeckFound: No initiative deck found, creating a new one...
 YZEC.NoInitiativeDeckDiscardPileFound: No discard pile found, creating a new one...
 YZEC.WARNING.InvalidDeckType: You can only draw initiative cards from a deck

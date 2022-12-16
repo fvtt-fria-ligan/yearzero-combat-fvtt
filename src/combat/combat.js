@@ -6,6 +6,7 @@ import { YZEC } from '@module/config';
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { getInitiativeDeck, getInitiativeDeckDiscardPile } from '@utils/utils';
 import { duplicateCombatant, getCombatantsSharingToken } from './duplicate-combatant';
+import { removeActions } from './slow-and-fast-actions';
 
 export default class YearZeroCombat extends Combat {
 
@@ -18,10 +19,12 @@ export default class YearZeroCombat extends Combat {
   async rollInitiative(ids, options = {}) {
     // Structures data.
     if (!Array.isArray(ids)) ids = [ids];
-    const { messageOptions } = options;
+    const { messageOptions = {} } = options;
     const messages = [];
     const skipMessage = false;
     const initiativeDeck = getInitiativeDeck(true);
+    const chatRollMode = game.settings.get('core', 'rollMode');
+
     //     ids = typeof ids === 'string' ? [ids] : ids;
     //     const initiativeDeck = getInitiativeDeck(true);
     //     const { messageOptions } = options;
@@ -127,10 +130,18 @@ export default class YearZeroCombat extends Combat {
       const messageData = foundry.utils.mergeObject({
         content,
         speaker: speakerData,
+        flavor: game.i18n.format('COMBAT.RollsInitiative', { name: combatant.name }),
+        flags: { 'core.initiativeRoll': true },
         whisper: combatant.token?.hidden || combatant.hidden
           ? game.users.filter(u => u.isGM)
           : [],
       }, messageOptions);
+
+      // If the combatant is hidden, use a private roll unless an alternative rollMode was explicitly requested
+      // eslint-disable-next-line no-nested-ternary
+      // messageData.rollMode = 'rollMode' in messageOptions
+      //   ? messageOptions.rollMode
+      //   : (combatant.hidden ? CONST.DICE_ROLL_MODES.PRIVATE : chatRollMode);
 
       messages.push(messageData);
     }
@@ -184,7 +195,7 @@ export default class YearZeroCombat extends Combat {
     const buttons = {
       ok: {
         icon: '<i class="fas fa-check"></i>',
-        label: 'OK',
+        label: game.i18n.localize('YZEC.OK'),
         callback: html => {
           const choice = html.find('input[name=card]:checked');
           const cardId = choice.data('card-id');
@@ -267,65 +278,6 @@ export default class YearZeroCombat extends Combat {
 
   /* ------------------------------------------ */
 
-  // /**
-  //  * For a draw of cards show the user the results in a
-  //  * dialog and ask if they want to keep the cards.
-  //  * allow them to select which cards to keep.
-  //  * @param {YearZeroCombatant} combatant
-  //  * @param {Cards[]}   cards
-  //  * @returns {Promise.<void>}
-  //  */
-  // async selectCards(combatant, cards) {
-  //   const template = `modules/${MODULE_ID}/templates/combat/select-cards.hbs`;
-  //   const content = await renderTemplate(template, { data: { combatant: combatant, cards: cards } });
-  //   const keep = [];
-  //   const buttons = {
-  //     ok: {
-  //       icon: '<i class="fas fa-check"></i>',
-  //       label: game.i18n.format('YZEC.OK'),
-  //       callback: html => {
-  //         const chosenCards = html.findAll('input[type="checkbox"]:checked');
-  //         const chosenCardsIds = chosenCards.map(card => card.id);
-  //         chosenCardsIds.forEach(id => {
-  //           keep.push(cards.find(card => card.id === id));
-  //         });
-  //       },
-  //     },
-  //   };
-
-  //   return Dialog.wait({
-  //     title: game.i18n.format('YZEC.Combat.SelectCard', {
-  //       name: combatant.token.name,
-  //     }),
-  //     content,
-  //     buttons,
-  //     default: 'ok',
-  //     close: async () => {
-  //       if (!keep) keep.push(cards[0]);
-  //       return keep;
-  //     },
-  //   });
-
-  //   // return new Promise(resolve => {
-  //   //   new Dialog({
-  //   //     title: game.i18n.format('YZEC.Combat.SelectCard', {
-  //   //       name: combatant.token.name,
-  //   //     }),
-  //   //     content: html,
-  //   //     buttons: buttons,
-  //   //     default: 'ok',
-  //   //     close: async () => {
-  //   //       if (!keep) {
-  //   //         keep.push(cards[0]);
-  //   //       }
-  //   //       resolve(keep);
-  //   //     },
-  //   //   }).render(true);
-  //   // });
-  // }
-
-  /* ------------------------------------------ */
-
   /**
    * Finds a specific card in the deck.
    * @param {number} cardValue
@@ -392,15 +344,18 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async startCombat() {
-    // Duplicate actors if their speed > 1.
-    for (const combatant of this.combatants) {
-      const speed = combatant.getSpeedFromActor();
-      if (speed > 1) {
-        const duplicatas = getCombatantsSharingToken(combatant);
-        const copyQty = speed - duplicatas.length;
-        if (copyQty > 0) await duplicateCombatant(combatant, copyQty);
+    // Duplicates combatants with speed > 1.
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.DUPLICATE_COMBATANTS_ON_START)) {
+      for (const combatant of this.combatants) {
+        const speed = combatant.getSpeedFromActor();
+        if (speed > 1) {
+          const duplicatas = getCombatantsSharingToken(combatant);
+          const copyQty = speed - duplicatas.length;
+          if (copyQty > 0) await duplicateCombatant(combatant, copyQty);
+        }
       }
     }
+
     // Draws initiative for each combatant.
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
       await this.resetInitiativeDeck();
@@ -410,6 +365,18 @@ export default class YearZeroCombat extends Combat {
       .map(c => c.id);
     await this.rollInitiative(ids);
     return super.startCombat();
+  }
+
+  /* ------------------------------------------ */
+
+  /** @override */
+  async endCombat() {
+    const toEnd = await super.endCombat();
+    if (toEnd && game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
+      for (const combatant of this.combatants) {
+        await removeActions(combatant.token);
+      }
+    }
   }
 
   /* ------------------------------------------ */

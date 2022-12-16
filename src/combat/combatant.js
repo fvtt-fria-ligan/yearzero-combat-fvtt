@@ -100,7 +100,7 @@ export default class YearZeroCombatant extends Combatant {
   getSpeedFromActor() {
     const key = game.settings.get(MODULE_ID, SETTINGS_KEYS.ACTOR_SPEED_ATTRIBUTE);
     const speed = foundry.utils.getProperty(this.actor, key) || 1;
-    return speed;
+    return Number(speed);
   }
 
   /* ------------------------------------------ */

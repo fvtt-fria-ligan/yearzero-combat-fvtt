@@ -1,14 +1,13 @@
-YZEC.InitiativeDeckName: Deck d'Initiative
-YZEC.InitiativeDeckDiscardPileName: Défausse des Cartes d'Initiative
+SETTINGS.AutoDraw: Activer la pioche d'initiative automatique
+SETTINGS.AutoDrawHint: Pioche automatiquement les cartes d'initiative.
+SETTINGS.SlowAndFastActions: Activer les Actions Rapides et Lentes
+SETTINGS.SlowAndFastActionsHint: >-
+  Affiche des boutons supplémentaires dans l'onglet combat
+  pour les actions rapides et lentes.
+YZEC.Combat.Initiative.Draw: Carte d'initiative de {name}
+YZEC.Combat.Initiative.NotEnoughCards: Pas assez de cartes dans le paquet d'initiative
+YZEC.InitiativeDeckName: Deck d'initiative
+YZEC.InitiativeDeckDiscardPileName: Défausse des cartes d'initiative
 YZEC.NoInitiativeDeckFound: Aucun deck d'initiative trouvé, création d'un nouveau ...
 YZEC.NoInitiativeDeckDiscardPileFound: Aucune pile de défausse trouvée, création d'une nouvelle ...
 YZEC.WARNING.InvalidDeckType: Vous ne pouvez piocher des cartes d'initiative que depuis un deck
-YZEC.Combat.Initiative.NotEnoughCards: Pas assez de cartes dans le paquet pour piocher l'initiative
-YZEC.Combat.Initiative.Draw: La carte d'initiative de {name} !
-YZEC.Combat.Draw: ''
-SETTINGS.SlowAndFastActionsN: Activer les Actions Rapides et Lentes
-SETTINGS.SlowAndFastActionsL: >-
-  Affiche des boutons supplémentaires dans l'onglet combat pour les actions
-  rapides et lentes.
-SETTINGS.AutoDraw: Mode de pioche d'initiative par défaut
-SETTINGS.AutoDrawHint: Pioche automatiquement les cartes d'initiative.

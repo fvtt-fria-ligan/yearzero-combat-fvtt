@@ -1,4 +1,4 @@
-import { MODULE_ID } from './constants.js';
+import { MODULE_ID, STATUS_EFFECTS } from './constants.js';
 
 /**
  * The Year Zero Engine Combat configuration.
@@ -9,6 +9,45 @@ export const YZEC = {};
 
 YZEC.CombatTracker = {
   src: `modules/${MODULE_ID}/sidebar/combat-tracker.config.json`,
+  DefaultCombatantControls: {
+    slowAndFastActions: [
+      {
+        'eventName': 'fast-action-button-clicked',
+        'icon': 'fa-forward',
+        'id': 'fast-action-button',
+        'property': 'fastAction',
+        'tooltip': 'YZEC.CombatTracker.FastAction',
+        'visibility': 'owner',
+      },
+      {
+        'eventName': 'slow-action-button-clicked',
+        'icon': 'fa-play',
+        'id': 'slow-action-button',
+        'property': 'slowAction',
+        'tooltip': 'YZEC.CombatTracker.SlowAction',
+        'visibility': 'owner',
+      },
+    ],
+  },
+};
+
+/* ------------------------------------------ */
+/*  Status Effects                            */
+/* ------------------------------------------ */
+
+YZEC.StatusEffects = {
+  slowAndFastActions: [
+    {
+      id: STATUS_EFFECTS.FAST_ACTION,
+      label: 'YZEC.CombatTracker.FastAction',
+      icon: `modules/${MODULE_ID}/assets/icons/fast-action.svg`,
+    },
+    {
+      id: STATUS_EFFECTS.SLOW_ACTION,
+      label: 'YZEC.CombatTracker.SlowAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+    },
+  ],
 };
 
 /* ------------------------------------------ */
@@ -25,6 +64,7 @@ YZEC.CombatTracker = {
  */
 YZEC.Icons = {
   bestCard: '<i class="fas fa-star"></i>',
+  duplicate: '<i class="fas fa-clone"></i>',
   // tabs: {
   //   bio: '<i class="fas fa-align-left"></i>',
   //   combat: '<i class="fas fa-fist-raised"></i>',

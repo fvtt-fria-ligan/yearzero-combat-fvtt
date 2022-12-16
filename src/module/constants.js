@@ -12,6 +12,12 @@ export const CARD_STACK = {
 };
 
 /** @enum {string} */
+export const STATUS_EFFECTS = {
+  FAST_ACTION: 'fastAction',
+  SLOW_ACTION: 'slowAction',
+};
+
+/** @enum {string} */
 export const CARDS_DRAW_KEEP_STATES = {
   /** @type {'best'} */ BEST: 'best',
   /** @type {'worst'} */ WORST: 'worst',
@@ -24,6 +30,8 @@ export const SETTINGS_KEYS = {
   /** @type {'initAutoDraw'} */ INITIATIVE_AUTODRAW: 'initAutoDraw',
   /** @type {'initMessaging'} */ INITIATIVE_MESSAGING: 'initMessaging',
   /** @type {'initResetDeckOnCombatStart'} */ INITIATIVE_RESET_DECK_ON_START: 'initResetDeckOnCombatStart',
+  /** @type {'duplicateCombatantOnCombatStart'} */ DUPLICATE_COMBATANTS_ON_START: 'duplicateCombatantOnCombatStart',
+  /** @type {'slowAndFastAction'} */ SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
 };
 
 /** @enum {string} */
