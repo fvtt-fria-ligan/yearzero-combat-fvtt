@@ -8,8 +8,9 @@
             name="card"
             id="card_{{id}}"
             data-card-id="{{id}}"
+            {{!-- {{#if (eq @index 0)}}checked{{/if}} --}}
           />
-          <figure{{#if (eq value ../bestCard)}} class="high-card"{{/if}}>
+          <figure{{#if (eq value ../bestCard.value)}} class="high-card"{{/if}}>
             <div class="indicator">
               {{{@root.config.Icons.bestCard}}}
             </div>

@@ -1,3 +1,5 @@
+import { CARD_STACK, MODULE_ID } from '@module/constants';
+
 /**
  * An abstract class (cannot be instantiated) with utility methods
  * to customize
@@ -6,6 +8,14 @@
 export default class YearZeroCombatHook {
   constructor() {
     throw new SyntaxError('This class cannot be instantiated!');
+  }
+
+  static async setInitiativeDeck(id) {
+    return game.settings.set(MODULE_ID, CARD_STACK.INITIATIVE_DECK, id);
+  }
+
+  static async setDiscardPile(id) {
+    return game.settings.set(MODULE_ID, CARD_STACK.DISCARD_PILE, id);
   }
 
   /**

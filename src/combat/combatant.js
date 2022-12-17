@@ -138,6 +138,16 @@ export default class YearZeroCombatant extends Combatant {
 
   /* ------------------------------------------ */
 
+  /**
+   * Gets the followers of this combatant.
+   * @returns {YearZeroCombatant[]}
+   */
+  getFollowers() {
+    return this.combat.combatants.filter(f => f.groupId === this.id);
+  }
+
+  /* ------------------------------------------ */
+
   async resetInitiative() {
     return this.updateSource({
       initiative: null,

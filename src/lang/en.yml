@@ -1,3 +1,4 @@
+COMBAT.CombatantReroll: Draw Another Card
 COMBAT.RollsInitiative: '{name} draws an initiative card!'
 SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
 SETTINGS.ActorSpeedAttributeHint: >-

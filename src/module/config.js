@@ -9,6 +9,7 @@ export const YZEC = {};
 
 YZEC.CombatTracker = {
   src: `modules/${MODULE_ID}/sidebar/combat-tracker.config.json`,
+  // config: undefined,
   DefaultCombatantControls: {
     slowAndFastActions: [
       {
@@ -63,9 +64,12 @@ YZEC.StatusEffects = {
  * <div>{{{@root.config.Icons.buttons.xxx}}}</div>
  */
 YZEC.Icons = {
-  cards: '<i class="fa-solid fa-cards"></i>',
+  cards: '<i class="fas fa-cards"></i>',
   bestCard: '<i class="fas fa-star"></i>',
   duplicate: '<i class="fas fa-clone"></i>',
+  followers: '<i class="fas fa-users"></i>',
+  groupLeader: '<i class="fas fa-users"></i>',
+  removeGroupLeader: '<i class="fa-solid fa-users-slash"></i>',
   // tabs: {
   //   bio: '<i class="fas fa-align-left"></i>',
   //   combat: '<i class="fas fa-fist-raised"></i>',

@@ -4,6 +4,7 @@ import { combatTrackerOnToggleDefeatedStatus, duplicateCombatant } from '@combat
 import { resetInitiativeDeck } from '@utils/utils';
 
 /** @typedef {import('@combat/combatant').default} YearZeroCombatant */
+/** @typedef {import('@combat/combat').default} YearZeroCombat */
 
 export default class YearZeroCombatTracker extends CombatTracker {
 
@@ -16,14 +17,86 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   /* ------------------------------------------ */
 
-  static async appendControlsToContextMenu(_, contextMenu) {
+  /** @override */
+  async getData(options) {
+    const data = await super.getData(options);
+    const turns = data.turns.map(turn => ({
+      ...turn,
+      ...this.#setTurnProperties(data, turn),
+    }));
+    const buttons = await this.#getButtonConfig();
+    return {
+      ...data,
+      turns,
+      buttons,
+    };
+  }
+
+  /* ------------------------------------------ */
+
+  /**
+   * @param {JQuery.<HTMLElement>} _html
+   * @param {ContextMenuEntry[]} contextMenu
+   */
+  static async appendControlsToContextMenu(_html, contextMenu) {
     // The combat tracker will initialize context menus regardless of there being a combat active
     if (!game.combat) return;
 
     // Scoped consts
+    /** @type {YearZeroCombat} */
     const combat = game.combat;
+    /** @type {Collection.<YearZeroCombatant>} EmbeddedCollection */
     const combatants = combat.combatants;
-    const { controls } = await YearZeroCombatTracker.#getConfig();
+
+    // Changes existing buttons.
+    const rerollIndex = contextMenu.findIndex(m => m.name === 'COMBAT.CombatantReroll');
+    if (~rerollIndex) contextMenu[rerollIndex].icon = YZEC.Icons.cards;
+
+    /** @type {ContextMenuEntry[]} */
+    const newMenu = [];
+
+    // Set Group Leader
+    newMenu.push({
+      name: 'YZEC.CombatTracker.MakeGroupLeader',
+      icon: YZEC.Icons.groupLeader,
+      condition: li => {
+        const c = combatants.get(li.data('combatant-id'));
+        return !c.isGroupLeader && c.actor.isOwner;
+      },
+      callback: async li => {
+        const c = combatants.get(li.data('combatant-id'));
+        return c.update({
+          [`flags.${MODULE_ID}`]: {
+            isGroupLeader: true,
+            '-=groupId': null,
+          },
+        });
+      },
+    });
+
+    // Set Group Color
+    // TODO https://gitlab.com/peginc/swade/-/blob/master/src/module/hooks/SwadeCoreHooks.ts#L570
+
+    // Remove Group Leader
+    newMenu.push({
+      name: 'YZEC.CombatTracker.RemoveGroupLeader',
+      icon: YZEC.Icons.removeGroupLeader,
+      condition: li => {
+        const c = combatants.get(li.data('combatant-id'));
+        return c.isGroupLeader && c.actor.isOwner;
+      },
+      callback: async li => {
+        const c = combatants.get(li.data('combatant-id'));
+        for (const f of c.getFollowers()) await f.unsetGroupId();
+        await c.unsetIsGroupLeader();
+      },
+    });
+
+    // Add Selected Tokens As Followers
+    newMenu.push({
+      name: 'YZEC.CombatTracker.AddFollowers',
+      icon: YZEC.Icons.followers,
+    });
 
     // This is the base index at which the controls will be inserted.
     // The preceding controls will (in a vanilla scenario) be the "Attack" and "End Turn" buttons.
@@ -42,6 +115,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
     index++;
 
     // Adds other context menu entries from the configuration.
+    const { controls } = await YearZeroCombatTracker.#getConfig();
     for (const { eventName, icon, label, visibility } of controls) {
       const condition = visibility === 'gm' ? game.user.isGM : true;
 
@@ -58,7 +132,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
       });
       index++;
     };
-    return contextMenu;
+    return contextMenu.splice(0, 0, ...newMenu);
   }
 
   /* ------------------------------------------ */
@@ -103,7 +177,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
           isGroupLeader: true,
         },
       });
-      const followers = await this.#getFollowers(combatant);
+      const followers = await this._getFollowers(combatant);
       for (const follower of followers) {
         await follower.setGroupId(newLeader.id);
       }
@@ -112,23 +186,6 @@ export default class YearZeroCombatTracker extends CombatTracker {
     if (combatant.groupId) {
       await combatant.unsetGroupId();
     }
-  }
-
-  /* ------------------------------------------ */
-
-  /** @override */
-  async getData(options) {
-    const data = await super.getData(options);
-    const turns = data.turns.map(turn => ({
-      ...turn,
-      ...this.#setTurnProperties(data, turn),
-    }));
-    const buttons = await this.#getButtonConfig();
-    return {
-      ...data,
-      turns,
-      buttons,
-    };
   }
 
   /* ------------------------------------------ */
@@ -265,11 +322,5 @@ export default class YearZeroCombatTracker extends CombatTracker {
       ...combatant.flags[MODULE_ID],
       emptyInit: !!combatant.groupId || turn.defeated,
     };
-  }
-
-  /* ------------------------------------------ */
-
-  #getFollowers(combatant) {
-    return game.combat.combatants.filter(f => f.groupId === combatant.id);
   }
 }

@@ -66,8 +66,7 @@ export default class YearZeroCombat extends Combat {
           }
         }
         else {
-          const chosenCard = await this.chooseCard(cards, combatant);
-          card = chosenCard ?? cards[0];
+          card = await this.chooseCard(cards, combatant);
         }
       }
       else {
@@ -162,10 +161,10 @@ export default class YearZeroCombat extends Combat {
    * @returns {Promise.<Card>}
    */
   async chooseCard(cards, combatant, bestCardValue) {
+    const bestCard = cards.find(c => c.value === bestCardValue) ?? cards[0];
     const template = `modules/${MODULE_ID}/templates/combat/choose-card-dialog.hbs`;
     const content = await renderTemplate(template, {
-      cards,
-      bestCard: bestCardValue ?? cards[0].value,
+      cards, bestCard,
       config: YZEC,
     });
     const buttons = {
@@ -175,7 +174,7 @@ export default class YearZeroCombat extends Combat {
         callback: html => {
           const choice = html.find('input[name=card]:checked');
           const cardId = choice.data('card-id');
-          return cards.find(c => c.id === cardId);
+          return cards.find(c => c.id === cardId) ?? bestCard;
         },
       },
     };
@@ -188,69 +187,11 @@ export default class YearZeroCombat extends Combat {
       content, buttons,
       default: 'ok',
       // Default value returned
-      close: () => cards.find(c => c.value === bestCardValue) ?? cards[0],
+      close: () => bestCard,
     }, {
       classes: ['dialog', MODULE_ID, game.system.id],
     }, {});
   }
-
-  /* ------------------------------------------ */
-
-
-  /**
-   * Shows a dialog asking how many cards to draw:
-   * - Ask the user to choose how many cards to keep
-   * - Ask the user if they keep best or worse
-   * - Draw the cards based on their input
-   * @param {YearZeroCombatant} combatant
-   * @returns {Promise.<void>}
-   */
-  // async setDrawQty(combatant) {
-  //   const template = `modules/${MODULE_ID}/templates/combat/set-draw-qty.hbs`;
-  //   const content = await renderTemplate(template, { data: { combatant: combatant } });
-  //   const buttons = {
-  //     draw: {
-  //       label: game.i18n.localize('YZEC.Combat.Draw'),
-  //       callback: async html => {
-  //         const qty = html.find('input[name="qty"]').value;
-  //         const keep = html.find('input[name="keep"]').value;
-  //         const keepState = html.find('input[name="keepState"]').value;
-  //         // here is where we set those flags then we want to drawInitiative
-  //         const cards = await this.drawCards(qty, keep);
-  //         combatant.setDrawQty(qty, keep, keepState);
-  //         combatant.setCards(cards);
-  //       },
-  //     },
-  //   };
-
-  // return Dialog.wait({
-  //   title: game.i18n.localize('YZEC.Combat.Initiative.DrawQty'),
-  //   content,
-  //   buttons,
-  //   default: {
-  //     qty: 1,
-  //     keep: 1,
-  //     keepState: 'best',
-  //   },
-  //   // Draw the cards happens on the drawInitiative should not be needed here.
-  //   // close: async () => {},
-  // });
-
-  // const dialog = new Dialog({
-  //   title: game.i18n.localize('YZEC.Combat.Initiative.DrawQty'),
-  //   content,
-  //   buttons: buttons,
-  //   default: {
-  //     qty: 1,
-  //     keep: 1,
-  //     keepState: 'best',
-  //   },
-  //   close: async () => {
-  //     // draw the cards happens on the drawInitiative should not be needed here
-  //   },
-  // });
-  // dialog.render(true);
-  // }
 
   /* ------------------------------------------ */
 
