@@ -83,6 +83,7 @@ export default class YearZeroCombat extends Combat {
 
       // Updates other combatants in the group.
       if (combatant.isGroupLeader) {
+        updateData[`flags.${MODULE_ID}.cardValue`] += 0.01;
         for (const follower of combatant.getFollowers()) {
           await follower.updateSource(updateData);
         }

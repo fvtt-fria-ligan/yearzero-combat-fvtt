@@ -175,7 +175,13 @@ export default class YearZeroCombatTracker extends CombatTracker {
         name: game.i18n.format('YZEC.CombatTracker.UnfollowLeader', { name: leader.name }),
         icon: YZEC.Icons.unfollow,
         condition: li => getCombatant(li).groupId === leader.id,
-        callback: async li => getCombatant(li).unsetGroupId(),
+        callback: async li => {
+          const c = getCombatant(li);
+          return c.update({
+            [`flags.${MODULE_ID}.cardValue`]: leader.cardValue,
+            [`flags.${MODULE_ID}.-=groupId`]: null,
+          });
+        },
       });
     }
 

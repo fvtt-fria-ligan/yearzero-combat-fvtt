@@ -176,6 +176,7 @@ export default class YearZeroCombatant extends Combatant {
     for (const f of this.getFollowers()) {
       updates.push({
         _id: f.id,
+        [`flags.${MODULE_ID}.cardValue`]: this.cardValue,
         [`flags.${MODULE_ID}.-=groupId`]: null,
       });
     }
