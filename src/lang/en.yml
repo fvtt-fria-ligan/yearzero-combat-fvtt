@@ -1,4 +1,7 @@
 COMBAT.CombatantReroll: Draw Another Card
+COMBAT.InitiativeRoll: Draw Initiative
+COMBAT.RollAll: Draw All
+COMBAT.RollNPC: Draw NPCs
 COMBAT.RollsInitiative: '{name} draws an initiative card!'
 SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
 SETTINGS.ActorSpeedAttributeHint: >-
@@ -35,10 +38,20 @@ YZEC.Combat.Initiative.Draw: '{name}''s Initiative'
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
 YZEC.Combat.Initiative.NotEnoughCards: Not enough cards in the initiative deck
 YZEC.Combat.Initiative.ResetDeck: Shuffled all the discarded initiative cards back into the deck
-YZEC.Combat.SetDraw: Set Draw
-YZEC.CombatTracker.FastAction: Fast Action
-YZEC.CombatTracker.SlowAction: Slow Action
+YZEC.CombatTracker.AddFollowers: Add Selected Tokens As Followers
 YZEC.CombatTracker.DuplicateCombatant: Duplicate Combatant
+YZEC.CombatTracker.FastAction: Fast Action
+YZEC.CombatTracker.FollowLeader: Follow {name}
+YZEC.CombatTracker.Group Leader: Group Leader
+YZEC.CombatTracker.InitiativeDeckReset: Reset Initiative Deck
+YZEC.CombatTracker.MakeGroupLeader: Make Group Leader
+YZEC.CombatTracker.RemoveGroupLeader: Remove Group Leader
+YZEC.CombatTracker.ResetColor: Reset
+YZEC.CombatTracker.SelectColor: Select Color
+YZEC.CombatTracker.SetGroupColor: Set Group Color
+YZEC.CombatTracker.SlowAction: Slow Action
+YZEC.CombatTracker.SubmitColor: Submit
+YZEC.CombatTracker.UnfollowLeader: Unfollow {name}
 YZEC.InitiativeDeckName: Initiative Deck
 YZEC.InitiativeDeckDiscardPileName: Initiative Cards Discard Pile
 YZEC.OK: OK

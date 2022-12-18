@@ -1,3 +1,5 @@
+import { MODULE_ID } from '@module/constants';
+
 /**
  * Duplicates a combatant.
  * @param {Combatant} combatant Combatant to duplicate
@@ -5,7 +7,10 @@
  * @returns {Promise.<Combatant[]>}
  */
 export async function duplicateCombatant(combatant, qty = 1) {
-  const combatants = new Array(qty).fill(combatant);
+  const c = combatant.toObject();
+  c.initiative = null;
+  c.flags[MODULE_ID] = null;
+  const combatants = new Array(qty).fill(c);
   return combatant.parent.createEmbeddedDocuments('Combatant', combatants);
 }
 

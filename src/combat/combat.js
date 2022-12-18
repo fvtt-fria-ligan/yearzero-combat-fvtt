@@ -6,7 +6,7 @@ import { YZEC } from '@module/config';
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { getInitiativeDeck, getInitiativeDeckDiscardPile, resetInitiativeDeck } from '@utils/utils';
 import { duplicateCombatant, getCombatantsSharingToken } from './duplicate-combatant';
-import { removeActions } from './slow-and-fast-actions';
+import { removeSlowAndFastActions } from './slow-and-fast-actions';
 
 export default class YearZeroCombat extends Combat {
 
@@ -279,7 +279,7 @@ export default class YearZeroCombat extends Combat {
     const toEnd = await super.endCombat();
     if (toEnd && game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
       for (const combatant of this.combatants) {
-        await removeActions(combatant.token);
+        await removeSlowAndFastActions(combatant.token);
       }
     }
   }
@@ -293,7 +293,7 @@ export default class YearZeroCombat extends Combat {
         [`flags.${MODULE_ID}.-=fastAction`]: null,
         [`flags.${MODULE_ID}.-=slowAction`]: null,
       });
-      await removeActions(combatant.token);
+      await removeSlowAndFastActions(combatant.token);
     }
     await this.update(
       { combatants: this.combatants.toObject() },

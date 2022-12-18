@@ -1,3 +1,4 @@
+import { YZEC } from '@module/config';
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { getCanvas } from '@utils/utils';
 
@@ -99,6 +100,18 @@ export default class YearZeroCombatant extends Combatant {
     return this.unsetFlag(MODULE_ID, 'isGroupLeader');
   }
 
+  // get isFollower() {
+  //   return !this.isGroupLeader && !!this.groupId;
+  // }
+
+  get groupColor() {
+    return this.getFlag(MODULE_ID, 'groupColor');
+  }
+
+  async setGroupColor(color) {
+    return this.setFlag(MODULE_ID, color);
+  }
+
   /* ------------------------------------------ */
   /*  Utility Methods                           */
   /* ------------------------------------------ */
@@ -137,6 +150,54 @@ export default class YearZeroCombatant extends Combatant {
   }
 
   /* ------------------------------------------ */
+  /*  Groups Methods                            */
+  /* ------------------------------------------ */
+
+  async promoteLeader(cardValue) {
+    const updateData = {
+      [`flags.${MODULE_ID}`]: {
+        isGroupLeader: true,
+        '-=groupId': null,
+      },
+    };
+    if (typeof cardValue !== 'undefined') updateData[`flags.${MODULE_ID}.cardValue`] = cardValue;
+    return this.update(updateData);
+  }
+
+  /* ------------------------------------------ */
+
+  async unpromoteLeader() {
+    for (const f of this.getFollowers()) await f.unsetGroupId();
+    return this.unsetIsGroupLeader();
+  }
+
+  /* ------------------------------------------ */
+
+  async addFollower(fCombatant, { cardValue, initiative } = {}) {
+    const updateData = {
+      [`flags.${MODULE_ID}`]: {
+        groupId: this.id,
+        '-=isGroupLeader': null,
+      },
+    };
+    if (typeof initiative !== 'undefined') updateData.initiative = initiative;
+    if (typeof cardValue !== 'undefined') updateData[`flags.${MODULE_ID}.cardValue`] = cardValue;
+    return fCombatant.update(updateData);
+  }
+
+  /* ------------------------------------------ */
+
+  // async addFollowers(combatants) {
+  //   this.combat.updateEmbeddedDocuments('Combatant', combatants.map(c => ({
+  //     _id: c.id,
+  //     [`flags.${MODULE_ID}`]: {
+  //       groupId: this.id,
+  //       '-=isGroupLeader': null,
+  //     },
+  //   })));
+  // }
+
+  /* ------------------------------------------ */
 
   /**
    * Gets the followers of this combatant.
@@ -146,6 +207,27 @@ export default class YearZeroCombatant extends Combatant {
     return this.combat.combatants.filter(f => f.groupId === this.id);
   }
 
+  /**
+   * Gets the leader of this combatant.
+   * @returns {YearZeroCombatant}
+   */
+  getLeader() {
+    if (this.isGroupLeader) return this;
+    return this.combat.combatants.get(this.groupId);
+  }
+
+  /**
+   * Gets the color of this combatant or its group.
+   * @returns {string}
+   */
+  getColor() {
+    if (this.groupColor) return this.groupColor;
+    if (this?.players.length) return this.players[0].color;
+    return game.users.find(u => u.isGM)?.color || YZEC.defaultGroupColor;
+  }
+
+  /* ------------------------------------------ */
+  /*  Initiative Methods                        */
   /* ------------------------------------------ */
 
   async resetInitiative() {

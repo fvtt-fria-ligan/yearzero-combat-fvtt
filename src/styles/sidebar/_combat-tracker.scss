@@ -1,0 +1,28 @@
+.combat-sidebar {
+  li.combatant {
+    .token-initiative {
+      border-right-style: solid;
+      border-right-width: 3px;
+      flex: 0 0 57px;
+
+      .initiative {
+        font-size: 1.5rem;
+      }
+
+      .roll {
+        background: url(../../icons/svg/card-hand.svg) no-repeat 50% 50%;
+        background-size: 100%;
+
+        &:hover {
+          background: url(./assets/icons/card-hand-gradient.svg) no-repeat 50% 50%;
+        }
+      }
+    }
+
+    .group-leader-icon {
+      font-size: .7rem;
+      color: gold;
+      opacity: .5;
+    }
+  }
+}

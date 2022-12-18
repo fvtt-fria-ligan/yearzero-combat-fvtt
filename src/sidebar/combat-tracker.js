@@ -2,6 +2,7 @@ import { YZEC } from '@module/config';
 import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { combatTrackerOnToggleDefeatedStatus, duplicateCombatant } from '@combat/duplicate-combatant';
 import { resetInitiativeDeck } from '@utils/utils';
+import YearZeroCombatGroupColor from '../apps/combat-group-color';
 
 /** @typedef {import('@combat/combatant').default} YearZeroCombatant */
 /** @typedef {import('@combat/combat').default} YearZeroCombat */
@@ -29,6 +30,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
       ...data,
       turns,
       buttons,
+      config: YZEC,
     };
   }
 
@@ -42,7 +44,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
     // The combat tracker will initialize context menus regardless of there being a combat active
     if (!game.combat) return;
 
-    // Scoped consts
+    // Scoped Constants
     /** @type {YearZeroCombat} */
     const combat = game.combat;
     /** @type {Collection.<YearZeroCombatant>} EmbeddedCollection */
@@ -55,48 +57,128 @@ export default class YearZeroCombatTracker extends CombatTracker {
     /** @type {ContextMenuEntry[]} */
     const newMenu = [];
 
-    // Set Group Leader
+    /** @returns {YearZeroCombatant} */
+    const getCombatant = li => combatants.get(li.data('combatant-id'));
+
+    // 👑 Set Group Leader
     newMenu.push({
       name: 'YZEC.CombatTracker.MakeGroupLeader',
-      icon: YZEC.Icons.groupLeader,
+      icon: YZEC.Icons.makeLeader,
       condition: li => {
-        const c = combatants.get(li.data('combatant-id'));
-        return !c.isGroupLeader && c.actor.isOwner;
+        const c = getCombatant(li);
+        return !c.isGroupLeader && c.actor?.isOwner;
       },
-      callback: async li => {
-        const c = combatants.get(li.data('combatant-id'));
-        return c.update({
-          [`flags.${MODULE_ID}`]: {
-            isGroupLeader: true,
-            '-=groupId': null,
-          },
-        });
-      },
+      callback: async li => getCombatant(li).promoteLeader(),
     });
 
-    // Set Group Color
-    // TODO https://gitlab.com/peginc/swade/-/blob/master/src/module/hooks/SwadeCoreHooks.ts#L570
+    // 🎨 Set Group Color
+    newMenu.push({
+      name: 'YZEC.CombatTracker.SetGroupColor',
+      icon: YZEC.Icons.color,
+      condition: li => {
+        const c = getCombatant(li);
+        return c.isGroupLeader && c.actor?.isOwner;
+      },
+      callback: li => new YearZeroCombatGroupColor(getCombatant(li)).render(true),
+    });
 
-    // Remove Group Leader
+    // 🚫 Remove Group Leader
     newMenu.push({
       name: 'YZEC.CombatTracker.RemoveGroupLeader',
-      icon: YZEC.Icons.removeGroupLeader,
+      icon: YZEC.Icons.removeLeader,
       condition: li => {
-        const c = combatants.get(li.data('combatant-id'));
-        return c.isGroupLeader && c.actor.isOwner;
+        const c = getCombatant(li);
+        return c.isGroupLeader && c.actor?.isOwner;
+      },
+      callback: async li => getCombatant(li).unpromoteLeader(),
+    });
+
+    // 👥 Add Selected Tokens As Followers
+    newMenu.push({
+      name: 'YZEC.CombatTracker.AddFollowers',
+      icon: YZEC.Icons.select,
+      condition: () => {
+        const selectedTokens = canvas?.tokens?.controlled || [];
+        return canvas?.ready &&
+          selectedTokens.length > 0 &&
+          selectedTokens.every(t => t.actor?.isOwner);
       },
       callback: async li => {
-        const c = combatants.get(li.data('combatant-id'));
-        for (const f of c.getFollowers()) await f.unsetGroupId();
-        await c.unsetIsGroupLeader();
+        const combatant = getCombatant(li);
+        let cardValue = combatant.cardValue;
+        const selectedTokens = canvas?.tokens?.controlled;
+        if (selectedTokens) {
+          await combatant.promoteLeader();
+
+          // Separates between new tokens and existing ones.
+          const [newCombatantTokens, existingCombatantTokens] = selectedTokens.partition(t => t.inCombat);
+
+          // For new tokens, creates new combatants.
+          const createData = newCombatantTokens.map(t => ({
+            tokenId: t.id,
+            actorId: t.actorId,
+            hidden: t.hidden,
+          }));
+
+          const cmbts = await combat.createEmbeddedDocuments('Combatant', createData);
+
+          // For existing combatants, just add them.
+          if (existingCombatantTokens.length > 0) {
+            for (const t of existingCombatantTokens) {
+              const c = combat.getCombatantByToken(t.id);
+              if (c) cmbts.push(c);
+            }
+          }
+
+          // Then sets all those combatants as followers.
+          if (cmbts) {
+            for (const c of cmbts) await combatant.addFollower(c);
+          }
+          for (const f of combatant.getFollowers()) {
+            cardValue += 0.01;
+            await f.update({ [`flags.${MODULE_ID}.cardValue`]: cardValue });
+          }
+        }
       },
     });
 
-    // Add Selected Tokens As Followers
-    newMenu.push({
-      name: 'YZEC.CombatTracker.AddFollowers',
-      icon: YZEC.Icons.followers,
-    });
+    // Set all combatant with the same name as followers
+    // TODO https://gitlab.com/peginc/swade/-/blob/master/src/module/hooks/SwadeCoreHooks.ts#L700
+
+    // Gets group leaders to prepare follow options.
+    const leaders = combat.combatants.filter(c => c.isGroupLeader);
+    for (const leader of leaders) {
+      // ➰ Follow a Leader
+      newMenu.push({
+        name: game.i18n.format('YZEC.CombatTracker.FollowLeader', { name: leader.name }),
+        icon: YZEC.Icons.follow,
+        condition: li => {
+          const c = getCombatant(li);
+          return c.groupId !== leader.id && c.id !== leader.id;
+        },
+        callback: async li => {
+          const c = getCombatant(li);
+          // await leader.setIsGroupLeader(true);
+          const initiative = leader.initiative;
+          const cardValue = leader.cardValue + 0.01;
+          // If that combatant is a leader too, move all its followers under the new leader
+          if (c.isGroupLeader) {
+            for (const f of c.getFollowers()) {
+              await leader.addFollower(f, { initiative, cardValue });
+            }
+          }
+          await leader.addFollower(c, { initiative, cardValue });
+        },
+      });
+
+      // ❌ Unfollow a Leader
+      newMenu.push({
+        name: game.i18n.format('YZEC.CombatTracker.UnfollowLeader', { name: leader.name }),
+        icon: YZEC.Icons.unfollow,
+        condition: li => getCombatant(li).groupId === leader.id,
+        callback: async li => getCombatant(li).unsetGroupId(),
+      });
+    }
 
     // This is the base index at which the controls will be inserted.
     // The preceding controls will (in a vanilla scenario) be the "Attack" and "End Turn" buttons.
@@ -108,7 +190,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
       name: game.i18n.localize('YZEC.CombatTracker.DuplicateCombatant'),
       condition: game.user.isGM,
       callback: li => {
-        const combatant = combatants.get(li.data('combatant-id'));
+        const combatant = getCombatant(li);
         return duplicateCombatant(combatant);
       },
     });
@@ -168,17 +250,14 @@ export default class YearZeroCombatTracker extends CombatTracker {
   async _onToggleDefeatedStatus(combatant) {
     await combatTrackerOnToggleDefeatedStatus(combatant);
 
-    // Changes the group leader.
+    // Finds a new group leader.
     if (combatant.isGroupLeader) {
       const newLeader = await this.viewed.combatants.find(f => f.groupId === combatant.id && !f.isDefeated);
-      await newLeader.update({
-        [`flags.${MODULE_ID}`]: {
-          '-=groupId': null,
-          isGroupLeader: true,
-        },
-      });
-      const followers = await this._getFollowers(combatant);
-      for (const follower of followers) {
+      if (!newLeader) return;
+
+      await newLeader.promoteLeader();
+
+      for (const follower of combatant.getFollowers()) {
         await follower.setGroupId(newLeader.id);
       }
       await combatant.unsetIsGroupLeader();
@@ -202,10 +281,10 @@ export default class YearZeroCombatTracker extends CombatTracker {
     html.find('.combat-control[data-control=resetDeck]').on('click', this._onResetInitiativeDeck);
 
     // Makes combatants draggable for the GM.
-    html.find('#combat-tracker li.combatant').each((i, li) => {
+    html.find('#combat-tracker li.combatant').each((_i, li) => {
       const id = li.dataset.combatantId;
       const combatant = this.viewed?.combatants.get(id, { strict: true });
-      if (combatant?.actor.isOwner || game.user.isGM) {
+      if (combatant?.actor?.isOwner || game.user.isGM) {
         // Adds draggable attribute and drag listeners.
         li.setAttribute('draggable', true);
         li.classList.add('draggable');
@@ -226,6 +305,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   _onResetInitiativeDeck(event) {
     event.preventDefault();
+    event.stopImmediatePropagation();
     return resetInitiativeDeck();
   }
 
@@ -321,6 +401,17 @@ export default class YearZeroCombatTracker extends CombatTracker {
     return {
       ...combatant.flags[MODULE_ID],
       emptyInit: !!combatant.groupId || turn.defeated,
+      groupColor: this.#getGroupColor(combatant),
     };
+  }
+
+  #getGroupColor(combatant) {
+    if (combatant.groupId) {
+      return combatant.getLeader()?.getColor();
+    }
+    if (combatant.isDefeated) {
+      return YZEC.defeatedGroupColor;
+    }
+    return combatant.getColor();
   }
 }

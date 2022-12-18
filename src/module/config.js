@@ -32,6 +32,9 @@ YZEC.CombatTracker = {
   },
 };
 
+YZEC.defaultGroupColor = '#efefef';
+YZEC.defeatedGroupColor = '#fff';
+
 /* ------------------------------------------ */
 /*  Status Effects                            */
 /* ------------------------------------------ */
@@ -64,12 +67,16 @@ YZEC.StatusEffects = {
  * <div>{{{@root.config.Icons.buttons.xxx}}}</div>
  */
 YZEC.Icons = {
-  cards: '<i class="fas fa-cards"></i>',
-  bestCard: '<i class="fas fa-star"></i>',
-  duplicate: '<i class="fas fa-clone"></i>',
-  followers: '<i class="fas fa-users"></i>',
-  groupLeader: '<i class="fas fa-users"></i>',
-  removeGroupLeader: '<i class="fa-solid fa-users-slash"></i>',
+  cards: '<i class="fa-solid fa-cards"></i>',
+  color: '<i class="fa-solid fa-palette"></i>',
+  bestCard: '<i class="fa-solid fa-star"></i>',
+  duplicate: '<i class="fa-solid fa-clone"></i>',
+  follow:'<i class="fa-solid fa-link"></i>',
+  unfollow: '<i class="fa-solid fa-link-slash"></i>',
+  leader: '<i class="fa-solid fa-flag-swallowtail"></i>',
+  makeLeader: '<i class="fa-solid fa-users"></i>',
+  removeLeader: '<i class="fa-solid fa-users-slash"></i>',
+  select: '<i class="fa-solid fa-square-dashed"></i>',
   // tabs: {
   //   bio: '<i class="fas fa-align-left"></i>',
   //   combat: '<i class="fas fa-fist-raised"></i>',
