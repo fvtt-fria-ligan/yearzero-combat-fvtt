@@ -16,12 +16,12 @@ export default class YearZeroCombatant extends Combatant {
     return this.setFlag(MODULE_ID, 'cardValue', cardValue);
   }
 
-  get cardDescription() {
-    return this.getFlag(MODULE_ID, 'cardDescription');
+  get cardName() {
+    return this.getFlag(MODULE_ID, 'cardName');
   }
 
-  async setCardDescription(cardDescription) {
-    return this.setFlag(MODULE_ID, 'cardDescription', cardDescription);
+  async setCardName(cardName) {
+    return this.setFlag(MODULE_ID, 'cardName', cardName);
   }
 
   /* ------------------------------------------ */
@@ -167,35 +167,38 @@ export default class YearZeroCombatant extends Combatant {
   /* ------------------------------------------ */
 
   async unpromoteLeader() {
-    for (const f of this.getFollowers()) await f.unsetGroupId();
-    return this.unsetIsGroupLeader();
+    // for (const f of this.getFollowers()) await f.unsetGroupId();
+    // return this.unsetIsGroupLeader();
+    const updates = [{
+      _id: this.id,
+      [`flags.${MODULE_ID}.-=isGroupLeader`]: null,
+    }];
+    for (const f of this.getFollowers()) {
+      updates.push({
+        _id: f.id,
+        [`flags.${MODULE_ID}.-=groupId`]: null,
+      });
+    }
+    return this.combat.updateEmbeddedDocuments('Combatant', updates);
   }
 
   /* ------------------------------------------ */
 
-  async addFollower(fCombatant, { cardValue, initiative } = {}) {
+  async addFollower(fCombatant, { cardValue, cardName, initiative } = {}) {
     const updateData = {
+      initiative: this.initiative,
       [`flags.${MODULE_ID}`]: {
+        cardValue: this.cardValue + 0.01,
+        cardName: this.cardName,
         groupId: this.id,
         '-=isGroupLeader': null,
       },
     };
     if (typeof initiative !== 'undefined') updateData.initiative = initiative;
     if (typeof cardValue !== 'undefined') updateData[`flags.${MODULE_ID}.cardValue`] = cardValue;
+    if (typeof cardName !== 'undefined') updateData[`flags.${MODULE_ID}.cardName`] = cardName;
     return fCombatant.update(updateData);
   }
-
-  /* ------------------------------------------ */
-
-  // async addFollowers(combatants) {
-  //   this.combat.updateEmbeddedDocuments('Combatant', combatants.map(c => ({
-  //     _id: c.id,
-  //     [`flags.${MODULE_ID}`]: {
-  //       groupId: this.id,
-  //       '-=isGroupLeader': null,
-  //     },
-  //   })));
-  // }
 
   /* ------------------------------------------ */
 
@@ -235,7 +238,7 @@ export default class YearZeroCombatant extends Combatant {
       initiative: null,
       [`flags.${MODULE_ID}`]: {
         cardValue: null,
-        cardDescription: '',
+        cardName: '',
         '-=fastAction': null,
         '-=slowAction': null,
       },
@@ -246,13 +249,41 @@ export default class YearZeroCombatant extends Combatant {
 
   /**
    * Swaps initiative cards between two combatants.
-   * @param {Combatant} target The combatant with which this combatant will swap a card
+   * @param {YearZeroCombatant} tCombatant The combatant with which this combatant will swap a card
    */
-  // TODO  recalculate the turn order on complettion
-  async swapInitiativeCard(target) {
-    const combatantCardValue = this.cardValue;
-    await this.setCardValue(target.cardValue);
-    await target.setCardValue(combatantCardValue);
+  async swapInitiativeCard(tCombatant) {
+    const updates = [{
+      _id: this.id,
+      initiative: tCombatant.initiative,
+      [`flags.${MODULE_ID}.cardValue`]: tCombatant.cardValue,
+      [`flags.${MODULE_ID}.cardName`]: tCombatant.cardName,
+    }, {
+      _id: tCombatant.id,
+      initiative: this.initiative,
+      [`flags.${MODULE_ID}.cardValue`]: this.cardValue,
+      [`flags.${MODULE_ID}.cardName`]: this.cardName,
+    }];
+    if (this.isGroupLeader) {
+      for (const f of this.getFollowers()) {
+        updates.push({
+          _id: f.id,
+          initiative: tCombatant.initiative,
+          [`flags.${MODULE_ID}.cardValue`]: tCombatant.cardValue + 0.01,
+          [`flags.${MODULE_ID}.cardName`]: tCombatant.cardName,
+        });
+      }
+    }
+    if (tCombatant.isGroupLeader) {
+      for (const f of tCombatant.getFollowers()) {
+        updates.push({
+          _id: f.id,
+          initiative: this.initiative,
+          [`flags.${MODULE_ID}.cardValue`]: this.cardValue + 0.01,
+          [`flags.${MODULE_ID}.cardName`]: this.cardName,
+        });
+      }
+    }
+    return this.combat.updateEmbeddedDocuments('Combatant', updates);
   }
 
   /* ------------------------------------------ */

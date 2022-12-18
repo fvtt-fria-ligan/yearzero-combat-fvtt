@@ -23,6 +23,7 @@ import YearZeroCards from '@combat/cards';
 import YearZeroCombat from '@combat/combat';
 import YearZeroCombatant from '@combat/combatant';
 import YearZeroCombatTracker from './sidebar/combat-tracker';
+import { onRenderCombatantConfig } from './sidebar/combatant-config';
 import { addSlowAndFastStatusEffects } from '@combat/slow-and-fast-actions';
 import { tokenOnHoverIn, tokenOnHoverOut } from '@combat/duplicate-combatant';
 
@@ -95,3 +96,6 @@ Hooks.once('ready', async () => {
 
 // Appends the configured context menu buttons to the combatant context menu.
 Hooks.on('getCombatTrackerEntryContext', YearZeroCombatTracker.appendControlsToContextMenu);
+
+// Injects custom HTML in the combatant config.
+Hooks.on('renderCombatantConfig', onRenderCombatantConfig);

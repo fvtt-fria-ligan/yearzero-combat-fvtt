@@ -77,14 +77,13 @@ export default class YearZeroCombat extends Combat {
       const updateData = {
         initiative: card.value,
         [`flags.${MODULE_ID}.cardValue`]: card.value,
-        [`flags.${MODULE_ID}.cardDescription`]: card.description,
+        [`flags.${MODULE_ID}.cardName`]: card.description || card.name,
       };
       await combatant.updateSource(updateData);
 
       // Updates other combatants in the group.
       if (combatant.isGroupLeader) {
-        const followers = game.combat.combatants.filter(f => f.groupId === id);
-        for (const follower of followers) {
+        for (const follower of combatant.getFollowers()) {
           await follower.updateSource(updateData);
         }
       }

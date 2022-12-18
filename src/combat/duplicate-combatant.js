@@ -73,6 +73,7 @@ export function tokenOnHoverOut(_event) {
 /* ------------------------------------------ */
 
 /**
+ * Gets all the combatants that share the same token.
  * @param {Combatant} combatant
  * @returns {Combatant[]}
  */

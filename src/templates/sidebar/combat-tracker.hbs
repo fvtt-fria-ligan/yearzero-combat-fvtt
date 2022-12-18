@@ -82,7 +82,7 @@
 							{{#if this.emptyInit}}
 							<span class="initiative"></span>
 							{{else if this.hasRolled}}
-							<span class="initiative">{{this.initiative}}</span>
+							<span class="initiative">{{this.cardName}}</span>
 							{{else if this.owner}}
 							<a class="combatant-control roll" data-tooltip="COMBAT.InitiativeRoll" data-control="rollInitiative"></a>
 							{{else}}
@@ -95,7 +95,7 @@
 							{{! Add a leader icon}}
 							<h4>
 								{{#if this.isGroupLeader}}
-									<span class="group-leader-icon" data-tooltip="{{localize "YZEC.CombatTracker.Group Leader"}}">
+									<span class="group-leader-icon" data-tooltip="{{localize "YZEC.CombatTracker.GroupLeader"}}">
 										{{{@root.config.Icons.makeLeader}}}
 									</span>
 								{{/if}}

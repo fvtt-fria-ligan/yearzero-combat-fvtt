@@ -38,11 +38,20 @@ YZEC.Combat.Initiative.Draw: '{name}''s Initiative'
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
 YZEC.Combat.Initiative.NotEnoughCards: Not enough cards in the initiative deck
 YZEC.Combat.Initiative.ResetDeck: Shuffled all the discarded initiative cards back into the deck
+YZEC.CombatantConfig.DrawSize: Draw Size
+YZEC.CombatantConfig.InitiativeCard: Initiative Card
+YZEC.CombatantConfig.InitiativeCardAvailable: Available
+YZEC.CombatantConfig.InitiativeCardDiscarded: Discarded
+YZEC.CombatantConfig.InitiativeCardDrawn: Drawn
+YZEC.CombatantConfig.KeepState: Keep State
+YZEC.CombatantConfig.KeepStateBest: Best
+YZEC.CombatantConfig.KeepStateWorst: Worst
+YZEC.CombatantConfig.Speed: Speed
 YZEC.CombatTracker.AddFollowers: Add Selected Tokens As Followers
 YZEC.CombatTracker.DuplicateCombatant: Duplicate Combatant
 YZEC.CombatTracker.FastAction: Fast Action
 YZEC.CombatTracker.FollowLeader: Follow {name}
-YZEC.CombatTracker.Group Leader: Group Leader
+YZEC.CombatTracker.GroupLeader: Group Leader
 YZEC.CombatTracker.InitiativeDeckReset: Reset Initiative Deck
 YZEC.CombatTracker.MakeGroupLeader: Make Group Leader
 YZEC.CombatTracker.RemoveGroupLeader: Remove Group Leader

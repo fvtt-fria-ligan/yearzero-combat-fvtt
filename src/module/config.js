@@ -1,4 +1,4 @@
-import { MODULE_ID, STATUS_EFFECTS } from './constants.js';
+import { CARDS_DRAW_KEEP_STATES, MODULE_ID, STATUS_EFFECTS } from './constants.js';
 
 /**
  * The Year Zero Engine Combat configuration.
@@ -32,8 +32,14 @@ YZEC.CombatTracker = {
   },
 };
 
+YZEC.maxDrawSize = 3;
 YZEC.defaultGroupColor = '#efefef';
 YZEC.defeatedGroupColor = '#fff';
+
+YZEC.keepStates = Object.values(CARDS_DRAW_KEEP_STATES).reduce((o, v) => {
+  o[v] = `YZEC.CombatantConfig.KeepState${v.capitalize()}`;
+  return o;
+}, {});
 
 /* ------------------------------------------ */
 /*  Status Effects                            */

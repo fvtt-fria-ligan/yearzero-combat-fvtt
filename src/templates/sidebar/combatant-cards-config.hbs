@@ -1,0 +1,47 @@
+{{#if inGroup}}
+	<div class="form-group">
+		<label>{{localize "YZEC.CombatTracker.GroupLeader"}}</label>
+		<input class="disabled" type="text" value="{{leaderName}}" disabled/>
+	</div>
+{{else}}
+	<div class="form-group">
+		<label>{{localize "YZEC.CombatantConfig.InitiativeCard"}}</label>
+		<select id="initiative-card">
+			{{#with drawnCard}}
+				<optgroup label="{{localize "YZEC.CombatantConfig.InitiativeCardDrawn"}}">
+					<option value="{{value}}" data-card-id="{{id}}" data-dtype="Number" selected>{{name}}{{#if description}} ({{description}}){{/if}} 🃏</option>
+				</optgroup>
+			{{else}}
+				<option value="" selected>–</option>
+			{{/with}}
+			{{#if availableCards.length}}
+				<optgroup label="{{localize "YZEC.CombatantConfig.InitiativeCardAvailable"}}">
+					{{#each availableCards}}
+						<option value="{{value}}" data-card-id="{{id}}" data-dtype="Number">{{name}}{{#if description}} ({{description}}){{/if}}</option>
+					{{/each}}
+				</optgroup>
+			{{/if}}
+			{{#if discardedCards.length}}
+				<optgroup label="{{localize "YZEC.CombatantConfig.InitiativeCardDiscarded"}}">
+					{{#each discardedCards}}
+						<option disabled>{{name}}{{#if description}} ({{description}}){{/if}}</option>
+					{{/each}}
+				</optgroup>
+			{{/if}}
+		</select>
+	</div>
+	<div class="form-group">
+		<label>{{localize "YZEC.CombatantConfig.DrawSize"}}</label>
+		{{rangePicker name="flags.yze-combat.drawSize" value=drawSize min=1 max=config.maxDrawSize step=1}}
+	</div>
+	<div class="form-group">
+		<label>{{localize "YZEC.CombatantConfig.KeepState"}}</label>
+		<select name="flags.yze-combat.keepState">
+			{{selectOptions config.keepStates selected=keepState localize=true}}
+		</select>
+	</div>
+	<div class="form-group">
+		<label>{{localize "YZEC.CombatantConfig.Speed"}}</label>
+		<input class="disabled" type="number" value="{{speed}}" disabled/>
+	</div>
+{{/if}}

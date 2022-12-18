@@ -36,6 +36,9 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   /* ------------------------------------------ */
 
+
+  /* ------------------------------------------ */
+
   /**
    * @param {JQuery.<HTMLElement>} _html
    * @param {ContextMenuEntry[]} contextMenu
@@ -105,7 +108,6 @@ export default class YearZeroCombatTracker extends CombatTracker {
       },
       callback: async li => {
         const combatant = getCombatant(li);
-        let cardValue = combatant.cardValue;
         const selectedTokens = canvas?.tokens?.controlled;
         if (selectedTokens) {
           await combatant.promoteLeader();
@@ -135,15 +137,15 @@ export default class YearZeroCombatTracker extends CombatTracker {
             for (const c of cmbts) await combatant.addFollower(c);
           }
           for (const f of combatant.getFollowers()) {
-            cardValue += 0.01;
-            await f.update({ [`flags.${MODULE_ID}.cardValue`]: cardValue });
+            await f.update({
+              initiative: combatant.initiative,
+              [`flags.${MODULE_ID}.cardValue`]: combatant.cardValue + 0.01,
+              [`flags.${MODULE_ID}.cardName`]: combatant.cardName,
+            });
           }
         }
       },
     });
-
-    // Set all combatant with the same name as followers
-    // TODO https://gitlab.com/peginc/swade/-/blob/master/src/module/hooks/SwadeCoreHooks.ts#L700
 
     // Gets group leaders to prepare follow options.
     const leaders = combat.combatants.filter(c => c.isGroupLeader);
@@ -158,16 +160,13 @@ export default class YearZeroCombatTracker extends CombatTracker {
         },
         callback: async li => {
           const c = getCombatant(li);
-          // await leader.setIsGroupLeader(true);
-          const initiative = leader.initiative;
-          const cardValue = leader.cardValue + 0.01;
           // If that combatant is a leader too, move all its followers under the new leader
           if (c.isGroupLeader) {
             for (const f of c.getFollowers()) {
-              await leader.addFollower(f, { initiative, cardValue });
+              await leader.addFollower(f);
             }
           }
-          await leader.addFollower(c, { initiative, cardValue });
+          await leader.addFollower(c);
         },
       });
 
@@ -292,21 +291,67 @@ export default class YearZeroCombatTracker extends CombatTracker {
         li.addEventListener('dragstart', this._onDragStart, false);
         // On dragOver:
         li.addEventListener('dragover', ev =>
-          $(ev.target).closest('li.combatant').addClass('dropTarget'),
+          $(ev.target).closest('li.combatant').addClass('drop-target'),
         );
         // On dragLeave:
-        li.addEventListener('dragLeave', ev =>
-          $(ev.target).closest('li.combatant').removeClass('dropTarget'),
+        li.addEventListener('dragleave', ev =>
+          $(ev.target).closest('li.combatant').removeClass('drop-target'),
         );
+        // On dragDrop:
+        li.addEventListener('drop', this._onDrop.bind(this), false);
       }
     });
   }
+
+  /* ------------------------------------------ */
+
+  /**
+   * @param {DragEvent} event
+   * @override
+   */
+  _onDragStart(event) {
+    const id = $(event.target).closest('li.combatant').data('combatant-id');
+    event.dataTransfer.setData('text', id);
+  }
+  /* ------------------------------------------ */
+
+  /**
+   * @param {DragEvent} event
+   * @override
+   */
+  async _onDrop(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const li = $(event.target).closest('li.combatant');
+    li.removeClass('drop-target');
+
+    const leaderId = li.data('combatant-id');
+    const draggedCombatantId = event.dataTransfer.getData('text');
+    if (leaderId === draggedCombatantId) return;
+
+    /** @type {YearZeroCombatant} */
+    const leader = this.viewed?.combatants.get(leaderId);
+    if (!leader.canUserModify(game.user, 'update')) return;
+
+    await leader.promoteLeader();
+
+    /** @type {YearZeroCombatant} */
+    const draggedCombatant = this.viewed?.combatants.get(draggedCombatantId);
+
+    if (draggedCombatant.isGroupLeader) {
+      for (const f of draggedCombatant.getFollowers()) {
+        await leader.addFollower(f);
+      }
+    }
+    await leader.addFollower(draggedCombatant);
+  }
+
   /* ------------------------------------------ */
 
   _onResetInitiativeDeck(event) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    return resetInitiativeDeck();
+    return resetInitiativeDeck(true);
   }
 
   /* ------------------------------------------ */

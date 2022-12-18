@@ -1,12 +1,17 @@
 .combat-sidebar {
   li.combatant {
+    &.drop-target {
+      border-color: gold;
+      background: rgba(255, 215, 0, .1);
+    }
+
     .token-initiative {
       border-right-style: solid;
       border-right-width: 3px;
       flex: 0 0 57px;
 
       .initiative {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
       }
 
       .roll {
