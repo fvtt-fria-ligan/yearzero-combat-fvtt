@@ -1,0 +1,123 @@
+/* ------------------------------------------ */
+/*  Draw Initiative Chat Message              */
+/*   Author: FloRad                           */
+/* ------------------------------------------ */
+
+.chat-message .initiative-draw {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin: .5em;
+
+  .card-filter-container {
+    border: none;
+    filter: drop-shadow(2px 3px 2px rgba(0,0,0,.5));
+    transform-origin: center left;
+    transition: transform .2s ease-in,filter .2s ease-in,z-index .2s step-end;
+    z-index: 1;
+    
+    .card-image {
+      aspect-ratio: 1/1.4;
+      border: none;
+      height: 75px;
+      transition: z-index .2s step-end;
+      z-index: 2;
+    }
+
+    &:hover {
+      z-index: 3;
+      filter: drop-shadow(4px 6px 4px rgb(0 0 0 / 50%));
+      transition: transform 0.2s ease-in, z-index 0.2s step-start;
+  
+      .card-image {
+        z-index: 4;
+        transition: z-index 0.2s step-start;
+      }
+    }
+  }
+
+  .card-name {
+    font-size: 1.125em;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 0;
+    // order: 2;
+  }
+}
+
+.chat-message {
+  &:nth-child(4n + 1) .initiative-draw .card-filter-container {
+    transform: rotate(2deg);
+
+    &:hover {
+      transform: rotate(0deg) scale(4.75);
+    }
+  }
+  &:nth-child(4n + 2) .initiative-draw .card-filter-container {
+    transform: rotate(-4deg);
+
+    &:hover {
+      transform: rotate(0deg) scale(4.75);
+    }
+  }
+  &:nth-child(4n + 3) .initiative-draw .card-filter-container {
+    transform: rotate(4deg);
+
+    &:hover {
+      transform: rotate(0deg) scale(4.75);
+    }
+  }
+  &:nth-child(4n + 4) .initiative-draw .card-filter-container {
+    transform: rotate(-2deg);
+
+    &:hover {
+      transform: rotate(0deg) scale(4.75);
+    }
+  }
+  &:first-child .initiative-draw .card-filter-container,
+  &:nth-of-type(2) .initiative-draw .card-filter-container {
+    transform-origin: top left;
+
+    &:hover {
+      transform-origin: top left;
+    }
+  }
+  &:last-child .initiative-draw .card-filter-container,
+  &:nth-last-of-type(2):not(:nth-of-type(2))
+    .initiative-draw
+    .card-filter-container {
+    transform-origin: bottom left;
+
+    &:hover {
+      transform-origin: bottom left;
+    }
+  }
+}
+
+// .chat-message:last-child .initiative-draw .card-filter-container,
+// .chat-message:last-child .initiative-draw .card-filter-container:hover,
+// .chat-message:nth-last-of-type(2):not(:nth-of-type(2)) .initiative-draw .card-filter-container,
+// .chat-message:nth-last-of-type(2):not(:nth-of-type(2)) .initiative-draw .card-filter-container:hover {
+//   transform-origin: bottom left;
+// }
+
+// .chat-message:first-child .initiative-draw .card-filter-container,
+// .chat-message:first-child .initiative-draw .card-filter-container:hover,
+// .chat-message:nth-of-type(2) .initiative-draw .card-filter-container,
+// .chat-message:nth-of-type(2) .initiative-draw .card-filter-container:hover {
+//   transform-origin: top left;
+// }
+
+// .chat-message:nth-child(4n+1) .initiative-draw .card-filter-container {
+//   transform: rotate(2deg);
+//   &:hover {
+//     transform: rotate(0deg) scale(4.75);
+//   }
+// }
+
+// .chat-message:nth-child(4n+2) .initiative-draw .card-filter-container {
+//   transform: rotate(-4deg);
+//   &:hover {
+//     transform: rotate(0deg) scale(4.75);
+//   }
+// }

@@ -32,7 +32,7 @@
             "type": "string",
             "description": "The property to set on the combatant when the button is clicked. E.g. 'isDead'"
           },
-          "tooltip": {
+          "label": {
             "type": "string",
             "description": "The tooltip to display when the button is hovered"
           },

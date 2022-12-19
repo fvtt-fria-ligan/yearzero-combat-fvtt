@@ -16,7 +16,7 @@
     "lint:fix": "eslint --ext .js --fix .",
     "format": "prettier-eslint \"**/*.{hbs,js,json,scss}\" --write",
     "postinstall": "npx husky install && npx patch-package",
-    "upd": "npm list -g --depth=0 & npm outdated & npx npm-check -u",
+    "upd": "npm list -g --depth=0 & npm outdated -g & npm outdated & npx npm-check -u",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -46,12 +46,12 @@
     "@league-of-foundry-developers/foundry-vtt-types": "^9.280.0",
     "@types/jquery": "3.5.14",
     "@typhonjs-fvtt/eslint-config-foundry.js": "0.8.0",
-    "chalk": "5.0.1",
+    "chalk": "^5.1.2",
     "cross-env": "7.0.3",
     "devmoji": "2.3.0",
-    "esbuild": "^0.15.7",
-    "esbuild-sass-plugin": "^2.3.2",
-    "eslint": "^8.23.0",
+    "esbuild": "^0.15.15",
+    "esbuild-sass-plugin": "^2.4.1",
+    "eslint": "^8.28.0",
     "eslint-config-jquery": "^3.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -60,9 +60,9 @@
     "gulp": "^4.0.2",
     "gulp-yaml": "2.0.4",
     "husky": "^7.0.4",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.0",
     "prettier-eslint-cli": "^7.1.0",
-    "semver": "^7.3.7",
+    "semver": "^7.3.8",
     "standard-version": "^9.3.2"
   },
   "volta": {

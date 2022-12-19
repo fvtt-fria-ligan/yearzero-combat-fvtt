@@ -1,4 +1,4 @@
-import { MODULE_NAME, CARD_STACK } from './constants';
+import { MODULE_ID, CARD_STACK } from './constants';
 
 export async function setupModule() {
   await setupCards(CARD_STACK.INITIATIVE_DECK);
@@ -7,14 +7,15 @@ export async function setupModule() {
 
 /**
  * Sets the initiative deck or its discard pile.
- * @param {string} stackType `initiativeDeck` or `initiativeDeckDiscardPile`
+ * @param {'initiativeDeck'|'initiativeDeckDiscardPile'} stackType
  * @returns {Cards|CardsPile}
  * @async
  */
 async function setupCards(stackType) {
   // Gets the deck/pile.
-  const cardStackId = game.settings.get(MODULE_NAME, stackType);
-  const cardStack = game.cards.get(cardStackId);
+  const cardStackId = game.settings.get(MODULE_ID, stackType);
+  let cardStack = game.cards.get(cardStackId);
+  if (!cardStack) cardStack = game.cards.getName(cardStackId);
 
   // Exits early if the deck/pile exists.
   if (cardStack) return cardStack;
@@ -43,7 +44,7 @@ async function setupCards(stackType) {
   }
 
   const newCardStack = await cardsCls.create(data);
-  await game.settings.set(MODULE_NAME, stackType, newCardStack.id);
+  await game.settings.set(MODULE_ID, stackType, newCardStack.id);
 
   if (stackType === CARD_STACK.INITIATIVE_DECK) {
     await newCardStack.shuffle({ chatNotification: false });

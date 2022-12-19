@@ -24,65 +24,65 @@ function registerHandlebarsHelpers() {
    * because we want to return a string
    * and not a SafeString object.
    */
-  Handlebars.registerHelper('concat', function () {
-    let str = '';
-    for (const arg in arguments) {
-      if (typeof arguments[arg] !== 'object') {
-        str += arguments[arg];
-      }
-    }
-    return str;
-  });
+  // Handlebars.registerHelper('concat', function () {
+  //   let str = '';
+  //   for (const arg in arguments) {
+  //     if (typeof arguments[arg] !== 'object') {
+  //       str += arguments[arg];
+  //     }
+  //   }
+  //   return str;
+  // });
 
-  Handlebars.registerHelper('capitalize', function (str) {
-    return str.capitalize(); // This is a Foundry primitive.
-  });
+  // Handlebars.registerHelper('capitalize', function (str) {
+  //   return str.capitalize(); // This is a Foundry primitive.
+  // });
 
-  Handlebars.registerHelper('toLowerCase', function (str) {
-    return str.toLowerCase();
-  });
+  // Handlebars.registerHelper('toLowerCase', function (str) {
+  //   return str.toLowerCase();
+  // });
 
-  Handlebars.registerHelper('toUpperCase', function (str) {
-    return str.toUpperCase();
-  });
+  // Handlebars.registerHelper('toUpperCase', function (str) {
+  //   return str.toUpperCase();
+  // });
 
-  Handlebars.registerHelper('times', function (n, content) {
-    let str = '';
-    for (let i = 0; i < n; i++) {
-      content.data.max = n;
-      content.data.index = i + 1;
-      str += content.fn(i);
-    }
-    return str;
-  });
+  // Handlebars.registerHelper('times', function (n, content) {
+  //   let str = '';
+  //   for (let i = 0; i < n; i++) {
+  //     content.data.max = n;
+  //     content.data.index = i + 1;
+  //     str += content.fn(i);
+  //   }
+  //   return str;
+  // });
 
-  Handlebars.registerHelper('mathMin', function (...args) {
-    return Math.min(...args);
-  });
+  // Handlebars.registerHelper('mathMin', function (...args) {
+  //   return Math.min(...args);
+  // });
 
-  Handlebars.registerHelper('mathMax', function (...args) {
-    return Math.max(...args);
-  });
+  // Handlebars.registerHelper('mathMax', function (...args) {
+  //   return Math.max(...args);
+  // });
 
-  Handlebars.registerHelper('add', function (a, b) {
-    return a + b;
-  });
+  // Handlebars.registerHelper('add', function (a, b) {
+  //   return a + b;
+  // });
 
-  Handlebars.registerHelper('substract', function (a, b) {
-    return a - b;
-  });
+  // Handlebars.registerHelper('substract', function (a, b) {
+  //   return a - b;
+  // });
 
-  Handlebars.registerHelper('divide', function (a, b) {
-    return a / b;
-  });
+  // Handlebars.registerHelper('divide', function (a, b) {
+  //   return a / b;
+  // });
 
-  Handlebars.registerHelper('multiply', function (a, b) {
-    return a * b;
-  });
+  // Handlebars.registerHelper('multiply', function (a, b) {
+  //   return a * b;
+  // });
 
-  Handlebars.registerHelper('ratio', function (a, b) {
-    return (a / b) * 100;
-  });
+  // Handlebars.registerHelper('ratio', function (a, b) {
+  //   return (a / b) * 100;
+  // });
 
   // Handlebars.registerHelper('boxes', function (field, options) {
   //   const value = Number(options.hash.value);

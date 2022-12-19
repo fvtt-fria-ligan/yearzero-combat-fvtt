@@ -1,0 +1,60 @@
+$medium-spacing: 5px;
+
+.card-dialog {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  .card {
+    min-width: 125px;
+    max-width: 125px;
+    flex-basis: auto;
+    flex-grow: 1;
+    padding: $medium-spacing;
+    margin-bottom: 5px;
+    text-align: center;
+    figure {
+      margin: 0;
+      .indicator {
+        visibility: hidden;
+        margin: 0 auto;
+      }
+      &.high-card {
+        .indicator {
+          visibility: visible;
+        }
+      }
+    }
+    img {
+      height: 100px;
+      display: block;
+      margin: $medium-spacing auto;
+      box-shadow: 2px 3px 3px -2px rgb(0 0 0 / 50%);
+      transition: all 0.2s ease-out;
+    }
+    /* HIDE RADIO */
+    input[type='radio'] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    /* IMAGE STYLES */
+    input[type='radio'] + figure img {
+      cursor: pointer;
+      &:hover {
+        transform: translateY(-$medium-spacing) scale(1.2);
+      }
+    }
+    /* CHECKED STYLES */
+    input[type='radio']:checked ~ figure img {
+      transform: translateY(-$medium-spacing) scale(1.2);
+      box-shadow: 0 0 5px red;
+    }
+    input[type='radio']:checked ~ figure figcaption {
+      font-weight: bold;
+    }
+  }
+}

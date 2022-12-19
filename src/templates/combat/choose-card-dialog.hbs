@@ -1,0 +1,24 @@
+<form autocomplete="off">
+  <ul class="card-dialog">
+    {{#each cards}}
+      <li class="card">
+        <label for="card_{{id}}">
+          <input
+            type="radio"
+            name="card"
+            id="card_{{id}}"
+            data-card-id="{{id}}"
+            {{!-- {{#if (eq @index 0)}}checked{{/if}} --}}
+          />
+          <figure{{#if (eq value ../bestCard.value)}} class="high-card"{{/if}}>
+            <div class="indicator">
+              {{{@root.config.Icons.bestCard}}}
+            </div>
+            <img src="{{currentFace.img}}"/>
+            <figcaption>{{name}}</figcaption>
+          </figure>
+        </label>
+      </li>
+    {{/each}}
+  </ul>
+</form>

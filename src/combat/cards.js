@@ -12,11 +12,10 @@ export default class YearZeroCards extends Cards {
    * @param {number} [drawMode=0] How to draw the cards, e.g. from the top of the deck
    * @returns {Promise.<Card[]>} An array of drawn cards, in the order they were drawn
    * @see {@link CONST.CARD_DRAW_MODES}
-   * @async
    */
   async drawInitiative(to, qty = 1, drawMode = foundry.CONST.CARD_DRAW_MODES.TOP) {
     // Exits early if invalid deck type.
-    if (this.data.type !== 'deck') {
+    if (this.type !== 'deck') {
       const msg = game.i18n.localize('YZEC.WARNING.InvalidDeckType');
       throw new TypeError(msg);
     }

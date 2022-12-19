@@ -13,16 +13,19 @@
  */
 
 import { YZEC } from '@module/config';
-import { MODULE_NAME } from '@module/constants';
+import { HOOKS_KEYS, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 // import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
 import { setupModule } from '@module/setup';
-import { YearZeroCombatHook } from '@utils/client-hooks';
-import YearZeroCards from './combat/cards';
-import YearZeroCombat from './combat/combat';
-import YearZeroCombatant from './combat/combatant';
+import YearZeroCombatHook from '@utils/client-hooks';
+import YearZeroCards from '@combat/cards';
+import YearZeroCombat from '@combat/combat';
+import YearZeroCombatant from '@combat/combatant';
 import YearZeroCombatTracker from './sidebar/combat-tracker';
+import { onRenderCombatantConfig } from './sidebar/combatant-config';
+import { addSlowAndFastStatusEffects } from '@combat/slow-and-fast-actions';
+import { tokenOnHoverIn, tokenOnHoverOut } from '@combat/duplicate-combatant';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */
@@ -39,17 +42,22 @@ Hooks.once('init', () => {
   CONFIG.Cards.presets = {
     initiative: {
       label: 'YZEC.InitiativeDeckPreset',
-      src: `modules/${MODULE_NAME}/cards/initiative-deck.json`,
+      src: `modules/${MODULE_ID}/cards/initiative-deck.json`,
       type: 'deck',
     },
   };
   CONFIG.ui.combat = YearZeroCombatTracker;
 
-  Hooks.call('yzeCombatInit', YearZeroCombatHook);
+  // Fixes base methods (mainly for duplicate combatants support).
+  Token.prototype._onHoverIn = tokenOnHoverIn;
+  Token.prototype._onHoverOut = tokenOnHoverOut;
 
   // registerSheets();
   initializeHandlebars();
   registerSystemSettings();
+
+  // Calls the configuration hook.
+  Hooks.call(HOOKS_KEYS.COMBAT_INIT, YearZeroCombatHook);
 });
 
 /* ------------------------------------------ */
@@ -60,6 +68,9 @@ Hooks.once('ready', async () => {
   if (game.user.isGM) {
     await setupModule();
   }
+  if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
+    addSlowAndFastStatusEffects();
+  }
 
   // TODO Hooks.call('yzeCombatReady');
 
@@ -68,19 +79,13 @@ Hooks.once('ready', async () => {
   // TODO Remove this example before merge
 
   // This listens for a message from the client called when the user clicks the slow button in the combat tracker.
-  Hooks.on(`${MODULE_NAME}.slow-action-button-clicked`, data => {
-    console.log('YZEC | Event', data);
-    // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
-    data.emit({ forGmOnly: 'secret lover' });
-  });
-  // This listens for a message from the client called when the user clicks the Duplicate button in the combat tracker.
-  Hooks.on(`${MODULE_NAME}.combat-tracker-duplicate-button-clicked`, data => {
+  Hooks.on(`${MODULE_ID}.slow-action-button-clicked`, data => {
     console.log('YZEC | Event', data);
     // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
     data.emit({ forGmOnly: 'secret lover' });
   });
   // This listens for a message from any client that sends the socket event.
-  game.socket.on(`module.${MODULE_NAME}`, ({ data, options: { forGmOnly } }) => {
+  game.socket.on(`module.${MODULE_ID}`, ({ data, options: { forGmOnly } }) => {
     console.log('YZEC | Socket', game.user.isGM ? `hello, ${forGmOnly}` : 'hello regular player', data);
   });
 });
@@ -91,3 +96,6 @@ Hooks.once('ready', async () => {
 
 // Appends the configured context menu buttons to the combatant context menu.
 Hooks.on('getCombatTrackerEntryContext', YearZeroCombatTracker.appendControlsToContextMenu);
+
+// Injects custom HTML in the combatant config.
+Hooks.on('renderCombatantConfig', onRenderCombatantConfig);
