@@ -1,4 +1,4 @@
-import { CARD_STACK, MODULE_ID } from '@module/constants';
+import { CARDS_DRAW_KEEP_STATES, CARD_STACK, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 
 /**
  * Gets the canvas (if ready).
@@ -45,4 +45,28 @@ export async function resetInitiativeDeck(chatNotification = false) {
   await initiativeDeck.recall({ chatNotification });
   await initiativeDeck.shuffle({ chatNotification });
   ui.notifications.info('YZEC.Combat.Initiative.ResetDeck', { localize: true });
+}
+
+/**
+ * Gets the sort order defined in the game settings.
+ * @param {CARDS_DRAW_KEEP_STATES} [keepState] Keep state of the combatant
+ *   to further modify the sort order
+ * @returns {1|-1} 1: Ascending | -1: Descending
+ */
+export function getCardSortOrderModifier(keepState) {
+  const n = game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_SORT_ORDER) || 1;
+  if (keepState) {
+    const m = keepState === CARDS_DRAW_KEEP_STATES.BEST ? 1 : -1;
+    return n * m;
+  }
+  return n;
+}
+
+/**
+ * Gets the modifier for the followers' card value
+ * depending on the default sort order defined in the game settings.
+ * @returns {0.01|-0.01}
+ */
+export function getCombatantSortOrderModifier() {
+  return getCardSortOrderModifier() >= 1 ? 0.01 : -0.01;
 }

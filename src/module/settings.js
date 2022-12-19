@@ -2,6 +2,7 @@
 // ? config: true (visible)
 
 import { CARD_STACK, MODULE_ID, SETTINGS_KEYS } from './constants.js';
+import { getCombatantSortOrderModifier } from '@utils/utils.js';
 
 export function registerSystemSettings() {
 
@@ -42,6 +43,7 @@ export function registerSystemSettings() {
       [-1]: 'SETTINGS.InitiativeSortOrderDescending',
     },
     default: 1,
+    onChange: _onInitiativeSortOrderChange,
   });
 
   game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW, {
@@ -50,7 +52,7 @@ export function registerSystemSettings() {
     scope: 'world',
     config: true,
     type: Boolean,
-    default: true,
+    default: false,
   });
 
   game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START, {
@@ -107,4 +109,37 @@ export function registerSystemSettings() {
     type: String,
     default: '',
   });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.MAX_DRAW_SIZE, {
+    name: 'SETTINGS.MaxDrawSize',
+    hint: 'SETTINGS.MaxDrawSizeHint',
+    scope: 'world',
+    config: true,
+    type: Number,
+    range: {
+      min: 1,
+      max: CONFIG.YZE_COMBAT.ultimateMaxDrawSize,
+      step: 1,
+    },
+    default: CONFIG.YZE_COMBAT.ultimateMaxDrawSize,
+  });
+}
+
+/** @param {number} _v value */
+async function _onInitiativeSortOrderChange(_v) {
+  for (const combat of game.combats) {
+    const updates = [];
+    for (const c of combat.combatants) {
+      if (c.groupId) {
+        const cv = c.cardValue;
+        if (cv && !Number.isInteger(cv)) {
+          updates.push({
+            _id: c.id,
+            [`flags.${MODULE_ID}.cardValue`]: Math.round(cv) + getCombatantSortOrderModifier(),
+          });
+        }
+      }
+    }
+    if (updates.length) await combat.updateEmbeddedDocuments('Combatant', updates);
+  }
 }

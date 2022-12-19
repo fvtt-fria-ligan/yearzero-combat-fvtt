@@ -1,6 +1,6 @@
 import { YZEC } from '@module/config';
-import { MODULE_ID } from '@module/constants';
-import { getInitiativeDeck, getInitiativeDeckDiscardPile } from '@utils/utils';
+import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
+import * as Utils from '@utils/utils';
 
 /**
  * Modifies the current Combatant Config dialog by injecting custom HTML.
@@ -20,9 +20,9 @@ export async function onRenderCombatantConfig(app, html, _options) {
   html.find('input[name=initiative]').parents('div.form-group').remove();
 
   // Gets the cards.
-  const deck = getInitiativeDeck();
+  const deck = Utils.getInitiativeDeck();
   /** @type {Card[]} */
-  const cards = deck.cards.contents.sort((a, b) => a.value - b.value);
+  const cards = deck.cards.contents.sort((a, b) => (a.value - b.value) * Utils.getCardSortOrderModifier());
   const drawnCard = cards.find(c => c.value === combatant.cardValue);
   const [availableCards, discardedCards] = cards
     .filter(c => c.id !== drawnCard?.id)
@@ -39,6 +39,7 @@ export async function onRenderCombatantConfig(app, html, _options) {
     speed: combatant.getSpeedFromActor(),
     inGroup: !!combatant.groupId,
     leaderName: combatant.getLeader()?.name,
+    maxDrawSize: Math.min(YZEC.ultimateMaxDrawSize, game.settings.get(MODULE_ID, SETTINGS_KEYS.MAX_DRAW_SIZE)),
     config: YZEC,
   });
   html.find('footer').before(content);
@@ -52,7 +53,7 @@ export async function onRenderCombatantConfig(app, html, _options) {
     if (!card) return;
     if (card.id === drawnCard?.id) return;
 
-    await card.discard(getInitiativeDeckDiscardPile({ strict: true }), { chatNotification: false });
+    await card.discard(Utils.getInitiativeDeckDiscardPile({ strict: true }), { chatNotification: false });
 
     const updateData = {
       initiative: card.value,
@@ -69,7 +70,7 @@ export async function onRenderCombatantConfig(app, html, _options) {
       for (const f of combatant.getFollowers()) {
         updates.push({
           _id: f.id,
-          [`flags.${MODULE_ID}.cardValue`]: card.value + 0.01,
+          [`flags.${MODULE_ID}.cardValue`]: card.value + Utils.getCombatantSortOrderModifier(),
           ...updateData,
         });
       }

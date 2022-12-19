@@ -22,9 +22,9 @@ SETTINGS.InitiativeDeckHint: ID or name of the Initiative deck from which to dra
 SETTINGS.DiscardPile: Discard Pile ID
 SETTINGS.DiscardPileHint: ID or name of the Discard pile where to put the drawn initiative cards.
 SETTINGS.DuplicateCombatantsOnCombatStart: Duplicate Combatants
-SETTINGS.DuplicateCombatantsOnCombatStartHint: Whether to duplicate combatants who have extra speed.
+SETTINGS.DuplicateCombatantsOnCombatStartHint: Whether to automatically duplicate combatants who have extra speed on combat start.
 SETTINGS.InitiativeMessaging: Send Initiative Messages
-SETTINGS.InitiativeMessagingHint: Whether to display chat messages when an initiative card is drawn.
+SETTINGS.InitiativeMessagingHint: Whether to display a chat message when an initiative card is drawn.
 SETTINGS.InitiativeResetDeckOnCombatStart: Reset the Initiative Deck
 SETTINGS.InitiativeResetDeckOnCombatStartHint: >-
   Whether to recall and shuffle all the initiative cards when starting a new
@@ -33,6 +33,8 @@ SETTINGS.InitiativeSortOrder: Initiative Sort Order
 SETTINGS.InitiativeSortOrderHint: Default sort order for initiative.
 SETTINGS.InitiativeSortOrderAscending: Ascending (Lowest first)
 SETTINGS.InitiativeSortOrderDescending: Descending (Highest first)
+SETTINGS.MaxDrawSize: Maximum Draw Size
+SETTINGS.MaxDrawSizeHint: Maximum number of cards that can be drawn at once by a single combatant.
 YZEC.Combat.Initiative.ChooseCard: Choose a Card
 YZEC.Combat.Initiative.Draw: '{name}''s Initiative'
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
@@ -48,6 +50,7 @@ YZEC.CombatantConfig.KeepStateBest: Best
 YZEC.CombatantConfig.KeepStateWorst: Worst
 YZEC.CombatantConfig.Speed: Speed
 YZEC.CombatTracker.AddFollowers: Add Selected Tokens As Followers
+YZEC.CombatTracker.ChooseCombatant: Choose a Combatant
 YZEC.CombatTracker.DuplicateCombatant: Duplicate Combatant
 YZEC.CombatTracker.FastAction: Fast Action
 YZEC.CombatTracker.FollowLeader: Follow {name}
@@ -60,6 +63,7 @@ YZEC.CombatTracker.SelectColor: Select Color
 YZEC.CombatTracker.SetGroupColor: Set Group Color
 YZEC.CombatTracker.SlowAction: Slow Action
 YZEC.CombatTracker.SubmitColor: Submit
+YZEC.CombatTracker.SwapInitiative: Swap Initiative
 YZEC.CombatTracker.UnfollowLeader: Unfollow {name}
 YZEC.InitiativeDeckName: Initiative Deck
 YZEC.InitiativeDeckDiscardPileName: Initiative Cards Discard Pile

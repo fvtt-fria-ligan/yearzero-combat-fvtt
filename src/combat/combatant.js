@@ -1,6 +1,6 @@
 import { YZEC } from '@module/config';
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { getCanvas } from '@utils/utils';
+import { getCanvas, getCombatantSortOrderModifier } from '@utils/utils';
 
 export default class YearZeroCombatant extends Combatant {
 
@@ -189,7 +189,7 @@ export default class YearZeroCombatant extends Combatant {
     const updateData = {
       initiative: this.initiative,
       [`flags.${MODULE_ID}`]: {
-        cardValue: this.cardValue + 0.01,
+        cardValue: this.cardValue + getCombatantSortOrderModifier(),
         cardName: this.cardName,
         groupId: this.id,
         '-=isGroupLeader': null,
@@ -269,7 +269,7 @@ export default class YearZeroCombatant extends Combatant {
         updates.push({
           _id: f.id,
           initiative: tCombatant.initiative,
-          [`flags.${MODULE_ID}.cardValue`]: tCombatant.cardValue + 0.01,
+          [`flags.${MODULE_ID}.cardValue`]: tCombatant.cardValue + getCombatantSortOrderModifier(),
           [`flags.${MODULE_ID}.cardName`]: tCombatant.cardName,
         });
       }
@@ -279,7 +279,7 @@ export default class YearZeroCombatant extends Combatant {
         updates.push({
           _id: f.id,
           initiative: this.initiative,
-          [`flags.${MODULE_ID}.cardValue`]: this.cardValue + 0.01,
+          [`flags.${MODULE_ID}.cardValue`]: this.cardValue + getCombatantSortOrderModifier(),
           [`flags.${MODULE_ID}.cardName`]: this.cardName,
         });
       }

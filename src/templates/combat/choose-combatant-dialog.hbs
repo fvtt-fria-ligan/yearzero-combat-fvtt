@@ -1,0 +1,10 @@
+<form autocomplete="off">
+  <div class="form-group">
+    <label>{{localize "YZEC.CombatTracker.ChooseCombatant"}}</label>
+    <select id="initiative-swap">
+      {{#each combatants}}
+        <option value="{{id}}">{{flags.yze-combat.cardName}}. {{name}}</option>
+      {{/each}}
+    </select>
+  </div>
+</form>

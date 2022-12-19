@@ -1,7 +1,7 @@
 import { YZEC } from '@module/config';
 import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { combatTrackerOnToggleDefeatedStatus, duplicateCombatant } from '@combat/duplicate-combatant';
-import { resetInitiativeDeck } from '@utils/utils';
+import { getCombatantSortOrderModifier, resetInitiativeDeck } from '@utils/utils';
 import YearZeroCombatGroupColor from '../apps/combat-group-color';
 
 /** @typedef {import('@combat/combatant').default} YearZeroCombatant */
@@ -53,15 +53,15 @@ export default class YearZeroCombatTracker extends CombatTracker {
     /** @type {Collection.<YearZeroCombatant>} EmbeddedCollection */
     const combatants = combat.combatants;
 
+    /** @returns {YearZeroCombatant} */
+    const getCombatant = li => combatants.get(li.data('combatant-id'));
+
     // Changes existing buttons.
     const rerollIndex = contextMenu.findIndex(m => m.name === 'COMBAT.CombatantReroll');
     if (~rerollIndex) contextMenu[rerollIndex].icon = YZEC.Icons.cards;
 
     /** @type {ContextMenuEntry[]} */
     const newMenu = [];
-
-    /** @returns {YearZeroCombatant} */
-    const getCombatant = li => combatants.get(li.data('combatant-id'));
 
     // 👑 Set Group Leader
     newMenu.push({
@@ -139,7 +139,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
           for (const f of combatant.getFollowers()) {
             await f.update({
               initiative: combatant.initiative,
-              [`flags.${MODULE_ID}.cardValue`]: combatant.cardValue + 0.01,
+              [`flags.${MODULE_ID}.cardValue`]: combatant.cardValue + getCombatantSortOrderModifier(),
               [`flags.${MODULE_ID}.cardName`]: combatant.cardName,
             });
           }
@@ -189,14 +189,42 @@ export default class YearZeroCombatTracker extends CombatTracker {
     // The preceding controls will (in a vanilla scenario) be the "Attack" and "End Turn" buttons.
     let index = 3;
 
+    // Adds "Swap Initiative" context menu entry.
+    contextMenu.splice(index, -1, {
+      name: 'YZEC.CombatTracker.SwapInitiative',
+      icon: YZEC.Icons.swap,
+      condition: li => {
+        const combatant = getCombatant(li);
+        if (combatant.groupId) return false;
+        return game.user.isGM &&
+          combatants.filter(c => c.initiative && !c.groupId).length > 1;
+      },
+      callback: async li => {
+        const combatant = getCombatant(li);
+        const template = `modules/${MODULE_ID}/templates/combat/choose-combatant-dialog.hbs`;
+        const content = await renderTemplate(template, {
+          combatants: combatants.filter(c => c.initiative && !c.groupId && c.id !== combatant.id),
+        });
+        const targetId = await Dialog.prompt({
+          title: game.i18n.localize('YZEC.CombatTracker.SwapInitiative'),
+          content,
+          callback: html => html.find('#initiative-swap')[0]?.value,
+          options: { classes:['dialog', game.system.id, MODULE_ID] },
+        });
+        const target = combat.combatants.get(targetId);
+        if (target) combatant.swapInitiativeCard(target);
+      },
+    });
+    index++;
+
     // Adds "Duplicate Combatant" context menu entry.
     contextMenu.splice(index, -1, {
+      name: 'YZEC.CombatTracker.DuplicateCombatant',
       icon: YZEC.Icons.duplicate,
-      name: game.i18n.localize('YZEC.CombatTracker.DuplicateCombatant'),
       condition: game.user.isGM,
       callback: li => {
-        const combatant = getCombatant(li);
-        return duplicateCombatant(combatant);
+        const c = getCombatant(li);
+        return duplicateCombatant(c);
       },
     });
     index++;
@@ -226,7 +254,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   /** @override */
   async _onCombatantControl(event) {
-    super._onCombatantControl(event);
+    await super._onCombatantControl(event);
     const btn = event.currentTarget;
     const li = btn.closest('.combatant');
     const combat = this.viewed;

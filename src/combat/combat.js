@@ -3,10 +3,10 @@
 /** @typedef {import('./combatant').default} YearZeroCombatant */
 
 import { YZEC } from '@module/config';
-import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { getInitiativeDeck, getInitiativeDeckDiscardPile, resetInitiativeDeck } from '@utils/utils';
+import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { duplicateCombatant, getCombatantsSharingToken } from './duplicate-combatant';
 import { removeSlowAndFastActions } from './slow-and-fast-actions';
+import * as Utils from '@utils/utils';
 
 export default class YearZeroCombat extends Combat {
 
@@ -22,7 +22,7 @@ export default class YearZeroCombat extends Combat {
     const { messageOptions = {} } = options;
     const messages = [];
     const skipMessage = false;
-    const initiativeDeck = getInitiativeDeck(true);
+    const initiativeDeck = Utils.getInitiativeDeck(true);
     // const chatRollMode = game.settings.get('core', 'rollMode');
 
     // Iterates over each combatant.
@@ -30,6 +30,7 @@ export default class YearZeroCombat extends Combat {
       /** @type {YearZeroCombatant} */
       const combatant = this.combatants.get(id, { strict: true });
       const inGroup = !!combatant.groupId;
+      const isRedraw = !!combatant.initiative;
 
       if (combatant.isDefeated || inGroup) continue;
 
@@ -37,7 +38,7 @@ export default class YearZeroCombat extends Combat {
       const cardsToDraw = combatant.getNumberOfCardsToDraw();
       if (cardsToDraw > initiativeDeck.availableCards.length) {
         ui.notifications.info('YZEC.Combat.Initiative.NotEnoughCards', { localize: true });
-        await resetInitiativeDeck();
+        await Utils.resetInitiativeDeck();
       }
 
       // Draws the cards.
@@ -48,22 +49,16 @@ export default class YearZeroCombat extends Combat {
       // FIXME DEBUG
       if (cards.length !== cardsToDraw) console.warn('Something went wrong: Incorrect number of cards drawn');
 
+      if (isRedraw) {
+        const previousCard = this.findCard(combatant.cardValue);
+        if (previousCard) cards.push(previousCard);
+      }
+
       if (cards.length > 1) {
-        cards.sort((a, b) => {
-          const n = game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_SORT_ORDER) || 1;
-          return (a.value - b.value) * n;
-        });
+        cards.sort((a, b) => (a.value - b.value) * Utils.getCardSortOrderModifier(combatant.keepState));
 
         if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
-          switch (combatant.keepState) {
-            default:
-            case CARDS_DRAW_KEEP_STATES.BEST:
-              card = cards[0];
-              break;
-            case CARDS_DRAW_KEEP_STATES.WORST:
-              card = cards.at(-1);
-              break;
-          }
+          card = cards[0];
         }
         else {
           card = await this.chooseCard(cards, combatant);
@@ -83,7 +78,7 @@ export default class YearZeroCombat extends Combat {
 
       // Updates other combatants in the group.
       if (combatant.isGroupLeader) {
-        updateData[`flags.${MODULE_ID}.cardValue`] += 0.01;
+        updateData[`flags.${MODULE_ID}.cardValue`] += Utils.getCombatantSortOrderModifier();
         for (const follower of combatant.getFollowers()) {
           await follower.updateSource(updateData);
         }
@@ -129,7 +124,7 @@ export default class YearZeroCombat extends Combat {
 
     // Creates multiple chat messages.
     if (!skipMessage) {
-      this._playInitiativeSound(); // No need to await
+      this.playInitiativeSound(); // No need to await
     }
     if (!skipMessage && game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_MESSAGING)) {
       await CONFIG.ChatMessage.documentClass.createDocuments(messages);
@@ -146,8 +141,8 @@ export default class YearZeroCombat extends Combat {
    * @returns {Promise.<Card[]>}
    */
   async drawCards(qty = 1) {
-    const initiativeDeck = getInitiativeDeck(true);
-    const discardPile = getInitiativeDeckDiscardPile(true);
+    const initiativeDeck = Utils.getInitiativeDeck(true);
+    const discardPile = Utils.getInitiativeDeckDiscardPile(true);
     return initiativeDeck.drawInitiative(discardPile, qty);
   }
 
@@ -201,12 +196,12 @@ export default class YearZeroCombat extends Combat {
    * @returns {Card|undefined}
    */
   findCard(cardValue) {
-    const initiativeDeck = getInitiativeDeck(true);
+    const initiativeDeck = Utils.getInitiativeDeck(true);
     return initiativeDeck.cards.find(c => c.value === cardValue);
   }
 
   /* ------------------------------------------ */
-  /* Overridden Base Methods                    */
+  /* Overridden Core Methods                    */
   /* ------------------------------------------ */
 
   /**
@@ -219,7 +214,7 @@ export default class YearZeroCombat extends Combat {
     if (!a || !b) return 0;
     // Sorts by card value:
     if (a.flags[MODULE_ID] && b.flags[MODULE_ID]) {
-      const n = game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_SORT_ORDER) || 1;
+      const n = Utils.getCardSortOrderModifier();
       if (a.cardValue < b.cardValue) return -n;
       if (a.cardValue > b.cardValue) return +n;
       return 0;
@@ -263,7 +258,7 @@ export default class YearZeroCombat extends Combat {
 
     // Draws initiative for each combatant.
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
-      await resetInitiativeDeck();
+      await Utils.resetInitiativeDeck();
     }
     const ids = this.combatants
       .filter(c => !c.isDefeated && c.initiative == null)
@@ -310,7 +305,7 @@ export default class YearZeroCombat extends Combat {
    * Plays a *drawing card* sound.
    * @private
    */
-  async _playInitiativeSound() {
+  async playInitiativeSound() {
     const data = {
       src: `modules/${MODULE_ID}/assets/sounds/card-flip.wav`,
       volume: 0.75,
