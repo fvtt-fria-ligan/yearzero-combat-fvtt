@@ -11,7 +11,6 @@ import * as Utils from '@utils/utils';
 export default class YearZeroCombat extends Combat {
 
   /**
-   * @see {@link https://gitlab.com/peginc/swade/-/blob/develop/src/module/documents/SwadeCombat.ts}
    * @param {string|string[]}    ids      The IDs of all the combatants in the combat
    * @param {InitiativeOptions} [options] Additional initiative options
    * @override
@@ -21,6 +20,7 @@ export default class YearZeroCombat extends Combat {
     if (!Array.isArray(ids)) ids = [ids];
     const { messageOptions = {} } = options;
     const messages = [];
+    const updates = [];
     const skipMessage = false;
     const initiativeDeck = Utils.getInitiativeDeck(true);
     // const chatRollMode = game.settings.get('core', 'rollMode');
@@ -74,13 +74,13 @@ export default class YearZeroCombat extends Combat {
         [`flags.${MODULE_ID}.cardValue`]: card.value,
         [`flags.${MODULE_ID}.cardName`]: card.description || card.name,
       };
-      await combatant.updateSource(updateData);
+      updates.push({ _id: combatant.id, ...updateData });
 
       // Updates other combatants in the group.
       if (combatant.isGroupLeader) {
         updateData[`flags.${MODULE_ID}.cardValue`] += Utils.getCombatantSortOrderModifier();
         for (const follower of combatant.getFollowers()) {
-          await follower.updateSource(updateData);
+          updates.push({ _id: follower.id, ...updateData });
         }
       }
 
@@ -116,11 +116,14 @@ export default class YearZeroCombat extends Combat {
       messages.push(messageData);
     }
 
+    // Updates the combatants.
+    await this.updateEmbeddedDocuments('Combatant', updates);
+
     // Updates the combat instance with the new combatants.
-    await this.update(
-      { combatants: this.combatants.toObject() },
-      { diff: false },
-    );
+    const currentId = this.combatant?.id;
+    if (options.updateTurn) {
+      await this.update({ turn: this.turns.findIndex(t => t.id === currentId) });
+    }
 
     // Creates multiple chat messages.
     if (!skipMessage) {
@@ -201,7 +204,7 @@ export default class YearZeroCombat extends Combat {
   }
 
   /* ------------------------------------------ */
-  /* Overridden Core Methods                    */
+  /*  Overridden Core Methods                   */
   /* ------------------------------------------ */
 
   /**
@@ -283,17 +286,21 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async nextRound() {
+    const updates = [];
     for (const combatant of this.combatants) {
-      await combatant.updateSource({
+      try {
+        await removeSlowAndFastActions(combatant.token);
+      }
+      catch (err) {
+        ui.notifications.error(err);
+      }
+      updates.push({
+        _id: combatant.id,
         [`flags.${MODULE_ID}.-=fastAction`]: null,
         [`flags.${MODULE_ID}.-=slowAction`]: null,
       });
-      await removeSlowAndFastActions(combatant.token);
     }
-    await this.update(
-      { combatants: this.combatants.toObject() },
-      { diff: false },
-    );
+    await this.updateEmbeddedDocuments('Combatant', updates);
     return super.nextRound();
   }
 
