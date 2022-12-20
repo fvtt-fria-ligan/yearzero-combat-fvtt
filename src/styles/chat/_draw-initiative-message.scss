@@ -1,6 +1,8 @@
 /* ------------------------------------------ */
-/*  Draw Initiative Chat Message              */
+/*  DRAW INITIATIVE CHAT MESSAGE              */
 /*   Author: FloRad                           */
+/*   Origin: SWADE system                     */
+/*    https://gitlab.com/peginc/swade         */
 /* ------------------------------------------ */
 
 .chat-message .initiative-draw {
@@ -93,31 +95,3 @@
     }
   }
 }
-
-// .chat-message:last-child .initiative-draw .card-filter-container,
-// .chat-message:last-child .initiative-draw .card-filter-container:hover,
-// .chat-message:nth-last-of-type(2):not(:nth-of-type(2)) .initiative-draw .card-filter-container,
-// .chat-message:nth-last-of-type(2):not(:nth-of-type(2)) .initiative-draw .card-filter-container:hover {
-//   transform-origin: bottom left;
-// }
-
-// .chat-message:first-child .initiative-draw .card-filter-container,
-// .chat-message:first-child .initiative-draw .card-filter-container:hover,
-// .chat-message:nth-of-type(2) .initiative-draw .card-filter-container,
-// .chat-message:nth-of-type(2) .initiative-draw .card-filter-container:hover {
-//   transform-origin: top left;
-// }
-
-// .chat-message:nth-child(4n+1) .initiative-draw .card-filter-container {
-//   transform: rotate(2deg);
-//   &:hover {
-//     transform: rotate(0deg) scale(4.75);
-//   }
-// }
-
-// .chat-message:nth-child(4n+2) .initiative-draw .card-filter-container {
-//   transform: rotate(-4deg);
-//   &:hover {
-//     transform: rotate(0deg) scale(4.75);
-//   }
-// }

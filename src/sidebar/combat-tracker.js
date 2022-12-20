@@ -1,3 +1,12 @@
+/* ------------------------------------------ */
+/*  COMBAT TRACKER                            */
+/* ------------------------------------------ */
+/*  Notes:                                    */
+/*   Some code parts are greatly inspired     */
+/*   by FloRad's work on the SWADE system     */
+/*   https://gitlab.com/peginc/swade          */
+/* ------------------------------------------ */
+
 import { YZEC } from '@module/config';
 import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { combatTrackerOnToggleDefeatedStatus, duplicateCombatant } from '@combat/duplicate-combatant';
@@ -36,10 +45,10 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   /* ------------------------------------------ */
 
-
-  /* ------------------------------------------ */
-
   /**
+   * Appends extra controls to the combatant's context menu.
+   * Inspired by FloRad's method in the {@link https://gitlab.com/peginc/swade FloRad (SWADE system)}
+   * (for group leaders & followers)
    * @param {JQuery.<HTMLElement>} _html
    * @param {ContextMenuEntry[]} contextMenu
    */
@@ -306,6 +315,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   /**
    * @param {JQuery.<HTMLElement>} html
+   * @author FloRad (SWADE system)
    * @override
    */
   activateListeners(html) {
@@ -351,6 +361,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   /**
    * @param {DragEvent} event
+   * @author FloRad (SWADE system)
    * @override
    */
   async _onDrop(event) {
@@ -384,7 +395,6 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   _onResetInitiativeDeck(event) {
     event.preventDefault();
-    event.stopImmediatePropagation();
     return resetInitiativeDeck(true);
   }
 

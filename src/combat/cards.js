@@ -1,3 +1,9 @@
+/* ------------------------------------------ */
+/*  CARDS                                     */
+/*   Original author: FloRad (SWADE system)   */
+/*   https://gitlab.com/peginc/swade          */
+/* ------------------------------------------ */
+
 /**
  * Year Zero Cards
  * @class
