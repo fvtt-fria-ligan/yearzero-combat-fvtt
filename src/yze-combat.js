@@ -9,7 +9,7 @@
  * Foundry License: Foundry Virtual Tabletop End User License Agreement
  *   https://foundryvtt.com/article/license/
  * 
- * Greatly inspired from FloRad's SWADE's initiative cards combat system
+ * Greatly inspired by FloRad's SWADE's initiative cards combat system
  *   https://gitlab.com/peginc/swade
  *
  * ============================================================================
