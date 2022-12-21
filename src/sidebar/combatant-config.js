@@ -1,3 +1,9 @@
+/* ------------------------------------------ */
+/*  COMBATANT CONFIG                          */
+/*   Original author: FloRad (SWADE system)   */
+/*   https://gitlab.com/peginc/swade          */
+/* ------------------------------------------ */
+
 import { YZEC } from '@module/config';
 import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import * as Utils from '@utils/utils';

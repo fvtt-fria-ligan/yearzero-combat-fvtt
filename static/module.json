@@ -12,16 +12,21 @@
     {
       "name": "Stefouch",
       "discord": "Stefouch#5202",
-      "url": "https://github.com/Stefouch"
+      "url": "https://stefouch.be"
     },
     {
-      "name": "aMediocreDad"
+      "name": "aMediocreDad",
+      "url": "https://github.com/aMediocreDad"
     },
     {
-      "name": "Dr Ogres"
+      "name": "DrOgres",
+      "url": "https://gitlab.com/florad92"
+    },
+    {
+      "name": "FloRad",
+      "url": "https://gitlab.com/florad92"
     }
   ],
-  "contributors": ["FloRad"],
   "localization": "",
   "bugs": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues",
   "media": [],

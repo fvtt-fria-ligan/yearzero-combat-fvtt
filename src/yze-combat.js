@@ -8,13 +8,15 @@
  *
  * Foundry License: Foundry Virtual Tabletop End User License Agreement
  *   https://foundryvtt.com/article/license/
+ * 
+ * Greatly inspired by FloRad's SWADE's initiative cards combat system
+ *   https://gitlab.com/peginc/swade
  *
  * ============================================================================
  */
 
 import { YZEC } from '@module/config';
 import { HOOKS_KEYS, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-// import { registerSheets } from '@system/sheets';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
 import { setupModule } from '@module/setup';
@@ -52,7 +54,6 @@ Hooks.once('init', () => {
   Token.prototype._onHoverIn = tokenOnHoverIn;
   Token.prototype._onHoverOut = tokenOnHoverOut;
 
-  // registerSheets();
   initializeHandlebars();
   registerSystemSettings();
 
