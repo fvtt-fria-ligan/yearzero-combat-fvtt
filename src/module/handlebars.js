@@ -49,6 +49,8 @@ function registerHandlebarsHelpers() {
   // Handlebars.registerHelper('times', function (n, content) {
   //   let str = '';
   //   for (let i = 0; i < n; i++) {
+  //     content.data.first = i === 0;
+  //     content.data.last = i === n - 1;
   //     content.data.max = n;
   //     content.data.index = i + 1;
   //     str += content.fn(i);
@@ -82,28 +84,6 @@ function registerHandlebarsHelpers() {
 
   // Handlebars.registerHelper('ratio', function (a, b) {
   //   return (a / b) * 100;
-  // });
-
-  // Handlebars.registerHelper('boxes', function (field, options) {
-  //   const value = Number(options.hash.value);
-  //   const min = Number(options.hash.min);
-  //   const max = Number(options.hash.max);
-  //   let loss = Number(options.hash.loss);
-  //   let str = `<a class="capacity-boxes" data-field="${field}" data-min="${min}" data-max="${max}">`;
-  //   for (let i = 0; i < max; i++) {
-  //     if (i === 10) str += '<br/>';
-  //     if (value > i) str += `${YZEC.Icons.boxes.full}`;
-  //     else str += `${YZEC.Icons.boxes.empty}`;
-  //   }
-  //   if (loss < 0) {
-  //     str += '<span class="loss">';
-  //     for (; loss < 0; loss++) {
-  //       str += `${YZEC.Icons.boxes.lost}`;
-  //     }
-  //     str += '</span>';
-  //   }
-  //   str += '</a>';
-  //   return new Handlebars.SafeString(str);
   // });
 }
 
