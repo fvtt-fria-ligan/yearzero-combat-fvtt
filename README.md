@@ -16,6 +16,10 @@
 - Module settings *(everything is customizable by the GM)*
 - Developer options for customization
 
+# For Gamemasters
+
+Go to the module's settings, and add the ID or name of the initiative deck you want to use.
+
 # For Developers
 
 ## Hooks
@@ -43,19 +47,38 @@ Hooks.once('yzeCombatInit', async yzec => {
 
 ## Customizing the Combat Tracker
 
-TODO
+The Combat Tracker in the sidebar can be configured with your own combatant controls' buttons and context menu entries with a JSON configuration file. It's schema can be found in `schemas/combat-tracker.schema.json`.
+
+Use the init Hook to set the path to your own config file:
+
+```js
+Hooks.once('yzeCombatInit', async yzec => {
+  yzec.setSourceForCombatTrackerPreset('./path-to-my/combat-tracker-config.json');
+});
+```
 
 ### Config JSON File
 
-TODO
+<!-- TODO -->
 
-### Custom Combatant's Controls Buttons and Context Menu Entries
+```jsonc
+// Example
+{
+  "$schema": "../../schemas/combat-tracker.schema.json",
+  "buttons": [],
+  "controls": []
+}
+```
 
-TODO
+<!-- ### Custom Combatant's Controls Buttons and Context Menu Entries -->
+
+<!-- TODO -->
 
 ### Socket Events
 
-TODO
+Clicking a custom button or menu entry will emit an event that you can capture.
+
+The name of the triggered event is equal to the `eventName` property prepended with "`yze-combat.`" to prevent conflicts with other events. *E.g.* `'Hooks.on('yze-combat.foo', data => {...})`
 
 ## Classes
 
