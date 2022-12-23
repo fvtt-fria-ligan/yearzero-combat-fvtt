@@ -1,6 +1,6 @@
 
 <center>
-<h1>Year Zero Engine Combat</h1>
+<h1>Year Zero Engine: Combat</h1>
 <p>A module that adds YZE combat mechanics to a game system!</p>
 </center>
 

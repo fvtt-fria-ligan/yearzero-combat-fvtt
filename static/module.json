@@ -1,7 +1,7 @@
 {
   "id": "yze-combat",
-  "title": "Year Zero Engine Combat",
-  "description": "WIP / Initiative deck.",
+  "title": "Year Zero Engine: ⚔️ Combat",
+  "description": "Adds YZE combat mechanics to a game system: Card initiative, slow & fast actions, groups, and more!",
   "version": "1.0.0",
   "compatibility": {
     "minimum": 10,
