@@ -1,13 +1,75 @@
-SETTINGS.AutoDraw: Activer la pioche d'initiative automatique
+COMBAT.CombatantReroll: Piocher une autre carte
+COMBAT.InitiativeRoll: Piocher l'initiative
+COMBAT.RollAll: Piocher pour tous
+COMBAT.RollNPC: Piocher pour les PNJs
+COMBAT.RollsInitiative: "{name} pioche une carte d'initiative !"
+SETTINGS.ActorSpeedAttribute: Attribut Vitesse du Personnage
+SETTINGS.ActorSpeedAttributeHint: >-
+  La chemin dans les données de l'acteur vers l'attribute qui définit
+  combien de cartes d'initiative sont gardées (vitesse) par le combattant
+  (ex: system.speed.value).
+SETTINGS.ActorDrawSizeAttribute: Actor's Draw Size Attribute
+SETTINGS.ActorDrawSizeAttributeHint: >-
+  Le chemin dans les données de l'acteur vers l'attribut qui définit
+  combien de cartes d'initiative sont piochées par le combattant
+  (ex: system.reflexes.value).
+SETTINGS.AutoDraw: Pioche d'initiative automatique
 SETTINGS.AutoDrawHint: Pioche automatiquement les cartes d'initiative.
-SETTINGS.SlowAndFastActions: Activer les Actions Rapides et Lentes
+SETTINGS.SlowAndFastActions: Activer les Actions Rapides & Lentes
 SETTINGS.SlowAndFastActionsHint: >-
   Affiche des boutons supplémentaires dans l'onglet combat
   pour les actions rapides et lentes.
+SETTINGS.InitiativeDeck: ID du Deck d'Initiative
+SETTINGS.InitiativeDeckHint: ID ou nom du deck d'initiative depuis lequel les cartes d'initiative sont piochées.
+SETTINGS.DiscardPile: ID de la Pile de Défausse
+SETTINGS.DiscardPileHint: ID ou nom de la pile de défausse où les cartes d'initiative piochées sont défaussées.
+SETTINGS.DuplicateCombatantsOnCombatStart: Copier les Combattants
+SETTINGS.DuplicateCombatantsOnCombatStartHint: Copie automatique des combattants qui ont plus de vitesse au démarrage du combat.
+SETTINGS.InitiativeMessaging: Poster les Messages d'Initiative
+SETTINGS.InitiativeMessagingHint: Affiche un message dans le chat lorsqu'une carte d'initiative est piochée.
+SETTINGS.InitiativeResetDeckOnCombatStart: Réinitialiser le Deck d'Initiative
+SETTINGS.InitiativeResetDeckOnCombatStartHint: >-
+  Reprendre et mélanger toutes les cartes d'initiative
+  lors d'un démarrage d'un nouveau combat.
+SETTINGS.InitiativeSortOrder: Ordre de Tri d'Initiative
+SETTINGS.InitiativeSortOrderHint: Définit l'ordre de tri par défaut de l'initiative.
+SETTINGS.InitiativeSortOrderAscending: Ascendant (plus petit en premier)
+SETTINGS.InitiativeSortOrderDescending: Descendant (plus grand en premier)
+SETTINGS.MaxDrawSize: Taille de Pioche Maximum
+SETTINGS.MaxDrawSizeHint: Nombre maximum de cartes d'initiative pouvant être piochées en une fois par un combattant.
+YZEC.Combat.Initiative.ChooseCard: Choisir une Carte
 YZEC.Combat.Initiative.Draw: Carte d'initiative de {name}
+YZEC.Combat.Initiative.DrawQty: Combien de Cartes à Piocher
 YZEC.Combat.Initiative.NotEnoughCards: Pas assez de cartes dans le paquet d'initiative
+YZEC.Combat.Initiative.ResetDeck: Toutes les cartes d'initiative défaussées ont été remélangées dans le deck d'initiative.
+YZEC.CombatantConfig.DrawSize: Taille de Pioche
+YZEC.CombatantConfig.InitiativeCard: Carte d'Initiative
+YZEC.CombatantConfig.InitiativeCardAvailable: Disponible
+YZEC.CombatantConfig.InitiativeCardDiscarded: Défaussée
+YZEC.CombatantConfig.InitiativeCardDrawn: Piochée
+YZEC.CombatantConfig.KeepState: Garder
+YZEC.CombatantConfig.KeepStateBest: Meilleure
+YZEC.CombatantConfig.KeepStateWorst: Pire
+YZEC.CombatantConfig.Speed: Vitesse
+YZEC.CombatTracker.AddFollowers: Ajouter les Jetons Sélectionnés dans le Groupe
+YZEC.CombatTracker.ChooseCombatant: Choisir un Combattant
+YZEC.CombatTracker.DuplicateCombatant: Copier le Combattant
+YZEC.CombatTracker.FastAction: Action Rapide
+YZEC.CombatTracker.FollowLeader: Suivre {name}
+YZEC.CombatTracker.GroupLeader: Chef de Groupe
+YZEC.CombatTracker.InitiativeDeckReset: Réinitialiser le Deck d'Initiative
+YZEC.CombatTracker.MakeGroupLeader: Nommer Chef de Groupe
+YZEC.CombatTracker.RemoveGroupLeader: Défaire Chef de Groupe
+YZEC.CombatTracker.ResetColor: Réinitialiser
+YZEC.CombatTracker.SelectColor: Sélectionner une couleur
+YZEC.CombatTracker.SetGroupColor: Sélectionner la Couleur du Groupe
+YZEC.CombatTracker.SlowAction: Action Lente
+YZEC.CombatTracker.SubmitColor: Envoyer
+YZEC.CombatTracker.SwapInitiative: Echanger l'Initiative
+YZEC.CombatTracker.UnfollowLeader: Quitter {name}
 YZEC.InitiativeDeckName: Deck d'initiative
 YZEC.InitiativeDeckDiscardPileName: Défausse des cartes d'initiative
+YZEC.OK: OK
 YZEC.NoInitiativeDeckFound: Aucun deck d'initiative trouvé, création d'un nouveau ...
 YZEC.NoInitiativeDeckDiscardPileFound: Aucune pile de défausse trouvée, création d'une nouvelle ...
 YZEC.WARNING.InvalidDeckType: Vous ne pouvez piocher des cartes d'initiative que depuis un deck
