@@ -39,37 +39,6 @@ export async function combatTrackerOnToggleDefeatedStatus(combatant) {
   else await token.toggleActiveEffect(effect, { overlay: true, active: isDefeated });
 }
 
-/**
- * Actions that should be taken for this Placeable Object when a mouseover event occurs.
- * @param {PIXI.InteractionEvent}        _event    The triggering canvas interaction event
- * @param {{ hoverOutOthers: boolean }} [_options] Options which customize event handling
- */
-export function tokenOnHoverIn(_event, _options = {}) {
-  const combatant = this.combatant;
-  if (combatant) {
-    const tracker = document.getElementById('combat-tracker');
-    for (const c of getCombatantsSharingToken(combatant)) {
-      const li = tracker.querySelector(`.combatant[data-combatant-id="${c.id}"]`);
-      if (li) li.classList.add('hover');
-    }
-  }
-}
-
-/**
- * Actions that should be taken for this Placeable Object when a mouseout event occurs.
- * @param {PIXI.InteractionEvent} _event The triggering canvas interaction event
- */
-export function tokenOnHoverOut(_event) {
-  const combatant = this.combatant;
-  if (combatant) {
-    const tracker = document.getElementById('combat-tracker');
-    for (const c of getCombatantsSharingToken(combatant)) {
-      const li = tracker.querySelector(`.combatant[data-combatant-id="${c.id}"]`);
-      if (li) li.classList.remove('hover');
-    }
-  }
-}
-
 /* ------------------------------------------ */
 
 /**
