@@ -133,9 +133,10 @@ export default class YearZeroCombatant extends Combatant {
    * @returns {number}
    */
   getDrawSizeFromActor() {
+    const maxDrawSize = game.settings.get(MODULE_ID, SETTINGS_KEYS.MAX_DRAW_SIZE);
     const key = game.settings.get(MODULE_ID, SETTINGS_KEYS.ACTOR_DRAWSIZE_ATTRIBUTE);
     const drawSize = foundry.utils.getProperty(this.actor, key) || 1;
-    return Number(drawSize);
+    return Math.min(Number(drawSize), maxDrawSize);
   }
 
   /* ------------------------------------------ */
