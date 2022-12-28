@@ -18,6 +18,7 @@ export default class YearZeroCombatHook {
    * @returns {Promise.<void>}
    */
   static async register(settings, once = true) {
+    if (!game.user.isGM) return;
     for (const [k, v] of Object.entries(settings)) {
       try {
         if (once && game.settings.get(MODULE_ID, k)) continue;

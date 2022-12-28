@@ -42,5 +42,6 @@ export const SETTINGS_KEYS = {
 
 /** @enum {string} */
 export const HOOKS_KEYS = {
-  /** @type {'yzeCombatInit'} */ COMBAT_INIT: 'yzeCombatInit',
+  /** @type {'yzeCombatInit'} */ YZEC_INIT: 'yzeCombatInit',
+  /** @type {'yzeCombatReady'} */ YZEC_READY: 'yzeCombatReady',
 };
