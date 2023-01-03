@@ -58,7 +58,7 @@ Hooks.once('init', () => {
   registerSystemSettings();
 
   // Calls the configuration hook.
-  Hooks.call(HOOKS_KEYS.YZEC_INIT, YearZeroCombatHook);
+  Hooks.callAll(HOOKS_KEYS.YZEC_INIT, YearZeroCombatHook);
 });
 
 /* ------------------------------------------ */
@@ -76,7 +76,7 @@ Hooks.once('ready', async () => {
   console.log('YZEC | Ready!');
 
   // Calls the configuration hook.
-  Hooks.call(HOOKS_KEYS.YZEC_READY, YearZeroCombatHook);
+  Hooks.callAll(HOOKS_KEYS.YZEC_READY, YearZeroCombatHook);
 
   // TODO Remove this example before merge
 
