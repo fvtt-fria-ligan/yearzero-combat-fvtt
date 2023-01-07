@@ -18,7 +18,7 @@ const distDirectory = './dist';
 const templateExt = 'hbs';
 const staticFiles = ['cards', 'LICENSE', 'module.json', 'sidebar', 'assets'];
 const getDownloadURL = version =>
-  `https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/download/v${version}/yze-combat_v${version}.zip`;
+  `https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/releases/download/${version}/module.zip`;
 const packageJson = JSON.parse(fs.readFileSync('package.json'));
 
 const stdio = 'inherit';
@@ -150,7 +150,7 @@ function getTargetVersion(currentVersion, release) {
  * @async
  */
 async function changelog() {
-  await execa('npx', ['standard-version', '--skip.bump', '--skip.tag', '--skip.commit'], { stdio });
+  await execa('npx', ['standard-version', '--skip.bump', '--skip.tag', '--skip.commit', '--tag-prefix', ''], { stdio });
 }
 
 /**
@@ -159,12 +159,12 @@ async function changelog() {
  */
 async function commitTagPush() {
   const { version } = packageJson;
-  const commitMsg = `chore(release): Release ${version}`;
+  const commitMsg = `chore(release): ${version}`;
   await execa('git', ['add', '-A'], { stdio });
   await execa('git', ['commit', '--message', commitMsg], { stdio });
-  await execa('git', ['tag', `v${version}`], { stdio });
-  await execa('git', ['push', 'upstream'], { stdio });
-  await execa('git', ['push', 'upstream', '--tag'], { stdio });
+  await execa('git', ['tag', `${version}`], { stdio });
+  await execa('git', ['push', 'origin'], { stdio });
+  await execa('git', ['push', 'origin', '--tag'], { stdio });
 }
 
 /* ------------------------------------------ */
