@@ -9,7 +9,8 @@
 
 import { YZEC } from '@module/config';
 import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { combatTrackerOnToggleDefeatedStatus, duplicateCombatant } from '@combat/duplicate-combatant';
+import { combatTrackerOnToggleDefeatedStatus,
+  duplicateCombatant, getCombatantsSharingToken } from '@combat/duplicate-combatant';
 import { getCombatantSortOrderModifier, resetInitiativeDeck } from '@utils/utils';
 import YearZeroCombatGroupColor from '../apps/combat-group-color';
 
@@ -393,9 +394,25 @@ export default class YearZeroCombatTracker extends CombatTracker {
 
   /* ------------------------------------------ */
 
-  _onResetInitiativeDeck(event) {
+  async _onResetInitiativeDeck(event) {
     event.preventDefault();
     return resetInitiativeDeck(true);
+  }
+
+  /* ------------------------------------------ */
+
+  /** @override */
+  hoverCombatant(combatant, hover) {
+    const trackers = [this.element[0]];
+    if (this._popout) trackers.push(this._popout.element[0]);
+    for (const tracker of trackers) {
+      for (const c of getCombatantsSharingToken(combatant)) {
+        const li = tracker.querySelector(`.combatant[data-combatant-id="${c.id}"]`);
+        if (!li) continue;
+        if (hover) li.classList.add('hover');
+        else li.classList.remove('hover');
+      }
+    }
   }
 
   /* ------------------------------------------ */

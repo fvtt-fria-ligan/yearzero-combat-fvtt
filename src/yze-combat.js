@@ -27,7 +27,6 @@ import YearZeroCombatant from '@combat/combatant';
 import YearZeroCombatTracker from './sidebar/combat-tracker';
 import { onRenderCombatantConfig } from './sidebar/combatant-config';
 import { addSlowAndFastStatusEffects } from '@combat/slow-and-fast-actions';
-import { tokenOnHoverIn, tokenOnHoverOut } from '@combat/duplicate-combatant';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */
@@ -49,10 +48,6 @@ Hooks.once('init', () => {
     },
   };
   CONFIG.ui.combat = YearZeroCombatTracker;
-
-  // Fixes base methods (mainly for duplicate combatants support).
-  Token.prototype._onHoverIn = tokenOnHoverIn;
-  Token.prototype._onHoverOut = tokenOnHoverOut;
 
   initializeHandlebars();
   registerSystemSettings();
