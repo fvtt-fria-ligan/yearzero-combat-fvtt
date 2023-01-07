@@ -58,7 +58,7 @@ Hooks.once('init', () => {
   registerSystemSettings();
 
   // Calls the configuration hook.
-  Hooks.call(HOOKS_KEYS.COMBAT_INIT, YearZeroCombatHook);
+  Hooks.callAll(HOOKS_KEYS.YZEC_INIT, YearZeroCombatHook);
 });
 
 /* ------------------------------------------ */
@@ -73,22 +73,23 @@ Hooks.once('ready', async () => {
     addSlowAndFastStatusEffects();
   }
 
-  // TODO Hooks.call('yzeCombatReady');
+  console.log('YZEC | Ready!');
 
-  console.log('YZEC | READY!');
+  // Calls the configuration hook.
+  Hooks.callAll(HOOKS_KEYS.YZEC_READY, YearZeroCombatHook);
 
   // TODO Remove this example before merge
 
-  // This listens for a message from the client called when the user clicks the slow button in the combat tracker.
-  Hooks.on(`${MODULE_ID}.slow-action-button-clicked`, data => {
-    console.log('YZEC | Event', data);
-    // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
-    data.emit({ forGmOnly: 'secret lover' });
-  });
-  // This listens for a message from any client that sends the socket event.
-  game.socket.on(`module.${MODULE_ID}`, ({ data, options: { forGmOnly } }) => {
-    console.log('YZEC | Socket', game.user.isGM ? `hello, ${forGmOnly}` : 'hello regular player', data);
-  });
+  // // This listens for a message from the client called when the user clicks the slow button in the combat tracker.
+  // Hooks.on(`${MODULE_ID}.slow-action-button-clicked`, data => {
+  //   console.log('YZEC | Event', data);
+  //   // The hook supplies a socket emit function that can be used to send a message to the server/other clients.
+  //   data.emit({ forGmOnly: 'secret lover' });
+  // });
+  // // This listens for a message from any client that sends the socket event.
+  // game.socket.on(`module.${MODULE_ID}`, ({ data, options: { forGmOnly } }) => {
+  //   console.log('YZEC | Socket', game.user.isGM ? `hello, ${forGmOnly}` : 'hello regular player', data);
+  // });
 });
 
 /* ------------------------------------------ */
