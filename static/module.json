@@ -4,9 +4,9 @@
   "description": "Adds YZE combat mechanics to a game system: Card initiative, slow & fast actions, groups, and more!",
   "version": "1.0.1",
   "compatibility": {
-    "minimum": 10,
+    "minimum": "10",
     "verified": "10.291",
-    "maximum": 11
+    "maximum": "11"
   },
   "authors": [
     {
