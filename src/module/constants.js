@@ -37,7 +37,7 @@ export const SETTINGS_KEYS = {
   /** @type {'initResetDeckOnCombatStart'} */ INITIATIVE_RESET_DECK_ON_START: 'initResetDeckOnCombatStart',
   /** @type {'initSortOrder'} */ INITIATIVE_SORT_ORDER: 'initSortOrder',
   /** @type {'maxDrawSize'} */ MAX_DRAW_SIZE: 'maxDrawSize',
-  /** @type {'slowAndFastAction'} */ SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
+  /** @type {'slowAndFastActions'} */ SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
 };
 
 /** @enum {string} */
