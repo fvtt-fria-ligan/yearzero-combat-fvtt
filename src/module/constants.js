@@ -38,6 +38,7 @@ export const SETTINGS_KEYS = {
   /** @type {'initSortOrder'} */ INITIATIVE_SORT_ORDER: 'initSortOrder',
   /** @type {'maxDrawSize'} */ MAX_DRAW_SIZE: 'maxDrawSize',
   /** @type {'slowAndFastActions'} */ SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
+  /** @type {'resetEachRound'} */ RESET_EACH_ROUND: 'resetEachRound',
 };
 
 /** @enum {string} */

@@ -4,12 +4,11 @@
 
 import { YZEC } from '@module/config';
 import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
+import * as Utils from '@utils/utils';
 import { duplicateCombatant, getCombatantsSharingToken } from './duplicate-combatant';
 import { removeSlowAndFastActions } from './slow-and-fast-actions';
-import * as Utils from '@utils/utils';
 
 export default class YearZeroCombat extends Combat {
-
   /**
    * @param {string|string[]}    ids      The IDs of all the combatants in the combat
    * @param {InitiativeOptions} [options] Additional initiative options
@@ -97,15 +96,16 @@ export default class YearZeroCombat extends Combat {
         }),
       };
 
-      const messageData = foundry.utils.mergeObject({
-        content,
-        speaker: speakerData,
-        flavor: game.i18n.format('COMBAT.RollsInitiative', { name: combatant.name }),
-        flags: { 'core.initiativeRoll': true },
-        whisper: combatant.token?.hidden || combatant.hidden
-          ? game.users.filter(u => u.isGM)
-          : [],
-      }, messageOptions);
+      const messageData = foundry.utils.mergeObject(
+        {
+          content,
+          speaker: speakerData,
+          flavor: game.i18n.format('COMBAT.RollsInitiative', { name: combatant.name }),
+          flags: { 'core.initiativeRoll': true },
+          whisper: combatant.token?.hidden || combatant.hidden ? game.users.filter(u => u.isGM) : [],
+        },
+        messageOptions,
+      );
 
       // If the combatant is hidden, use a private roll unless an alternative rollMode was explicitly requested
       // eslint-disable-next-line no-nested-ternary
@@ -123,6 +123,9 @@ export default class YearZeroCombat extends Combat {
     const currentId = this.combatant?.id;
     if (options.updateTurn) {
       await this.update({ turn: this.turns.findIndex(t => t.id === currentId) });
+    }
+    else if (options.newRound) {
+      await this.update({ turn: 0 }, { diff: false });
     }
 
     // Creates multiple chat messages.
@@ -162,7 +165,8 @@ export default class YearZeroCombat extends Combat {
     const bestCard = cards.find(c => c.value === bestCardValue) ?? cards[0];
     const template = `modules/${MODULE_ID}/templates/combat/choose-card-dialog.hbs`;
     const content = await renderTemplate(template, {
-      cards, bestCard,
+      cards,
+      bestCard,
       config: YZEC,
     });
     const buttons = {
@@ -180,15 +184,20 @@ export default class YearZeroCombat extends Combat {
     /**
      * @see {@link https://foundryvtt.com/api/classes/client.Dialog.html#wait}
      */
-    return Dialog.wait({
-      title: `${combatant.name}: ${game.i18n.localize('YZEC.Combat.Initiative.ChooseCard')}`,
-      content, buttons,
-      default: 'ok',
-      // Default value returned
-      close: () => bestCard,
-    }, {
-      classes: ['dialog', MODULE_ID, game.system.id],
-    }, {});
+    return Dialog.wait(
+      {
+        title: `${combatant.name}: ${game.i18n.localize('YZEC.Combat.Initiative.ChooseCard')}`,
+        content,
+        buttons,
+        default: 'ok',
+        // Default value returned
+        close: () => bestCard,
+      },
+      {
+        classes: ['dialog', MODULE_ID, game.system.id],
+      },
+      {},
+    );
   }
 
   /* ------------------------------------------ */
@@ -237,10 +246,7 @@ export default class YearZeroCombat extends Combat {
     for (const combatant of this.combatants) {
       await combatant.resetInitiative();
     }
-    return this.update(
-      { turn: 0, combatants: this.combatants.toObject() },
-      { diff: false },
-    );
+    return this.update({ turn: 0, combatants: this.combatants.toObject() }, { diff: false });
   }
 
   /* ------------------------------------------ */
@@ -263,9 +269,7 @@ export default class YearZeroCombat extends Combat {
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
       await Utils.resetInitiativeDeck();
     }
-    const ids = this.combatants
-      .filter(c => !c.isDefeated && c.initiative == null)
-      .map(c => c.id);
+    const ids = this.combatants.filter(c => !c.isDefeated && c.initiative == null).map(c => c.id);
     await this.rollInitiative(ids);
     return super.startCombat();
   }
@@ -301,7 +305,13 @@ export default class YearZeroCombat extends Combat {
       });
     }
     await this.updateEmbeddedDocuments('Combatant', updates);
-    return super.nextRound();
+
+    await super.nextRound();
+
+    // Resets the initiative of all combatants at the start of the round.
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND)) this.#resetInitiativeAtEndOfRound();
+
+    return this;
   }
 
   /* ------------------------------------------ */
@@ -322,4 +332,22 @@ export default class YearZeroCombat extends Combat {
     return AudioHelper.play(data);
   }
 
+  /**
+   * Resets the initiative of all combatants at the start of the round. Optionally resets the initiative deck,
+   * and draws cards for combatants with no initiative.
+   * @private
+   * @returns {Promise.<void>}
+   */
+  async #resetInitiativeAtEndOfRound() {
+    await this.resetAll();
+
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
+      await Utils.resetInitiativeDeck();
+    }
+
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
+      const ids = this.combatants.map(c => c.id);
+      await this.rollInitiative(ids, { newRound: true });
+    }
+  }
 }
