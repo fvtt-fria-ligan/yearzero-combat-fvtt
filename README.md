@@ -10,6 +10,7 @@
 - Combat initiative order is ascending (lowest first)
 - Initiative groups are supported *(1 card for multiple combatants, create groups with right-click or drag'n-drop)*
 - Combatant cloning is supported *(one token can have multiple initiative entries in a combat instance, useful for monsters with Speed > 1)*
+- Redrawing initiative at the start of each round is supported
 - Swap initiative cards between two combatants
 - Buttons for Fast and Slow actions
 - Combatant configuration *(how many cards to draw, keep best or worst, etc.)*
