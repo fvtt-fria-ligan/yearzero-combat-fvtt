@@ -30,11 +30,11 @@
           },
           "property": {
             "type": "string",
-            "description": "The property to set on the combatant when the button is clicked. E.g. 'isDead'"
+            "description": "A boolean property to set on the combatant when the button is clicked. E.g. 'isDead'"
           },
           "label": {
             "type": "string",
-            "description": "The tooltip to display when the button is hovered"
+            "description": "The label to display when the button is hovered. E.g. 'MyGame.CombatTracker.myButton"
           },
           "visibility": {
             "type": "string",
@@ -42,7 +42,7 @@
             "enum": ["gm", "owner", "all"]
           }
         },
-        "required": ["eventName", "icon", "id", "property", "tooltip"],
+        "required": ["eventName", "icon", "id", "property", "label"],
         "additionalProperties": false
       }
     },
