@@ -1,8 +1,8 @@
 // ? scope: world (gm), client (player)
 // ? config: true (visible)
 
-import { CARD_STACK, MODULE_ID, SETTINGS_KEYS } from './constants.js';
 import { getCombatantSortOrderModifier } from '@utils/utils.js';
+import { CARD_STACK, MODULE_ID, SETTINGS_KEYS } from './constants.js';
 
 export function registerSystemSettings() {
 
@@ -62,6 +62,15 @@ export function registerSystemSettings() {
     config: true,
     type: Boolean,
     default: true,
+  });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND, {
+    name: 'SETTINGS.InitiativeResetEachRound',
+    hint: 'SETTINGS.InitiativeResetEachRoundHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
   });
 
   game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_MESSAGING, {

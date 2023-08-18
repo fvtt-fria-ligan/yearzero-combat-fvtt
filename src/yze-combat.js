@@ -8,25 +8,25 @@
  *
  * Foundry License: Foundry Virtual Tabletop End User License Agreement
  *   https://foundryvtt.com/article/license/
- * 
+ *
  * Greatly inspired by FloRad's SWADE's initiative cards combat system
  *   https://gitlab.com/peginc/swade
  *
  * ============================================================================
  */
 
+import YearZeroCards from '@combat/cards';
+import YearZeroCombat from '@combat/combat';
+import YearZeroCombatant from '@combat/combatant';
+import { addSlowAndFastStatusEffects } from '@combat/slow-and-fast-actions';
 import { YZEC } from '@module/config';
 import { HOOKS_KEYS, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { initializeHandlebars } from '@module/handlebars';
 import { registerSystemSettings } from '@module/settings';
 import { setupModule } from '@module/setup';
 import YearZeroCombatHook from '@utils/client-hooks';
-import YearZeroCards from '@combat/cards';
-import YearZeroCombat from '@combat/combat';
-import YearZeroCombatant from '@combat/combatant';
 import YearZeroCombatTracker from './sidebar/combat-tracker';
 import { onRenderCombatantConfig } from './sidebar/combatant-config';
-import { addSlowAndFastStatusEffects } from '@combat/slow-and-fast-actions';
 
 /* ------------------------------------------ */
 /*  Foundry VTT Initialization                */
@@ -72,8 +72,6 @@ Hooks.once('ready', async () => {
 
   // Calls the configuration hook.
   Hooks.callAll(HOOKS_KEYS.YZEC_READY, YearZeroCombatHook);
-
-  // TODO Remove this example before merge
 
   // // This listens for a message from the client called when the user clicks the slow button in the combat tracker.
   // Hooks.on(`${MODULE_ID}.slow-action-button-clicked`, data => {

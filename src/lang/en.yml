@@ -3,52 +3,51 @@ COMBAT.InitiativeRoll: Draw Initiative
 COMBAT.RollAll: Draw All
 COMBAT.RollNPC: Draw NPCs
 COMBAT.RollsInitiative: '{name} draws an initiative card!'
-SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
-SETTINGS.ActorSpeedAttributeHint: >-
-  The property key in the actor's data to the attribute that defines how many
-  initiative cards are kept (speed) by the combatant (e.g. system.speed.value).
 SETTINGS.ActorDrawSizeAttribute: Actor's Draw Size Attribute
 SETTINGS.ActorDrawSizeAttributeHint: >-
   The property key in the actor's data to the attribute that defines how many
   initiative cards are drawn by the combatant (e.g. system.reflexes.value).
+SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
+SETTINGS.ActorSpeedAttributeHint: >-
+  The property key in the actor's data to the attribute that defines how many
+  initiative cards are kept (speed) by the combatant (e.g. system.speed.value).
 SETTINGS.AutoDraw: Automatic Initiative Draw
 SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards.
-SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
-SETTINGS.SlowAndFastActionsHint: >-
-  Whether to show additional buttons for Slow & Fast Actions in the Combat
-  Tracker.
-SETTINGS.InitiativeDeck: Initiative Deck ID
-SETTINGS.InitiativeDeckHint: ID or name of the Initiative deck from which to draw initiative cards.
 SETTINGS.DiscardPile: Discard Pile ID
 SETTINGS.DiscardPileHint: ID or name of the Discard pile where to put the drawn initiative cards.
 SETTINGS.DuplicateCombatantsOnCombatStart: Duplicate Combatants
-SETTINGS.DuplicateCombatantsOnCombatStartHint: Whether to automatically duplicate combatants who have extra speed on combat start.
+SETTINGS.DuplicateCombatantsOnCombatStartHint: >-
+  Whether to automatically duplicate combatants who have extra speed on combat
+  start.
+SETTINGS.InitiativeDeck: Initiative Deck ID
+SETTINGS.InitiativeDeckHint: ID or name of the Initiative deck from which to draw initiative cards.
 SETTINGS.InitiativeMessaging: Send Initiative Messages
 SETTINGS.InitiativeMessagingHint: Whether to display a chat message when an initiative card is drawn.
 SETTINGS.InitiativeResetDeckOnCombatStart: Reset the Initiative Deck
 SETTINGS.InitiativeResetDeckOnCombatStartHint: >-
   Whether to recall and shuffle all the initiative cards when starting a new
   combat.
+SETTINGS.InitiativeResetEachRound: Reset the Initiative each round
+SETTINGS.InitiativeResetEachRoundHint: >-
+  Whether to reset Initiative at the start of each round. If "Automatic
+  Initiative Draw" is enabled, new Initiative will be drawn each round. If
+  "Reset the Initiative Deck" is enabled the initiative deck will reset at the
+  start of each round as well.
 SETTINGS.InitiativeSortOrder: Initiative Sort Order
-SETTINGS.InitiativeSortOrderHint: Default sort order for initiative.
 SETTINGS.InitiativeSortOrderAscending: Ascending (Lowest first)
 SETTINGS.InitiativeSortOrderDescending: Descending (Highest first)
+SETTINGS.InitiativeSortOrderHint: Default sort order for initiative.
 SETTINGS.MaxDrawSize: Maximum Draw Size
 SETTINGS.MaxDrawSizeHint: Maximum number of cards that can be drawn at once by a single combatant.
+SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
+SETTINGS.SlowAndFastActionsHint: >-
+  Whether to show additional buttons for Slow & Fast Actions in the Combat
+  Tracker.
 YZEC.Combat.Initiative.ChooseCard: Choose a Card
 YZEC.Combat.Initiative.Draw: '{name}''s Initiative'
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
 YZEC.Combat.Initiative.NotEnoughCards: Not enough cards in the initiative deck
 YZEC.Combat.Initiative.ResetDeck: Shuffled all the discarded initiative cards back into the deck
-YZEC.CombatantConfig.DrawSize: Draw Size
-YZEC.CombatantConfig.InitiativeCard: Initiative Card
-YZEC.CombatantConfig.InitiativeCardAvailable: Available
-YZEC.CombatantConfig.InitiativeCardDiscarded: Discarded
-YZEC.CombatantConfig.InitiativeCardDrawn: Drawn
-YZEC.CombatantConfig.KeepState: Keep State
-YZEC.CombatantConfig.KeepStateBest: Best
-YZEC.CombatantConfig.KeepStateWorst: Worst
-YZEC.CombatantConfig.Speed: Speed
 YZEC.CombatTracker.AddFollowers: Add Selected Tokens As Followers
 YZEC.CombatTracker.ChooseCombatant: Choose a Combatant
 YZEC.CombatTracker.DuplicateCombatant: Duplicate Combatant
@@ -65,9 +64,18 @@ YZEC.CombatTracker.SlowAction: Slow Action
 YZEC.CombatTracker.SubmitColor: Submit
 YZEC.CombatTracker.SwapInitiative: Swap Initiative
 YZEC.CombatTracker.UnfollowLeader: Unfollow {name}
-YZEC.InitiativeDeckName: Initiative Deck
+YZEC.CombatantConfig.DrawSize: Draw Size
+YZEC.CombatantConfig.InitiativeCard: Initiative Card
+YZEC.CombatantConfig.InitiativeCardAvailable: Available
+YZEC.CombatantConfig.InitiativeCardDiscarded: Discarded
+YZEC.CombatantConfig.InitiativeCardDrawn: Drawn
+YZEC.CombatantConfig.KeepState: Keep State
+YZEC.CombatantConfig.KeepStateBest: Best
+YZEC.CombatantConfig.KeepStateWorst: Worst
+YZEC.CombatantConfig.Speed: Speed
 YZEC.InitiativeDeckDiscardPileName: Initiative Cards Discard Pile
-YZEC.OK: OK
-YZEC.NoInitiativeDeckFound: No initiative deck found, creating a new one...
+YZEC.InitiativeDeckName: Initiative Deck
 YZEC.NoInitiativeDeckDiscardPileFound: No discard pile found, creating a new one...
+YZEC.NoInitiativeDeckFound: No initiative deck found, creating a new one...
+YZEC.OK: OK
 YZEC.WARNING.InvalidDeckType: You can only draw initiative cards from a deck
