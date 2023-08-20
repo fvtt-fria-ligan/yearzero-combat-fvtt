@@ -9,6 +9,21 @@ import { duplicateCombatant, getCombatantsSharingToken } from './duplicate-comba
 import { removeSlowAndFastActions } from './slow-and-fast-actions';
 
 export default class YearZeroCombat extends Combat {
+  /* ------------------------------------------ */
+  /*  Properties                                */
+  /* ------------------------------------------ */
+
+  get history() {
+    return this.getFlag(MODULE_ID, 'history') || {};
+  }
+
+  async setHistory($history) {
+    return this.setFlag(MODULE_ID, 'history', $history);
+  }
+
+  /* ------------------------------------------ */
+  /*  Methods                                   */
+  /* ------------------------------------------ */
   /**
    * @param {string|string[]}    ids      The IDs of all the combatants in the combat
    * @param {InitiativeOptions} [options] Additional initiative options
@@ -270,8 +285,12 @@ export default class YearZeroCombat extends Combat {
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
       await Utils.resetInitiativeDeck();
     }
-    const ids = this.combatants.filter(c => !c.isDefeated && c.initiative == null).map(c => c.id);
-    await this.rollInitiative(ids);
+
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
+      const ids = this.combatants.filter(c => !c.isDefeated && c.initiative == null).map(c => c.id);
+      await this.rollInitiative(ids);
+    }
+
     return super.startCombat();
   }
 
@@ -291,6 +310,10 @@ export default class YearZeroCombat extends Combat {
 
   /** @override */
   async nextRound() {
+
+    // Save the state of the combatants before we end the previous round.
+    await this.setHistory({ ...this.history, [this.round]: this.combatants.map(c => c.toObject()) });
+
     const updates = [];
     for (const combatant of this.combatants) {
       try {
@@ -309,8 +332,33 @@ export default class YearZeroCombat extends Combat {
 
     await super.nextRound();
 
+    // Check if state exists for this round and restore it.
+    const roundState = this.history[this.round];
+
     // Resets the initiative of all combatants at the start of the round.
-    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND)) this.#resetInitiativeAtEndOfRound();
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND) && !roundState) {
+      this.#resetInitiativeAtEndOfRound();
+    }
+    else if (roundState) await this.update({ ['combatants']: roundState }, { diff: false });
+
+    return this;
+  }
+
+  /* ------------------------------------------ */
+
+  /** @override */
+  async previousRound() {
+    // Save the state of the combatants before we end the current round.
+    await this.setHistory({ ...this.history, [this.round]: this.combatants.map(c => c.toObject()) });
+
+    // Proceed to previous round.
+    await super.previousRound();
+
+    const roundState = this.history[this.round];
+
+    if (roundState) {
+      await this.update({ ['combatants']: roundState }, { diff: false });
+    }
 
     return this;
   }
