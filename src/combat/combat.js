@@ -46,7 +46,7 @@ export default class YearZeroCombat extends Combat {
       const inGroup = !!combatant.groupId;
       const isRedraw = !!combatant.initiative;
 
-      if (combatant.isDefeated || inGroup || combatant.lockInitiative) continue;
+      if (combatant.isDefeated || inGroup) continue;
 
       // Checks if enough cards are available.
       const cardsToDraw = combatant.getNumberOfCardsToDraw();
@@ -71,16 +71,11 @@ export default class YearZeroCombat extends Combat {
       if (cards.length > 1) {
         cards.sort((a, b) => (a.value - b.value) * Utils.getCardSortOrderModifier(combatant.keepState));
 
-        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
-          card = cards[0];
-        }
-        else {
-          card = await this.chooseCard(cards, combatant);
-        }
+        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.AUTO_SELECT_BEST_CARD)) {card = cards[0];}
+        else card = await this.chooseCard(cards, combatant);
       }
-      else {
-        card = cards[0];
-      }
+      else {card = cards[0];}
+
 
       // Updates the combatant.
       const updateData = {
@@ -354,8 +349,8 @@ export default class YearZeroCombat extends Combat {
     // Proceed to previous round.
     await super.previousRound();
 
+    // Check if state exists for this round and restore it.
     const roundState = this.history[this.round];
-
     if (roundState) {
       await this.update({ ['combatants']: roundState }, { diff: false });
     }
@@ -380,6 +375,8 @@ export default class YearZeroCombat extends Combat {
     };
     return AudioHelper.play(data);
   }
+
+  /* ------------------------------------------ */
 
   /**
    * Resets the initiative of all combatants at the start of the round. Optionally resets the initiative deck,
