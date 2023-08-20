@@ -31,7 +31,7 @@ export default class YearZeroCombat extends Combat {
       const inGroup = !!combatant.groupId;
       const isRedraw = !!combatant.initiative;
 
-      if (combatant.isDefeated || inGroup) continue;
+      if (combatant.isDefeated || inGroup || combatant.lockInitiative) continue;
 
       // Checks if enough cards are available.
       const cardsToDraw = combatant.getNumberOfCardsToDraw();
@@ -244,6 +244,7 @@ export default class YearZeroCombat extends Combat {
   /** @override */
   async resetAll() {
     for (const combatant of this.combatants) {
+      if (combatant.lockInitiative && !combatant.isDefeated) continue;
       await combatant.resetInitiative();
     }
     return this.update({ turn: 0, combatants: this.combatants.toObject() }, { diff: false });
@@ -342,7 +343,8 @@ export default class YearZeroCombat extends Combat {
     await this.resetAll();
 
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
-      await Utils.resetInitiativeDeck();
+      const lockedCards = this.combatants.filter(c => c.lockInitiative).map(c => c.cardValue);
+      await Utils.resetInitiativeDeck(true, lockedCards);
     }
 
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {

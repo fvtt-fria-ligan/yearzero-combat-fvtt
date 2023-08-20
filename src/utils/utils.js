@@ -40,10 +40,14 @@ export function getInitiativeDeckDiscardPile(strict = false) {
  * and shuffles them back into the initiative deck.
  * @param {boolean} [chatNotification=false] Whether to send a chat notification.
  */
-export async function resetInitiativeDeck(chatNotification = false) {
+export async function resetInitiativeDeck(chatNotification = false, toExclude = []) {
   const initiativeDeck = getInitiativeDeck(true);
-  await initiativeDeck.recall({ chatNotification });
+  const discardPile = getInitiativeDeckDiscardPile(true);
+  const toRecall = discardPile.cards.filter(c => !toExclude.includes(c.value)).map(c => c.id);
+
+  await discardPile.pass(initiativeDeck, toRecall, { chatNotification });
   await initiativeDeck.shuffle({ chatNotification });
+
   ui.notifications.info('YZEC.Combat.Initiative.ResetDeck', { localize: true });
 }
 

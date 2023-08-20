@@ -55,6 +55,7 @@ YZEC.CombatTracker.FastAction: Fast Action
 YZEC.CombatTracker.FollowLeader: Follow {name}
 YZEC.CombatTracker.GroupLeader: Group Leader
 YZEC.CombatTracker.InitiativeDeckReset: Reset Initiative Deck
+YZEC.CombatTracker.lockInitiative: Lock Initiative
 YZEC.CombatTracker.MakeGroupLeader: Make Group Leader
 YZEC.CombatTracker.RemoveGroupLeader: Remove Group Leader
 YZEC.CombatTracker.ResetColor: Reset

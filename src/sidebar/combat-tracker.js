@@ -7,10 +7,12 @@
 /*   https://gitlab.com/peginc/swade          */
 /* ------------------------------------------ */
 
+import {
+  combatTrackerOnToggleDefeatedStatus,
+  duplicateCombatant, getCombatantsSharingToken,
+} from '@combat/duplicate-combatant';
 import { YZEC } from '@module/config';
 import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
-import { combatTrackerOnToggleDefeatedStatus,
-  duplicateCombatant, getCombatantsSharingToken } from '@combat/duplicate-combatant';
 import { getCombatantSortOrderModifier, resetInitiativeDeck } from '@utils/utils';
 import YearZeroCombatGroupColor from '../apps/combat-group-color';
 
@@ -437,6 +439,10 @@ export default class YearZeroCombatTracker extends CombatTracker {
           cfg.buttons.unshift(...YZEC.CombatTracker.DefaultCombatantControls.slowAndFastActions);
         }
 
+        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND)) {
+          cfg.buttons.unshift(...YZEC.CombatTracker.DefaultCombatantControls.lockInitiative);
+        }
+
         CONFIG.YZE_COMBAT.CombatTracker.config = cfg;
         return cfg;
       }
@@ -473,6 +479,16 @@ export default class YearZeroCombatTracker extends CombatTracker {
     const sortedButtons = buttons.reduce(
       (acc, button) => {
         const { visibility, ...buttonConfig } = button;
+
+        // Create getters for the button properties.
+        if (!CONFIG.Combatant.documentClass.prototype.hasOwnProperty(buttonConfig.property)) {
+          Object.defineProperty(CONFIG.Combatant.documentClass.prototype, buttonConfig.property, {
+            get() {
+              return this.getFlag(MODULE_ID, buttonConfig.property);
+            },
+          });
+        }
+
         if (visibility === 'gm') {
           acc.gmButtons.push(buttonConfig);
         }
