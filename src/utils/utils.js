@@ -39,6 +39,7 @@ export function getInitiativeDeckDiscardPile(strict = false) {
  * Recalls all the discarded initiative cards
  * and shuffles them back into the initiative deck.
  * @param {boolean} [chatNotification=false] Whether to send a chat notification.
+ * @param {number[]} [toExclude=[]] Array of card values to exclude from the reset.
  */
 export async function resetInitiativeDeck(chatNotification = false, toExclude = []) {
   const initiativeDeck = getInitiativeDeck(true);
