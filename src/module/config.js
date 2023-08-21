@@ -37,6 +37,11 @@ YZEC.CombatTracker = {
         id: 'lock-initiative-button',
         property: 'lockInitiative',
         visibility: 'owner',
+        condition: (combat, combatant) => {
+          const combatHasBegun = combat.active && combat.started;
+          const notInGroup = !combatant.groupId;
+          return combatHasBegun && notInGroup;
+        },
       },
     ],
   },
