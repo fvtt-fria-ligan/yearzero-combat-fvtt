@@ -275,8 +275,8 @@ export default class YearZeroCombat extends Combat {
       for (const combatant of this.combatants) {
         const speed = combatant.getSpeedFromActor();
         if (speed > 1) {
-          const duplicatas = getCombatantsSharingToken(combatant);
-          const copyQty = speed - duplicatas.length;
+          const duplicates = getCombatantsSharingToken(combatant);
+          const copyQty = speed - duplicates.length;
           if (copyQty > 0) await duplicateCombatant(combatant, copyQty);
         }
       }
@@ -401,6 +401,32 @@ export default class YearZeroCombat extends Combat {
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
       const ids = this.combatants.map(c => c.id);
       await this.rollInitiative(ids, { newRound: true });
+    }
+  }
+
+  /* ------------------------------------------ */
+  /*  Static Methods                            */
+  /* ------------------------------------------ */
+
+  /**
+   * Handles createCombatant hook called when a new combatant is added to the Combat instance.
+   * @param {Combat} combat
+   * @param {Combatant} combatant
+   * @returns {Promise.<Combatant>}
+   * @static
+   * @async
+  */
+  static async createCombatant(combatant) {
+    if (!game.user.isGM) return;
+
+    // This handles cases where a combatant is added after combat started,
+    // and said combatant has a speed > 1.
+    const { parent: { started } } = combatant;
+    const speed = combatant.getSpeedFromActor();
+    if (started && speed > 1) {
+      const duplicates = getCombatantsSharingToken(combatant);
+      const copyQty = speed - duplicates.length;
+      if (copyQty > 0) await duplicateCombatant(combatant, copyQty);
     }
   }
 }
