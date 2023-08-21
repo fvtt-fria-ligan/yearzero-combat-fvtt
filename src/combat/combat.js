@@ -71,10 +71,16 @@ export default class YearZeroCombat extends Combat {
       if (cards.length > 1) {
         cards.sort((a, b) => (a.value - b.value) * Utils.getCardSortOrderModifier(combatant.keepState));
 
-        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.AUTO_SELECT_BEST_CARD)) {card = cards[0];}
-        else card = await this.chooseCard(cards, combatant);
+        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.AUTO_SELECT_BEST_CARD)) {
+          card = cards[0];
+        }
+        else {
+          card = await this.chooseCard(cards, combatant);
+        }
       }
-      else {card = cards[0];}
+      else {
+        card = cards[0];
+      }
 
 
       // Updates the combatant.
