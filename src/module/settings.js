@@ -71,6 +71,7 @@ export function registerSystemSettings() {
     config: true,
     type: Boolean,
     default: false,
+    requiresReload: true,
   });
 
   game.settings.register(MODULE_ID, SETTINGS_KEYS.AUTO_SELECT_BEST_CARD, {
