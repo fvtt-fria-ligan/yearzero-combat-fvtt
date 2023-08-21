@@ -39,6 +39,7 @@ export const SETTINGS_KEYS = {
   /** @type {'maxDrawSize'} */ MAX_DRAW_SIZE: 'maxDrawSize',
   /** @type {'slowAndFastActions'} */ SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
   /** @type {'resetEachRound'} */ RESET_EACH_ROUND: 'resetEachRound',
+  /** @type {'autoSelectBestCard'} */ AUTO_SELECT_BEST_CARD: 'autoSelectBestCard',
 };
 
 /** @enum {string} */

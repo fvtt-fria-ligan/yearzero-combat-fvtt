@@ -12,7 +12,11 @@ SETTINGS.ActorSpeedAttributeHint: >-
   The property key in the actor's data to the attribute that defines how many
   initiative cards are kept (speed) by the combatant (e.g. system.speed.value).
 SETTINGS.AutoDraw: Automatic Initiative Draw
-SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards.
+SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards when combat starts.
+SETTINGS.AutoSelectBestCard: Choose Best Card
+SETTINGS.AutoSelectBestCardHint: >-
+  Forgo the card selection dialog on multiple drawn initiative cards, instead opting for
+  the best (fastest) initiative card.
 SETTINGS.DiscardPile: Discard Pile ID
 SETTINGS.DiscardPileHint: ID or name of the Discard pile where to put the drawn initiative cards.
 SETTINGS.DuplicateCombatantsOnCombatStart: Duplicate Combatants
@@ -64,6 +68,7 @@ YZEC.CombatTracker.SlowAction: Slow Action
 YZEC.CombatTracker.SubmitColor: Submit
 YZEC.CombatTracker.SwapInitiative: Swap Initiative
 YZEC.CombatTracker.UnfollowLeader: Unfollow {name}
+YZEC.CombatTracker.lockInitiative: Lock Initiative
 YZEC.CombatantConfig.DrawSize: Draw Size
 YZEC.CombatantConfig.InitiativeCard: Initiative Card
 YZEC.CombatantConfig.InitiativeCardAvailable: Available

@@ -85,6 +85,12 @@ function registerHandlebarsHelpers() {
   // Handlebars.registerHelper('ratio', function (a, b) {
   //   return (a / b) * 100;
   // });
+
+  Handlebars.registerHelper('test', function (...args) {
+    const [cb, ...params] = args;
+    if (typeof cb !== 'function') return true;
+    return !!cb(...params);
+  });
 }
 
 export function initializeHandlebars() {

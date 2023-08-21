@@ -147,6 +147,7 @@ export default class YearZeroCombatant extends Combatant {
    */
   getNumberOfCardsToDraw() {
     // TODO add talents here, if any.
+    if (this.lockInitiative) return 0;
     return this.drawSize;
   }
 

@@ -71,6 +71,16 @@ export function registerSystemSettings() {
     config: true,
     type: Boolean,
     default: false,
+    requiresReload: true,
+  });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.AUTO_SELECT_BEST_CARD, {
+    name: 'SETTINGS.AutoSelectBestCard',
+    hint: 'SETTINGS.AutoSelectBestCardHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
   });
 
   game.settings.register(MODULE_ID, SETTINGS_KEYS.INITIATIVE_MESSAGING, {

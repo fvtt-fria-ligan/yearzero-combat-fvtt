@@ -29,6 +29,21 @@ YZEC.CombatTracker = {
         visibility: 'owner',
       },
     ],
+    lockInitiative: [
+      {
+        eventName: 'lock-initiative-button-clicked',
+        label: 'YZEC.CombatTracker.lockInitiative',
+        icon: 'fas fa-lock',
+        id: 'lock-initiative-button',
+        property: 'lockInitiative',
+        visibility: 'owner',
+        condition: (combat, combatant) => {
+          const combatHasBegun = combat.active && combat.started;
+          const notInGroup = !combatant.groupId;
+          return combatHasBegun && notInGroup;
+        },
+      },
+    ],
   },
 };
 
