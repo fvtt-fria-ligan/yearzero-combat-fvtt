@@ -94,3 +94,5 @@ Hooks.on('getCombatTrackerEntryContext', YearZeroCombatTracker.appendControlsToC
 
 // Injects custom HTML in the combatant config.
 Hooks.on('renderCombatantConfig', onRenderCombatantConfig);
+
+Hooks.on('createCombatant', YearZeroCombat.createCombatant);
