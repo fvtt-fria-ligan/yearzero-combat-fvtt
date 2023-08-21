@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.1.0...1.2.0) (2023-08-21)
+
+
+### Features
+
+* ✨ Add lock initiative button ([52dde6e](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/52dde6eb8c4eae851e00d92c4e2bb73ba71b7b61))
+* ✨ Add state to combatants ([0ea4da5](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/0ea4da5672811cd080c411cf50adc64488a2e454))
+
+
+### Bug Fixes
+
+* 🐛 Add conditional display to buttons ([fbfce03](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/fbfce0310f9f2b11ecd78c4be320ce516df9e9d7))
+* 🐛 Handle duplicates when added to started combat ([f851374](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/f85137419e4bb8bc76b5e1219123569bd0b4bf71)), closes [#30](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues/30)
+* 🐛 Locking initiative in groups ([c5549b1](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/c5549b182db8eefab543379e0b785efa1dfb2977))
+* 🐛 Require reload on setting Reset Each Round ([f2d7038](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/f2d7038bb0f3e4930e3b03239e14211a397a9f03))
+
 ## [1.1.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.0.1...1.1.0) (2023-08-18)
 
 
