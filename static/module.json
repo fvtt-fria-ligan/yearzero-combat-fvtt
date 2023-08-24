@@ -48,6 +48,11 @@
       "lang": "fr",
       "name": "Français",
       "path": "lang/fr.json"
+    },
+    {
+      "lang": "sv",
+      "name": "Svenska",
+      "path": "lang/sv.json"
     }
   ],
   "url": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt",
