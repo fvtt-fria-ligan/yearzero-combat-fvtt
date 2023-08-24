@@ -140,7 +140,7 @@ export default class YearZeroCombat extends Combat {
     if (options.updateTurn) {
       await this.update({ turn: this.turns.findIndex(t => t.id === currentId) });
     }
-    else if (options.newRound) {
+    else {
       await this.update({ turn: 0 }, { diff: false });
     }
 
@@ -258,12 +258,18 @@ export default class YearZeroCombat extends Combat {
   /* ------------------------------------------ */
 
   /** @override */
-  async resetAll() {
+  async resetAll({ soft } = { soft: false }) {
+    const predicate = soft ? c => c.lockInitiative || c.isDefeated : _ => false;
+
     for (const combatant of this.combatants) {
-      if (combatant.lockInitiative && !combatant.isDefeated) continue;
+      if (predicate(combatant)) continue;
       await combatant.resetInitiative();
     }
-    return this.update({ turn: 0, combatants: this.combatants.toObject() }, { diff: false });
+
+    if (soft) await this.update({ combatants: this.combatants.toObject() }, { diff: false });
+    else await this.update({ turn: 0, combatants: this.combatants.toObject() }, { diff: false });
+
+    return this;
   }
 
   /* ------------------------------------------ */
@@ -315,32 +321,20 @@ export default class YearZeroCombat extends Combat {
     // Save the state of the combatants before we end the previous round.
     await this.setHistory({ ...this.history, [this.round]: this.combatants.map(c => c.toObject()) });
 
-    const updates = [];
-    for (const combatant of this.combatants) {
-      try {
-        await removeSlowAndFastActions(combatant.token);
-      }
-      catch (err) {
-        ui.notifications.error(err);
-      }
-      updates.push({
-        _id: combatant.id,
-        [`flags.${MODULE_ID}.-=fastAction`]: null,
-        [`flags.${MODULE_ID}.-=slowAction`]: null,
-      });
+    const roundState = this.history[this.round + 1];
+
+    if (roundState) await this.update({ ['combatants']: roundState }, { diff: false });
+    // Resets the initiative of all combatants at the start of the round if new round.
+    else if (game.settings.get(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND)) {
+      await this.#resetInitiativeAtEndOfRound();
     }
-    await this.updateEmbeddedDocuments('Combatant', updates);
 
     await super.nextRound();
 
-    // Check if state exists for this round and restore it.
-    const roundState = this.history[this.round];
-
-    // Resets the initiative of all combatants at the start of the round.
-    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND) && !roundState) {
-      this.#resetInitiativeAtEndOfRound();
+    // Remove slow and fast actions if enabled.
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
+      await this.#removeSlowAndFastActions();
     }
-    else if (roundState) await this.update({ ['combatants']: roundState }, { diff: false });
 
     return this;
   }
@@ -391,7 +385,7 @@ export default class YearZeroCombat extends Combat {
    * @returns {Promise.<void>}
    */
   async #resetInitiativeAtEndOfRound() {
-    await this.resetAll();
+    await this.resetAll({ soft: true });
 
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_RESET_DECK_ON_START)) {
       const lockedCards = this.combatants.filter(c => c.lockInitiative).map(c => c.cardValue);
@@ -400,8 +394,34 @@ export default class YearZeroCombat extends Combat {
 
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.INITIATIVE_AUTODRAW)) {
       const ids = this.combatants.map(c => c.id);
-      await this.rollInitiative(ids, { newRound: true });
+      await this.rollInitiative(ids);
     }
+  }
+
+  /* ------------------------------------------ */
+
+  /**
+   * Removes slow and fast actions from all combatants.
+   * @private
+   * @returns {Promise.<void>}
+   * @async
+   */
+  async #removeSlowAndFastActions() {
+    const updates = [];
+    for (const combatant of this.combatants) {
+      try {
+        await removeSlowAndFastActions(combatant.token);
+      }
+      catch (err) {
+        ui.notifications.error(err);
+      }
+      updates.push({
+        _id: combatant.id,
+        [`flags.${MODULE_ID}.-=fastAction`]: null,
+        [`flags.${MODULE_ID}.-=slowAction`]: null,
+      });
+    }
+    await this.updateEmbeddedDocuments('Combatant', updates);
   }
 
   /* ------------------------------------------ */
