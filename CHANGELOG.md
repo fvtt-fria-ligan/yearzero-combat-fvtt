@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.2.1...1.2.2) (2023-08-26)
+
+
+### Features
+
+* Adds Swedish localization. ([3934587](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/3934587347366e051e624f8ab4ec1534491af312))
+
 ### [1.2.1](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.2.0...1.2.1) (2023-08-26)
 
 
