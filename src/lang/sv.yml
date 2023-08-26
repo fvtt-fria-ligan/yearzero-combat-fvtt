@@ -1,0 +1,75 @@
+COMBAT.CombatantReroll: Dra ett annat kort
+COMBAT.InitiativeRoll: Iniativdraget
+COMBAT.RollAll: Dra för alla
+COMBAT.RollNPC: Dra för SLP:er
+COMBAT.RollsInitiative: '{name} drar ett initiativkort!'
+SETTINGS.ActorDrawSizeAttribute: Karaktärens attribut för antal initiativkort
+SETTINGS.ActorDrawSizeAttributeHint: >-
+  Egenskapsnyckeln i karaktärens data som definierar hur många initiativkort som dras av stridsdeltagaren (t.ex. system.reflexes.value).
+SETTINGS.ActorSpeedAttribute: Karaktärens attribut för hastighet
+SETTINGS.ActorSpeedAttributeHint: >-
+  Egenskapsnyckeln i karaktärens data som definierar hur många initiativkort som behålls (hastighet) av stridsdeltagaren (t.ex. system.speed.value).
+SETTINGS.AutoDraw: Automatisk initiativdragning
+SETTINGS.AutoDrawHint: Om initiativkort ska dras automatiskt när striden börjar.
+SETTINGS.AutoSelectBestCard: Välj bästa kortet
+SETTINGS.AutoSelectBestCardHint: >-
+  Avstå från kortväljardialogen vid flera dragna initiativkort och välj istället det bästa (snabbaste) initiativkortet.
+SETTINGS.DiscardPile: ID för kasthög
+SETTINGS.DiscardPileHint: ID eller namn på kasthögen där de dragna initiativkorten ska läggas.
+SETTINGS.DuplicateCombatantsOnCombatStart: Duplicera stridsdeltagare
+SETTINGS.DuplicateCombatantsOnCombatStartHint: >-
+  Om stridsdeltagare med extra hastighet automatiskt ska dupliceras vid stridens start.
+SETTINGS.InitiativeDeck: ID för initiativkortlek
+SETTINGS.InitiativeDeckHint: ID eller namn på kortleken som initiativkort dras från.
+SETTINGS.InitiativeMessaging: Skicka initiativmeddelanden
+SETTINGS.InitiativeMessagingHint: Om ett chattmeddelande ska visas när ett initiativkort dras.
+SETTINGS.InitiativeResetDeckOnCombatStart: Återställ initiativkortleken
+SETTINGS.InitiativeResetDeckOnCombatStartHint: >-
+  Om alla initiativkort ska tas tillbaka och blandas om när en ny strid börjar.
+SETTINGS.InitiativeResetEachRound: Återställ initiativet varje runda
+SETTINGS.InitiativeResetEachRoundHint: >-
+  Om initiativet ska återställas i början av varje runda. Om "Automatisk initiativdragning" är aktiverad kommer nytt initiativ dras varje runda. Om "Återställ initiativkortleken" är aktiverad kommer initiativkortleken att återställas i början av varje runda också.
+SETTINGS.InitiativeSortOrder: Sorteringsordning för initiativ
+SETTINGS.InitiativeSortOrderAscending: Stigande (Lägst först)
+SETTINGS.InitiativeSortOrderDescending: Fallande (Högst först)
+SETTINGS.InitiativeSortOrderHint: Standardsorteringsordning för initiativ.
+SETTINGS.MaxDrawSize: Maximalt antal kort som kan dras
+SETTINGS.MaxDrawSizeHint: Maximalt antal kort som kan dras samtidigt av en enskild stridsdeltagare.
+SETTINGS.SlowAndFastActions: Aktivera långsamma & snabba handlingar
+SETTINGS.SlowAndFastActionsHint: >-
+  Om ytterligare knappar för långsamma & snabba handlingar ska visas i stridsöversikten.
+YZEC.Combat.Initiative.ChooseCard: Välj ett kort
+YZEC.Combat.Initiative.Draw: '{name}s initiativ'
+YZEC.Combat.Initiative.ResetDeck: Blanda in alla kastade initiativkort i leken
+YZEC.CombatTracker.AddFollowers: Lägg till valda spelfigurer Som följeslagare
+YZEC.CombatTracker.ChooseCombatant: Välj en stridsdeltagare
+YZEC.CombatTracker.DuplicateCombatant: Duplicera stridsdeltagare
+YZEC.CombatTracker.FastAction: Snabb handling
+YZEC.CombatTracker.FollowLeader: 'Följ {name}'
+YZEC.CombatTracker.GroupLeader: Gruppledare
+YZEC.CombatTracker.InitiativeDeckReset: Återställ initiativkortleken
+YZEC.CombatTracker.MakeGroupLeader: Gör till gruppledare
+YZEC.CombatTracker.RemoveGroupLeader: Ta bort gruppledare
+YZEC.CombatTracker.ResetColor: Återställ
+YZEC.CombatTracker.SelectColor: Välj färg
+YZEC.CombatTracker.SetGroupColor: Ange gruppfärg
+YZEC.CombatTracker.SlowAction: Långsam handling
+YZEC.CombatTracker.SubmitColor: Skicka in
+YZEC.CombatTracker.SwapInitiative: Byt initiativ
+YZEC.CombatTracker.UnfollowLeader: 'Sluta följ {name}'
+YZEC.CombatTracker.lockInitiative: Lås initiativ
+YZEC.CombatantConfig.DrawSize: Antal kort som ska dras
+YZEC.CombatantConfig.InitiativeCard: Initiativkort
+YZEC.CombatantConfig.InitiativeCardAvailable: Tillgängligt
+YZEC.CombatantConfig.InitiativeCardDiscarded: Kastat
+YZEC.CombatantConfig.InitiativeCardDrawn: Dragit
+YZEC.CombatantConfig.KeepState: Behåll tillstånd
+YZEC.CombatantConfig.KeepStateBest: Bäst
+YZEC.CombatantConfig.KeepStateWorst: Sämst
+YZEC.CombatantConfig.Speed: Hastighet
+YZEC.InitiativeDeckDiscardPileName: Kasthög för initiativkort
+YZEC.InitiativeDeckName: Initiativkortlek
+YZEC.NoInitiativeDeckDiscardPileFound: Ingen kasthög hittades, skapar en ny...
+YZEC.NoInitiativeDeckFound: Ingen initiativkortlek hittades, skapar en ny...
+YZEC.OK: OK
+YZEC.WARNING.InvalidDeckType: Du kan bara dra initiativkort från en kortlek
