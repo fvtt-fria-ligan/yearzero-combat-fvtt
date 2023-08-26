@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.2.0...1.2.1) (2023-08-26)
+
+
+### Bug Fixes
+
+* 🐛 Next round problems when resetting ([a759107](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/a7591073f0212affa093df04fe73ddd0e5554bed))
+
 ## [1.2.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.1.0...1.2.0) (2023-08-21)
 
 
