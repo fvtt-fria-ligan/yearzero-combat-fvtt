@@ -3,7 +3,7 @@
 	{{#each buttons}}
 		{{#if (test condition @root.combat ../combatant)}}
 			<a class="combatant-control {{#if (lookup ../combatant property)}}active{{/if}}" id={{id}} data-event={{eventName}}
-				data-property="{{property}}" data-tooltip="{{localize label}}">
+				data-property="{{property}}" data-control="{{property}}" data-tooltip="{{localize label}}">
 				<i class="fas {{icon}}"></i></a>
 		{{/if}}
 	{{/each}}
@@ -124,7 +124,9 @@
 									{{/if}}
 									<div class="token-effects">
 											{{#each this.effects}}
-											<img class="token-effect" src="{{this}}"/>
+												{{#unless (startsWith this "modules/yze-combat")}}
+													<img class="token-effect" src="{{this}}"/>
+												{{/unless}}
 											{{/each}}
 									</div>
 							</div>

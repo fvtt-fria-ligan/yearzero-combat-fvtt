@@ -66,11 +66,13 @@ YZEC.StatusEffects = {
       id: STATUS_EFFECTS.FAST_ACTION,
       label: 'YZEC.CombatTracker.FastAction',
       icon: `modules/${MODULE_ID}/assets/icons/fast-action.svg`,
+      statuses: ['fastAction'],
     },
     {
       id: STATUS_EFFECTS.SLOW_ACTION,
       label: 'YZEC.CombatTracker.SlowAction',
       icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['slowAction'],
     },
   ],
 };

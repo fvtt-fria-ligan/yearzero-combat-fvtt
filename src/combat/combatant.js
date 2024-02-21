@@ -26,24 +26,6 @@ export default class YearZeroCombatant extends Combatant {
 
   /* ------------------------------------------ */
 
-  get fastAction() {
-    return this.getFlag(MODULE_ID, 'fastAction');
-  }
-
-  async setFastAction(action) {
-    return this.setFlag(MODULE_ID, 'fastAction', action);
-  }
-
-  get slowAction() {
-    return this.getFlag(MODULE_ID, 'slowAction');
-  }
-
-  async setSlowAction(action) {
-    return this.setFlag(MODULE_ID, 'slowAction', action);
-  }
-
-  /* ------------------------------------------ */
-
   /**
    * The quantity of initiative cards to draw.
    * @type {number}
@@ -242,8 +224,6 @@ export default class YearZeroCombatant extends Combatant {
       [`flags.${MODULE_ID}`]: {
         cardValue: null,
         cardName: '',
-        '-=fastAction': null,
-        '-=slowAction': null,
       },
     });
   }

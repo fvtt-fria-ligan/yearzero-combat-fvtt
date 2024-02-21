@@ -3,10 +3,9 @@
 /** @typedef {import('./combatant').default} YearZeroCombatant */
 
 import { YZEC } from '@module/config';
-import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
+import { MODULE_ID, SETTINGS_KEYS, STATUS_EFFECTS } from '@module/constants';
 import * as Utils from '@utils/utils';
 import { duplicateCombatant, getCombatantsSharingToken } from './duplicate-combatant';
-import { removeSlowAndFastActions } from './slow-and-fast-actions';
 
 export default class YearZeroCombat extends Combat {
   /* ------------------------------------------ */
@@ -307,9 +306,7 @@ export default class YearZeroCombat extends Combat {
   async endCombat() {
     const toEnd = await super.endCombat();
     if (toEnd && game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
-      for (const combatant of this.combatants) {
-        await removeSlowAndFastActions(combatant.token);
-      }
+      await this.#removeAllFastAndSlowActions();
     }
   }
 
@@ -333,7 +330,7 @@ export default class YearZeroCombat extends Combat {
 
     // Remove slow and fast actions if enabled.
     if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
-      await this.#removeSlowAndFastActions();
+      await this.#removeAllFastAndSlowActions();
     }
 
     return this;
@@ -356,6 +353,20 @@ export default class YearZeroCombat extends Combat {
     }
 
     return this;
+  }
+
+  /* ------------------------------------------ */
+
+  async nextTurn() {
+    const turn = this.turn;
+    const combatant = this.turns[turn];
+    const duplicates = getCombatantsSharingToken(combatant);
+    const lastValue = duplicates.map(c => c.cardValue).sort().pop();
+
+    if (duplicates.length > 1 && combatant.cardValue !== lastValue) {
+      await YearZeroCombat.#removeSlowAndFastActions(combatant.token);
+    }
+    return super.nextTurn();
   }
 
   /* ------------------------------------------ */
@@ -406,23 +417,17 @@ export default class YearZeroCombat extends Combat {
    * @returns {Promise.<void>}
    * @async
    */
-  async #removeSlowAndFastActions() {
-    const updates = [];
-    for (const combatant of this.combatants) {
-      try {
-        await removeSlowAndFastActions(combatant.token);
-      }
-      catch (err) {
-        ui.notifications.error(err);
-      }
-      updates.push({
-        _id: combatant.id,
-        [`flags.${MODULE_ID}.-=fastAction`]: null,
-        [`flags.${MODULE_ID}.-=slowAction`]: null,
-      });
-    }
-    await this.updateEmbeddedDocuments('Combatant', updates);
+  async #removeAllFastAndSlowActions() {
+    const tokens = Array.from(new Set(this.combatants.map(c => c.token)));
+    Promise.all(tokens.map(async c => await YearZeroCombat.#removeSlowAndFastActions(c)));
   }
+
+  static async #removeSlowAndFastActions(token) {
+    return Promise.all([STATUS_EFFECTS.FAST_ACTION, STATUS_EFFECTS.SLOW_ACTION].map(async effect =>
+      await token.toggleActiveEffect({ id: effect }, { active: false }),
+    ));
+  }
+
 
   /* ------------------------------------------ */
   /*  Static Methods                            */

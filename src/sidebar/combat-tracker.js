@@ -35,7 +35,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
     const data = await super.getData(options);
     const turns = data.turns.map(turn => ({
       ...turn,
-      ...this.#setTurnProperties(data, turn),
+      ...YearZeroCombatTracker.#setTurnProperties(data, turn),
     }));
     const buttons = await this.#getButtonConfig();
     return {
@@ -221,7 +221,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
           title: game.i18n.localize('YZEC.CombatTracker.SwapInitiative'),
           content,
           callback: html => html.find('#initiative-swap')[0]?.value,
-          options: { classes:['dialog', game.system.id, MODULE_ID] },
+          options: { classes: ['dialog', game.system.id, MODULE_ID] },
         });
         const target = combat.combatants.get(targetId);
         if (target) combatant.swapInitiativeCard(target);
@@ -280,10 +280,20 @@ export default class YearZeroCombatTracker extends CombatTracker {
       event: eventName,
       origin: btn,
     };
-    if (property) {
+    if (property === 'slowAction' || property === 'fastAction') {
+      const effect = CONFIG.statusEffects.find(e => e.id === property);
+      const active = !combatant[property];
+      if (!active) await combatant.unsetFlag(MODULE_ID, property);
+      await combatant.token.toggleActiveEffect(
+        { ...effect },
+        { active },
+      );
+    }
+    else if (property) {
       await combatant.setFlag(MODULE_ID, property, !combatant.getFlag(MODULE_ID, property));
     }
-    YearZeroCombatTracker.#callHook(eventData);
+
+    { YearZeroCombatTracker.#callHook(eventData); }
   }
 
   /* ------------------------------------------ */
@@ -466,6 +476,44 @@ export default class YearZeroCombatTracker extends CombatTracker {
   }
 
   /* ------------------------------------------ */
+
+  /**
+   * Sets the turn's properties for the template.
+   * @param {*} data
+   * @param {*} turn
+   * @returns {Promise.<any>}
+   */
+  static #setTurnProperties(data, turn) {
+    const { id } = turn;
+    const combatant = data.combat.combatants.get(id);
+    const flags = combatant.flags[MODULE_ID];
+    // FIXME: Figure out why these turn up as flags.
+    delete flags.fastAction;
+    delete flags.slowAction;
+    const statuses = combatant.actor?.statuses.reduce((acc, s) => {
+      acc[s] = true;
+      return acc;
+    }, flags) || flags;
+    return {
+      ...statuses,
+      emptyInit: !!combatant.groupId || turn.defeated,
+      groupColor: YearZeroCombatTracker.#getGroupColor(combatant),
+    };
+  }
+
+  /* ------------------------------------------ */
+
+  static #getGroupColor(combatant) {
+    if (combatant.groupId) {
+      return combatant.getLeader()?.getColor();
+    }
+    if (combatant.isDefeated) {
+      return YZEC.defeatedGroupColor;
+    }
+    return combatant.getColor();
+  }
+
+  /* ------------------------------------------ */
   /*  Private Methods                           */
   /* ------------------------------------------ */
 
@@ -507,33 +555,5 @@ export default class YearZeroCombatTracker extends CombatTracker {
       },
     );
     return sortedButtons;
-  }
-
-  /* ------------------------------------------ */
-
-  /**
-   * Sets the turn's properties for the template.
-   * @param {*} data
-   * @param {*} turn
-   * @returns {Promise.<any>}
-   */
-  #setTurnProperties(data, turn) {
-    const { id } = turn;
-    const combatant = data.combat.combatants.get(id);
-    return {
-      ...combatant.flags[MODULE_ID],
-      emptyInit: !!combatant.groupId || turn.defeated,
-      groupColor: this.#getGroupColor(combatant),
-    };
-  }
-
-  #getGroupColor(combatant) {
-    if (combatant.groupId) {
-      return combatant.getLeader()?.getColor();
-    }
-    if (combatant.isDefeated) {
-      return YZEC.defeatedGroupColor;
-    }
-    return combatant.getColor();
   }
 }

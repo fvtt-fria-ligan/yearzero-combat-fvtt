@@ -86,6 +86,10 @@ function registerHandlebarsHelpers() {
   //   return (a / b) * 100;
   // });
 
+  Handlebars.registerHelper('startsWith', function (str, prefix) {
+    return str.startsWith(prefix);
+  });
+
   Handlebars.registerHelper('test', function (...args) {
     const [cb, ...params] = args;
     if (typeof cb !== 'function') return true;
