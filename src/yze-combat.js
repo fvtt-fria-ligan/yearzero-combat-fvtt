@@ -18,7 +18,7 @@
 import YearZeroCards from '@combat/cards';
 import YearZeroCombat from '@combat/combat';
 import YearZeroCombatant from '@combat/combatant';
-import { addSlowAndFastStatusEffects } from '@combat/slow-and-fast-actions';
+import { addSlowAndFastStatusEffects, addSingleActionStatusEffect } from '@combat/slow-and-fast-actions';
 import { YZEC } from '@module/config';
 import { HOOKS_KEYS, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { initializeHandlebars } from '@module/handlebars';
@@ -66,6 +66,9 @@ Hooks.once('ready', async () => {
   }
   if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
     addSlowAndFastStatusEffects();
+  }
+  if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SINGLE_ACTION)) {
+    addSingleActionStatusEffect();
   }
 
   console.log('YZEC | Ready!');
