@@ -102,6 +102,16 @@ export function registerSystemSettings() {
     requiresReload: true,
   });
 
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.SINGLE_ACTION, {
+    name: 'SETTINGS.SingleAction',
+    hint: 'SETTINGS.SingleActionHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: true,
+  });
+
   game.settings.register(MODULE_ID, SETTINGS_KEYS.DUPLICATE_COMBATANTS_ON_START, {
     name: 'SETTINGS.DuplicateCombatantsOnCombatStart',
     hint: 'SETTINGS.DuplicateCombatantsOnCombatStartHint',

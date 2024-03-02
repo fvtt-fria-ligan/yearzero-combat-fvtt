@@ -29,6 +29,16 @@ YZEC.CombatTracker = {
         visibility: 'owner',
       },
     ],
+    singleAction: [
+      {
+        eventName: 'single-action-button-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button',
+        property: 'action',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+      },
+    ],
     lockInitiative: [
       {
         eventName: 'lock-initiative-button-clicked',
@@ -75,6 +85,12 @@ YZEC.StatusEffects = {
       statuses: ['slowAction'],
     },
   ],
+  singleAction: {
+    id: STATUS_EFFECTS.SINGLE_ACTION,
+    label: 'YZEC.CombatTracker.SingleAction',
+    icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+    statuses: ['action'],
+  },
 };
 
 /* ------------------------------------------ */

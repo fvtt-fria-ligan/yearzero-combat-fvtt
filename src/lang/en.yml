@@ -47,6 +47,9 @@ SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
 SETTINGS.SlowAndFastActionsHint: >-
   Whether to show additional buttons for Slow & Fast Actions in the Combat
   Tracker.
+SETTINGS.SingleAction: Enable Single Action
+SETTINGS.SingleActionHint: >-
+  Whether to show a button for a single action in the Combat Tracker, for e.g. Dragonbane.
 YZEC.Combat.Initiative.ChooseCard: Choose a Card
 YZEC.Combat.Initiative.Draw: '{name}''s Initiative'
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
@@ -64,6 +67,7 @@ YZEC.CombatTracker.RemoveGroupLeader: Remove Group Leader
 YZEC.CombatTracker.ResetColor: Reset
 YZEC.CombatTracker.SelectColor: Select Color
 YZEC.CombatTracker.SetGroupColor: Set Group Color
+YZEC.CombatTracker.SingleAction: Action
 YZEC.CombatTracker.SlowAction: Slow Action
 YZEC.CombatTracker.SubmitColor: Submit
 YZEC.CombatTracker.SwapInitiative: Swap Initiative

@@ -280,7 +280,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
       event: eventName,
       origin: btn,
     };
-    if (property === 'slowAction' || property === 'fastAction') {
+    if (property === 'slowAction' || property === 'fastAction' || property === 'action') {
       const effect = CONFIG.statusEffects.find(e => e.id === property);
       const active = !combatant[property];
       if (!active) await combatant.unsetFlag(MODULE_ID, property);
@@ -448,6 +448,9 @@ export default class YearZeroCombatTracker extends CombatTracker {
         if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
           cfg.buttons.unshift(...YZEC.CombatTracker.DefaultCombatantControls.slowAndFastActions);
         }
+        else if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SINGLE_ACTION)) {
+          cfg.buttons.unshift(...YZEC.CombatTracker.DefaultCombatantControls.singleAction);
+        }
 
         if (game.settings.get(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND)) {
           cfg.buttons.unshift(...YZEC.CombatTracker.DefaultCombatantControls.lockInitiative);
@@ -490,6 +493,7 @@ export default class YearZeroCombatTracker extends CombatTracker {
     // FIXME: Figure out why these turn up as flags.
     delete flags.fastAction;
     delete flags.slowAction;
+    delete flags.action;
     const statuses = combatant.actor?.statuses.reduce((acc, s) => {
       acc[s] = true;
       return acc;
