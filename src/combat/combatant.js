@@ -266,7 +266,7 @@ export default class YearZeroCombatant extends Combatant {
         });
       }
     }
-    return this.combat.updateEmbeddedDocuments('Combatant', updates);
+    return this.combat.updateEmbeddedDocuments('Combatant', updates, { turnEvents: false });
   }
 
   /* ------------------------------------------ */
