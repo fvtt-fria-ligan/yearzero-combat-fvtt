@@ -12,7 +12,7 @@
 - Combatant cloning is supported *(one token can have multiple initiative entries in a combat instance, useful for monsters with Speed > 1)*
 - Redrawing initiative at the start of each round is supported
 - Swap initiative cards between two combatants
-- Buttons for Fast and Slow actions
+- Buttons for actions (single or fast/slow)
 - Combatant configuration *(how many cards to draw, keep best or worst, etc.)*
 - Module settings *(everything is customizable by the GM)*
 - Developer options for customization

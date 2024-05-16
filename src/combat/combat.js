@@ -305,7 +305,9 @@ export default class YearZeroCombat extends Combat {
   /** @override */
   async endCombat() {
     const toEnd = await super.endCombat();
-    if (toEnd && game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
+    const slowAndFastActions = game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS);
+    const singleAction = game.settings.get(MODULE_ID, SETTINGS_KEYS.SINGLE_ACTION);
+    if (toEnd && (slowAndFastActions || singleAction)) {
       await this.#removeAllFastAndSlowActions();
     }
   }
@@ -329,7 +331,9 @@ export default class YearZeroCombat extends Combat {
     await super.nextRound();
 
     // Remove slow and fast actions if enabled.
-    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS)) {
+    const slowAndFastActions = game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS);
+    const singleAction = game.settings.get(MODULE_ID, SETTINGS_KEYS.SINGLE_ACTION);
+    if (slowAndFastActions || singleAction) {
       await this.#removeAllFastAndSlowActions();
     }
 
@@ -423,7 +427,11 @@ export default class YearZeroCombat extends Combat {
   }
 
   static async #removeSlowAndFastActions(token) {
-    return Promise.all([STATUS_EFFECTS.FAST_ACTION, STATUS_EFFECTS.SLOW_ACTION].map(async effect =>
+    return Promise.all([
+      STATUS_EFFECTS.FAST_ACTION,
+      STATUS_EFFECTS.SLOW_ACTION,
+      STATUS_EFFECTS.SINGLE_ACTION,
+    ].map(async effect =>
       await token.toggleActiveEffect({ id: effect }, { active: false }),
     ));
   }

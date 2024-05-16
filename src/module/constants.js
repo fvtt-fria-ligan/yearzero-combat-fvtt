@@ -18,6 +18,7 @@ export const CARD_STACK = {
 export const STATUS_EFFECTS = {
   FAST_ACTION: 'fastAction',
   SLOW_ACTION: 'slowAction',
+  SINGLE_ACTION: 'action',
 };
 
 /** @enum {string} */
@@ -38,6 +39,7 @@ export const SETTINGS_KEYS = {
   /** @type {'initSortOrder'} */ INITIATIVE_SORT_ORDER: 'initSortOrder',
   /** @type {'maxDrawSize'} */ MAX_DRAW_SIZE: 'maxDrawSize',
   /** @type {'slowAndFastActions'} */ SLOW_AND_FAST_ACTIONS: 'slowAndFastActions',
+  /** @type {'singleAction'} */ SINGLE_ACTION: 'singleAction',
   /** @type {'resetEachRound'} */ RESET_EACH_ROUND: 'resetEachRound',
   /** @type {'autoSelectBestCard'} */ AUTO_SELECT_BEST_CARD: 'autoSelectBestCard',
 };
