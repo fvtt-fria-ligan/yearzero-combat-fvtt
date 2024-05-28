@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.2.2...1.3.0) (2024-05-28)
+
+
+### Features
+
+* ✨ Add a single-action mode for the combat tracker ([#39](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues/39)) ([0e51865](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/0e51865fe08ddbbc523957efe4f831b5994808a7))
+* ✨ Fast / Slow actions tied to tokens ([#38](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues/38)) ([2484b0b](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/2484b0b199b329fb5d4a50be70d493dbb2605015))
+
+
+### Bug Fixes
+
+* 🐛 prevent turn from changing when swapping initiative ([#40](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues/40)) ([69eee2c](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/69eee2cc68694cf37fc9e925c732fa22ed7b71d4))
+
 ### [1.2.2](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.2.1...1.2.2) (2023-08-26)
 
 
