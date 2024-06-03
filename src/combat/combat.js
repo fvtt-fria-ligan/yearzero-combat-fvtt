@@ -427,11 +427,13 @@ export default class YearZeroCombat extends Combat {
   }
 
   static async #removeSlowAndFastActions(token) {
-    return Promise.all([
+    const effects = [
       STATUS_EFFECTS.FAST_ACTION,
       STATUS_EFFECTS.SLOW_ACTION,
       STATUS_EFFECTS.SINGLE_ACTION,
-    ].map(async effect =>
+    ].filter(action => CONFIG.statusEffects.find(e => e.id === action));
+
+    return Promise.all(effects.map(async effect =>
       await token.toggleActiveEffect({ id: effect }, { active: false }),
     ));
   }
