@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.3.0...1.3.1) (2024-06-06)
+
+
+### Bug Fixes
+
+* 🐛 removes error when toggling status effect ([d956655](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/d9566557143c73c77b7ffdd651ffec175a496215))
+
 ## [1.3.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.2.2...1.3.0) (2024-05-28)
 
 
