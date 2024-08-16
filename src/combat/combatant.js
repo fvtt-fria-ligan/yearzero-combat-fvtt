@@ -272,7 +272,7 @@ export default class YearZeroCombatant extends Combatant {
   /** @override */
   static async _preUpdateOperation(_documents, operation, _user) {
     await super._preUpdateOperation(_documents, operation, _user);
-    if (operation.turnEvents === false) {
+    if (operation.turnEvents === false && operation.combatTurn) {
       delete operation.combatTurn;
     }
   }
