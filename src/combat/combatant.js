@@ -269,14 +269,6 @@ export default class YearZeroCombatant extends Combatant {
     return this.combat.updateEmbeddedDocuments('Combatant', updates, { turnEvents: false });
   }
 
-  /** @override */
-  static async _preUpdateOperation(_documents, operation, _user) {
-    await super._preUpdateOperation(_documents, operation, _user);
-    if (operation.turnEvents === false && operation.combatTurn) {
-      delete operation.combatTurn;
-    }
-  }
-
   /* ------------------------------------------ */
   /*  Combatant Creation                        */
   /* ------------------------------------------ */
