@@ -18,7 +18,11 @@
 import YearZeroCards from '@combat/cards';
 import YearZeroCombat from '@combat/combat';
 import YearZeroCombatant from '@combat/combatant';
-import { addSlowAndFastStatusEffects, addSingleActionStatusEffect } from '@combat/slow-and-fast-actions';
+import {
+  addSlowAndFastStatusEffects,
+  addSingleActionStatusEffect,
+  onRenderTokenHUD,
+} from '@combat/slow-and-fast-actions';
 import { YZEC } from '@module/config';
 import { HOOKS_KEYS, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { initializeHandlebars } from '@module/handlebars';
@@ -99,3 +103,6 @@ Hooks.on('getCombatTrackerEntryContext', YearZeroCombatTracker.appendControlsToC
 Hooks.on('renderCombatantConfig', onRenderCombatantConfig);
 
 Hooks.on('createCombatant', YearZeroCombat.createCombatant);
+
+// Removes unused single action status effects from the HUD
+Hooks.on('renderTokenHUD', onRenderTokenHUD);

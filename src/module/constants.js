@@ -18,7 +18,15 @@ export const CARD_STACK = {
 export const STATUS_EFFECTS = {
   FAST_ACTION: 'fastAction',
   SLOW_ACTION: 'slowAction',
-  SINGLE_ACTION: 'action',
+  SINGLE_ACTION_1: 'action1',
+  SINGLE_ACTION_2: 'action2',
+  SINGLE_ACTION_3: 'action3',
+  SINGLE_ACTION_4: 'action4',
+  SINGLE_ACTION_5: 'action5',
+  SINGLE_ACTION_6: 'action6',
+  SINGLE_ACTION_7: 'action7',
+  SINGLE_ACTION_8: 'action8',
+  SINGLE_ACTION_9: 'action9',
 };
 
 /** @enum {string} */

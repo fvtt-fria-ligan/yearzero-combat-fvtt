@@ -12,7 +12,7 @@ import {
   duplicateCombatant, getCombatantsSharingToken,
 } from '@combat/duplicate-combatant';
 import { YZEC } from '@module/config';
-import { MODULE_ID, SETTINGS_KEYS } from '@module/constants';
+import { MODULE_ID, SETTINGS_KEYS, STATUS_EFFECTS } from '@module/constants';
 import { getCombatantSortOrderModifier, resetInitiativeDeck } from '@utils/utils';
 import YearZeroCombatGroupColor from '../apps/combat-group-color';
 
@@ -280,14 +280,12 @@ export default class YearZeroCombatTracker extends CombatTracker {
       event: eventName,
       origin: btn,
     };
-    if (property === 'slowAction' || property === 'fastAction' || property === 'action') {
+
+    if (Object.values(STATUS_EFFECTS).includes(property)) {
       const effect = CONFIG.statusEffects.find(e => e.id === property);
       const active = !combatant[property];
       if (!active) await combatant.unsetFlag(MODULE_ID, property);
-      await combatant.token.toggleActiveEffect(
-        { ...effect },
-        { active },
-      );
+      await combatant.token.actor.toggleStatusEffect(effect.id, { active });
     }
     else if (property) {
       await combatant.setFlag(MODULE_ID, property, !combatant.getFlag(MODULE_ID, property));
@@ -493,7 +491,15 @@ export default class YearZeroCombatTracker extends CombatTracker {
     // FIXME: Figure out why these turn up as flags.
     delete flags.fastAction;
     delete flags.slowAction;
-    delete flags.action;
+    delete flags.action1;
+    delete flags.action2;
+    delete flags.action3;
+    delete flags.action4;
+    delete flags.action5;
+    delete flags.action6;
+    delete flags.action7;
+    delete flags.action8;
+    delete flags.action9;
     const statuses = combatant.actor?.statuses.reduce((acc, s) => {
       acc[s] = true;
       return acc;

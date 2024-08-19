@@ -229,6 +229,29 @@ export default class YearZeroCombatant extends Combatant {
   }
 
   /* ------------------------------------------ */
+  #getSingleActionStatus(combatant) {
+    const as = combatant.combat.turns.filter(t => t.tokenId === combatant.tokenId);
+    for (let i = 0; i < as.length && i < YZEC.StatusEffects.singleAction.length; i++) {
+      as[i] = {
+        id: as[i].id,
+        action: as[i].token.hasStatusEffect(YZEC.StatusEffects.singleAction[i].id),
+      };
+    }
+    return as;
+  }
+
+  #updateSingleActionStatus(combatant, preCombatantActions) {
+    const post = this.#getSingleActionStatus(combatant);
+    for (let i = 0; i < post.length; i++) {
+      const preIndex = preCombatantActions.findIndex(e => e.id === post[i].id);
+      const preAction = preCombatantActions[preIndex].action;
+      const postAction = post[i].action;
+      if (preAction != postAction) {
+        const postEffect = YZEC.StatusEffects.singleAction[i];
+        combatant.token.actor.toggleStatusEffect(postEffect.id, { active: preAction });
+      }
+    }
+  }
 
   /**
    * Swaps initiative cards between two combatants.
@@ -266,8 +289,23 @@ export default class YearZeroCombatant extends Combatant {
         });
       }
     }
+    if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SINGLE_ACTION)) {
+      // Action status effects rely on the order of combatants with the same token.
+      // If that order changes, the actions must be updated accordingly.
+      const thisActions = this.#getSingleActionStatus(this);
+      const combatantActions = this.#getSingleActionStatus(tCombatant);
+
+      const result = await this.combat.updateEmbeddedDocuments('Combatant', updates, { turnEvents: false });
+
+      this.#updateSingleActionStatus(this, thisActions);
+      if (this.tokenId != tCombatant.tokenId) {
+        this.#updateSingleActionStatus(tCombatant, combatantActions);
+      }
+      return result;
+    }
     return this.combat.updateEmbeddedDocuments('Combatant', updates, { turnEvents: false });
   }
+
 
   /* ------------------------------------------ */
   /*  Combatant Creation                        */

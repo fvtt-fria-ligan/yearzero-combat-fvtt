@@ -7,6 +7,16 @@ import { CARDS_DRAW_KEEP_STATES, MODULE_ID, STATUS_EFFECTS } from './constants.j
  */
 export const YZEC = {};
 
+function singleActionCondition(combat, combatant, index) {
+  const tokenId = combat.combatants.get(combatant.id).tokenId;
+  let action = 0;
+  for (const turn of combat.turns) {
+    if (turn.tokenId === tokenId) action++;
+    if (turn.id === combatant.id) break;
+  }
+  return action === index;
+}
+
 YZEC.CombatTracker = {
   src: `modules/${MODULE_ID}/sidebar/combat-tracker.config.json`,
   // config: undefined,
@@ -31,12 +41,85 @@ YZEC.CombatTracker = {
     ],
     singleAction: [
       {
-        eventName: 'single-action-button-clicked',
+        eventName: 'single-action-button-1-clicked',
         icon: 'fa-play',
-        id: 'single-action-button',
-        property: 'action',
+        id: 'single-action-button-1',
+        property: 'action1',
         label: 'YZEC.CombatTracker.SingleAction',
         visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 1),
+      },
+      {
+        eventName: 'single-action-button-2-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button-2',
+        property: 'action2',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 2),
+      },
+      {
+        eventName: 'single-action-button-3-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button-3',
+        property: 'action3',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 3),
+      },
+      {
+        eventName: 'single-action-button-4-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button-4',
+        property: 'action4',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 4),
+      },
+      {
+        eventName: 'single-action-button-5-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button-5',
+        property: 'action5',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 5),
+      },
+      {
+        eventName: 'single-action-button-6-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button-6',
+        property: 'action6',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 6),
+      },
+      {
+        eventName: 'single-action-button-7-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button-7',
+        property: 'action7',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 7),
+      },
+      {
+        eventName: 'single-action-button-8-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button-8',
+        property: 'action8',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 8),
+      },
+      {
+        eventName: 'single-action-button-9-clicked',
+        icon: 'fa-play',
+        id: 'single-action-button-9',
+        property: 'action9',
+        label: 'YZEC.CombatTracker.SingleAction',
+        visibility: 'owner',
+        condition: (combat, combatant) => singleActionCondition(combat, combatant, 9),
       },
     ],
     lockInitiative: [
@@ -85,12 +168,62 @@ YZEC.StatusEffects = {
       statuses: ['slowAction'],
     },
   ],
-  singleAction: {
-    id: STATUS_EFFECTS.SINGLE_ACTION,
-    label: 'YZEC.CombatTracker.SingleAction',
-    icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
-    statuses: ['action'],
-  },
+  singleAction: [
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_1,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action1'],
+    },
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_2,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action2'],
+    },
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_3,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action3'],
+    },
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_4,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action4'],
+    },
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_5,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action5'],
+    },
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_6,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action6'],
+    },
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_7,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action7'],
+    },
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_8,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action8'],
+    },
+    {
+      id: STATUS_EFFECTS.SINGLE_ACTION_9,
+      label: 'YZEC.CombatTracker.SingleAction',
+      icon: `modules/${MODULE_ID}/assets/icons/slow-action.svg`,
+      statuses: ['action9'],
+    },
+  ],
 };
 
 /* ------------------------------------------ */
