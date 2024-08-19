@@ -230,8 +230,10 @@ export default class YearZeroCombatant extends Combatant {
 
   /* ------------------------------------------ */
   #getSingleActionStatus(combatant) {
-    const as = combatant.combat.turns.filter(t => t.tokenId === combatant.tokenId);
-    for (let i = 0; i < as.length && i < YZEC.StatusEffects.singleAction.length; i++) {
+    const as = combatant.combat.turns
+      .filter(t => t.tokenId === combatant.tokenId)
+      .slice(0, YZEC.StatusEffects.singleAction.length);
+    for (let i = 0; i < as.length; i++) {
       as[i] = {
         id: as[i].id,
         action: as[i].token.hasStatusEffect(YZEC.StatusEffects.singleAction[i].id),
@@ -244,6 +246,7 @@ export default class YearZeroCombatant extends Combatant {
     const post = this.#getSingleActionStatus(combatant);
     for (let i = 0; i < post.length; i++) {
       const preIndex = preCombatantActions.findIndex(e => e.id === post[i].id);
+      if (preIndex < 0) continue;
       const preAction = preCombatantActions[preIndex].action;
       const postAction = post[i].action;
       if (preAction != postAction) {
