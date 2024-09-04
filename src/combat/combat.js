@@ -308,7 +308,7 @@ export default class YearZeroCombat extends Combat {
     const slowAndFastActions = game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS);
     const singleAction = game.settings.get(MODULE_ID, SETTINGS_KEYS.SINGLE_ACTION);
     if (toEnd && (slowAndFastActions || singleAction)) {
-      await this.#removeAllFastAndSlowActions();
+      await this.#removeAllActions();
     }
   }
 
@@ -334,7 +334,7 @@ export default class YearZeroCombat extends Combat {
     const slowAndFastActions = game.settings.get(MODULE_ID, SETTINGS_KEYS.SLOW_AND_FAST_ACTIONS);
     const singleAction = game.settings.get(MODULE_ID, SETTINGS_KEYS.SINGLE_ACTION);
     if (slowAndFastActions || singleAction) {
-      await this.#removeAllFastAndSlowActions();
+      await this.#removeAllActions();
     }
 
     return this;
@@ -421,20 +421,38 @@ export default class YearZeroCombat extends Combat {
    * @returns {Promise.<void>}
    * @async
    */
-  async #removeAllFastAndSlowActions() {
+  async #removeAllActions() {
     const tokens = Array.from(new Set(this.combatants.map(c => c.token)));
     Promise.all(tokens.map(async c => await YearZeroCombat.#removeSlowAndFastActions(c)));
+    Promise.all(tokens.map(async c => await YearZeroCombat.#removeSingleActions(c)));
   }
 
   static async #removeSlowAndFastActions(token) {
     const effects = [
       STATUS_EFFECTS.FAST_ACTION,
       STATUS_EFFECTS.SLOW_ACTION,
-      STATUS_EFFECTS.SINGLE_ACTION,
     ].filter(action => CONFIG.statusEffects.find(e => e.id === action));
 
     return Promise.all(effects.map(async effect =>
-      await token.toggleActiveEffect({ id: effect }, { active: false }),
+      await token.actor.toggleStatusEffect(effect, { active: false }),
+    ));
+  }
+
+  static async #removeSingleActions(token) {
+    const effects = [
+      STATUS_EFFECTS.SINGLE_ACTION_1,
+      STATUS_EFFECTS.SINGLE_ACTION_2,
+      STATUS_EFFECTS.SINGLE_ACTION_3,
+      STATUS_EFFECTS.SINGLE_ACTION_4,
+      STATUS_EFFECTS.SINGLE_ACTION_5,
+      STATUS_EFFECTS.SINGLE_ACTION_6,
+      STATUS_EFFECTS.SINGLE_ACTION_7,
+      STATUS_EFFECTS.SINGLE_ACTION_8,
+      STATUS_EFFECTS.SINGLE_ACTION_9,
+    ].filter(action => CONFIG.statusEffects.find(e => e.id === action));
+
+    return Promise.all(effects.map(async effect =>
+      await token.actor.toggleStatusEffect(effect, { active: false }),
     ));
   }
 
