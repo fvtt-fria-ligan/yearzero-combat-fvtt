@@ -63,7 +63,7 @@ async function pipeTranslations() {
   gulp
     .src('src/lang/**/*.{yml,yaml}')
     .pipe(yaml({ safe: true }))
-    .pipe(gulp.dest('./dist/lang'));
+    .pipe(gulp.dest(`${distDirectory}/lang`));
 }
 
 /* ------------------------------------------ */
@@ -103,7 +103,7 @@ function buildWatch() {
  * @async
  */
 async function cleanDist() {
-  if (fs.existsSync('./dist')) await fs.remove('./dist');
+  if (fs.existsSync(distDirectory)) await fs.remove(distDirectory);
 }
 
 /* ------------------------------------------ */
