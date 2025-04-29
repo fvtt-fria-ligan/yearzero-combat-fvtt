@@ -29,14 +29,13 @@ export async function combatTrackerOnToggleDefeatedStatus(combatant) {
     }));
   await combatant.parent.updateEmbeddedDocuments('Combatant', updates);
 
-  // Pushes the defeated status to the token (copied from Foundry's code).
-  const token = combatant.token;
-  if (!token) return;
-  const defeatedStatus = CONFIG.statusEffects.find(e => e.id === CONFIG.specialStatusEffects.DEFEATED);
-  if (!defeatedStatus && !token.object) return;
-  const effect = token.actor && defeatedStatus ? defeatedStatus : CONFIG.controlIcons.defeated;
-  if (token.object) await token.object.toggleEffect(effect, { overlay: true, active: isDefeated });
-  else await token.toggleActiveEffect(effect, { overlay: true, active: isDefeated });
+  // Pushes the defeated status to the token
+  const actor = combatant.token?.actor;
+  if (actor) {
+    const defeatedStatus = CONFIG.statusEffects.find(e => e.id === CONFIG.specialStatusEffects.DEFEATED);
+    const effect = defeatedStatus ?? CONFIG.controlIcons.defeated;
+    await actor.toggleStatusEffect(effect.id, { overlay: true, active: isDefeated });
+  }
 }
 
 /* ------------------------------------------ */

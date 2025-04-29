@@ -4,9 +4,9 @@
   "description": "Adds YZE combat mechanics to a game system: Card initiative, slow & fast actions, groups, and more!",
   "version": "1.3.3",
   "compatibility": {
-    "minimum": 10,
-    "verified": 12.331,
-    "maximum": 12
+    "minimum": 13.340,
+    "verified": 13.340,
+    "maximum": 13
   },
   "authors": [
     {
@@ -25,6 +25,10 @@
     {
       "name": "FloRad",
       "url": "https://gitlab.com/florad92"
+    },
+    {
+      "name": "PatrikP",
+      "url": "https://www.patrikp.com"
     }
   ],
   "localization": "",

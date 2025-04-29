@@ -8,7 +8,7 @@ function preloadHandlebarsTemplates() {
   // eslint-disable-next-line no-undef
   const paths = PATHS;
   console.log('YZEC | Loading Handlebars templates:', paths);
-  return loadTemplates(paths);
+  return foundry.applications.handlebars.loadTemplates(paths);
 }
 
 /* ------------------------------------------ */
