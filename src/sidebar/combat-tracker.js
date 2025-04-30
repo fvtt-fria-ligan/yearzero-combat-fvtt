@@ -214,20 +214,24 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
     groupMenu.push({
       name: 'YZEC.CombatTracker.AddFollowers',
       icon: YZEC.Icons.select,
-      condition: () => {
+      condition: li => {
+        const combatant = getCombatant(li);
         const selectedTokens = canvas?.tokens?.controlled || [];
+        const followerTokens = selectedTokens?.filter(t => t.actor.id != combatant.actorId);
         return canvas?.ready &&
-          selectedTokens.length > 0 &&
-          selectedTokens.every(t => t.actor?.isOwner);
+          followerTokens.length > 0 &&
+          followerTokens.every(t => t.actor?.isOwner);
       },
       callback: async li => {
         const combatant = getCombatant(li);
         const selectedTokens = canvas?.tokens?.controlled;
-        if (selectedTokens) {
+        const followerTokens = selectedTokens?.filter(t => t.actor.id != combatant.actorId);
+
+        if (followerTokens) {
           await combatant.promoteLeader();
 
           // Separates between new tokens and existing ones.
-          const [newCombatantTokens, existingCombatantTokens] = selectedTokens.partition(t => t.inCombat);
+          const [newCombatantTokens, existingCombatantTokens] = followerTokens.partition(t => t.inCombat);
 
           // For new tokens, creates new combatants.
           const createData = newCombatantTokens.map(t => ({
@@ -261,44 +265,70 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       },
     });
 
+    // ❌ Unfollow a Leader - static context menu implementation, see below for dynamic context menu implementation
+    groupMenu.push({
+      name: game.i18n.format('YZEC.CombatTracker.UnfollowLeader', { name: '' }),
+      icon: YZEC.Icons.unfollow,
+      condition: li => {
+        const c = getCombatant(li);
+        return c.groupId && !c.isGroupLeader && c.actor?.isOwner;
+      },
+      callback: async li => {
+        const combatant = getCombatant(li);
+        return combatant.update({
+          initiative: null,
+          [`flags.${MODULE_ID}.-=cardValue`]: null,
+          [`flags.${MODULE_ID}.-=groupId`]: null,
+        });
+      },
+    });
+
+
     // Gets group leaders to prepare follow options.
+
+    // TODO: Update/invalidate context meny when group leaders are added/removed.
+    // AppV2 context menu is static, so can't generate menu items for each leader.
+
+    /*
     const leaders = combat.combatants.filter(c => c.isGroupLeader);
-    for (const leader of leaders) {
-      // ➰ Follow a Leader
-      groupMenu.push({
-        name: game.i18n.format('YZEC.CombatTracker.FollowLeader', { name: leader.name }),
-        icon: YZEC.Icons.follow,
-        condition: li => {
-          const c = getCombatant(li);
-          return c.groupId !== leader.id && c.id !== leader.id;
-        },
-        callback: async li => {
-          const c = getCombatant(li);
-          // If that combatant is a leader too, move all its followers under the new leader
-          if (c.isGroupLeader) {
-            for (const f of c.getFollowers()) {
-              await leader.addFollower(f);
+    if (leaders.size > 0) {
+      for (const leader of leaders) {
+        // ➰ Follow a Leader
+        groupMenu.push({
+          name: game.i18n.format('YZEC.CombatTracker.FollowLeader', { name: leader.name }),
+          icon: YZEC.Icons.follow,
+          condition: li => {
+            const c = getCombatant(li);
+            return c.groupId !== leader.id && c.id !== leader.id;
+          },
+          callback: async li => {
+            const c = getCombatant(li);
+            // If that combatant is a leader too, move all its followers under the new leader
+            if (c.isGroupLeader) {
+              for (const f of c.getFollowers()) {
+                await leader.addFollower(f);
+              }
             }
-          }
-          await leader.addFollower(c);
-        },
-      });
+            await leader.addFollower(c);
+          },
+        });
 
-      // ❌ Unfollow a Leader
-      groupMenu.push({
-        name: game.i18n.format('YZEC.CombatTracker.UnfollowLeader', { name: leader.name }),
-        icon: YZEC.Icons.unfollow,
-        condition: li => getCombatant(li).groupId === leader.id,
-        callback: async li => {
-          const c = getCombatant(li);
-          return c.update({
-            [`flags.${MODULE_ID}.cardValue`]: leader.cardValue,
-            [`flags.${MODULE_ID}.-=groupId`]: null,
-          });
-        },
-      });
+        // ❌ Unfollow a Leader
+        groupMenu.push({
+          name: game.i18n.format('YZEC.CombatTracker.UnfollowLeader', { name: leader.name }),
+          icon: YZEC.Icons.unfollow,
+          condition: li => getCombatant(li).groupId === leader.id,
+          callback: async li => {
+            const c = getCombatant(li);
+            return c.update({
+              [`flags.${MODULE_ID}.cardValue`]: leader.cardValue,
+              [`flags.${MODULE_ID}.-=groupId`]: null,
+            });
+          },
+        });
+      }
     }
-
+    */
     return groupMenu.concat(contextMenu);
   }
 
