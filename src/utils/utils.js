@@ -5,7 +5,7 @@ import { CARDS_DRAW_KEEP_STATES, CARD_STACK, MODULE_ID, SETTINGS_KEYS } from '@m
  * @returns {Canvas}
  */
 export function getCanvas() {
-  if (canvas instanceof Canvas && canvas.ready) {
+  if (canvas instanceof foundry.canvas.Canvas && canvas.ready) {
     return canvas;
   }
   throw new Error('No Canvas available');

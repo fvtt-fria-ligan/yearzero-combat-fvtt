@@ -1,10 +1,24 @@
 .combat-sidebar {
+
+  .combat-tracker {
+    .combatant {
+      gap: 4px;
+    }
+    .combatant-controls {
+      gap: 0px;
+      button.inline-control {
+        --button-size: 20px;
+      }
+      }
+  }
+
   li.combatant {
+
     &.drop-target {
       border-color: gold;
       background: rgba(255, 215, 0, .1);
     }
-
+    
     .token-initiative {
       border-right-style: solid;
       border-right-width: 3px;
@@ -17,6 +31,7 @@
       .roll {
         background: url(../../icons/svg/card-hand.svg) no-repeat 50% 50%;
         background-size: 100%;
+        transition: unset;
 
         &:hover {
           background: url(./assets/icons/card-hand-gradient.svg) no-repeat 50% 50%;

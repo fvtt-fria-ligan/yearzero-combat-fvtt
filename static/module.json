@@ -4,9 +4,9 @@
   "description": "Adds YZE combat mechanics to a game system: Card initiative, slow & fast actions, groups, and more!",
   "version": "1.3.3",
   "compatibility": {
-    "minimum": 10,
-    "verified": 12.331,
-    "maximum": 12
+    "minimum": 13.341,
+    "verified": 13.341,
+    "maximum": 13
   },
   "authors": [
     {
@@ -27,7 +27,6 @@
       "url": "https://gitlab.com/florad92"
     }
   ],
-  "localization": "",
   "bugs": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues",
   "media": [],
   "scripts": [],

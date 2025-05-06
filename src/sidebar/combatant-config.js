@@ -16,14 +16,22 @@ import * as Utils from '@utils/utils';
  * @param {Object} options
  */
 export async function onRenderCombatantConfig(app, html, _options) {
-  const combatant = app.object;
+  const combatant = app.document;
   const combat = combatant.combat;
 
   // Resizes the dialog to fit the new stuff.
-  html.css({ height: 'auto' });
+  html.style.height = 'auto';
 
   // Removes the old initiative input.
-  html.find('input[name=initiative]').parents('div.form-group').remove();
+  const inputElement = html.querySelector('input[name=initiative]');
+  let inputParent = inputElement.parentNode;
+  while (inputParent) {
+    if (inputParent.matches('div.form-group')) {
+      inputParent.remove();
+      break;
+    }
+    inputParent = inputParent.parentNode;
+  }
 
   // Gets the cards.
   const deck = Utils.getInitiativeDeck();
@@ -35,8 +43,11 @@ export async function onRenderCombatantConfig(app, html, _options) {
     .partition(c => c.drawn);
 
   // Injects custom HTML.
+  const footer = html.querySelector('footer');
   const template = `modules/${MODULE_ID}/templates/sidebar/combatant-cards-config.hbs`;
-  const content = await renderTemplate(template, {
+  const customHTML = document.createElement('div');
+
+  customHTML.innerHTML = await foundry.applications.handlebars.renderTemplate(template, {
     drawnCard,
     availableCards,
     discardedCards,
@@ -48,11 +59,12 @@ export async function onRenderCombatantConfig(app, html, _options) {
     maxDrawSize: Math.min(YZEC.ultimateMaxDrawSize, game.settings.get(MODULE_ID, SETTINGS_KEYS.MAX_DRAW_SIZE)),
     config: YZEC,
   });
-  html.find('footer').before(content);
+  footer.before(customHTML);
 
   // Adds a new event listener to the button for updating.
-  html.find('footer button').on('click', async () => {
-    const selectedCard = html.find('select#initiative-card')[0];
+  const buttonElement = footer.querySelector('button');
+  buttonElement.addEventListener('click', async () => {
+    const selectedCard = html.querySelector('select#initiative-card');
     if (!selectedCard) return;
     const cardValue = Number(selectedCard.value);
     const card = cards.find(c => c.value === cardValue);

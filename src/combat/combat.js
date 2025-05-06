@@ -100,7 +100,7 @@ export default class YearZeroCombat extends Combat {
 
       // Prepares the messages.
       const template = `modules/${MODULE_ID}/templates/chat/draw-initiative-chatcard.hbs`;
-      const content = await renderTemplate(template, { card });
+      const content = await foundry.applications.handlebars.renderTemplate(template, { card });
 
       const speakerData = {
         scene: game.scenes?.active?.id,
@@ -179,7 +179,7 @@ export default class YearZeroCombat extends Combat {
   async chooseCard(cards, combatant, bestCardValue) {
     const bestCard = cards.find(c => c.value === bestCardValue) ?? cards[0];
     const template = `modules/${MODULE_ID}/templates/combat/choose-card-dialog.hbs`;
-    const content = await renderTemplate(template, {
+    const content = await foundry.applications.handlebars.renderTemplate(template, {
       cards,
       bestCard,
       config: YZEC,
@@ -388,7 +388,7 @@ export default class YearZeroCombat extends Combat {
       autoplay: true,
       loop: false,
     };
-    return AudioHelper.play(data);
+    return foundry.audio.AudioHelper.play(data);
   }
 
   /* ------------------------------------------ */

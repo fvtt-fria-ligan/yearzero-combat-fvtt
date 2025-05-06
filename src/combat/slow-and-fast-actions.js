@@ -17,7 +17,8 @@ export function onRenderTokenHUD(_app, html, options) {
 
   // Remove unused single action status effects from HUD
   for (let i = 1 + speed; i <= 9; i++) {
-    const effects = html.find(`.effect-control[data-status-id="action${i}"]`);
-    effects.remove();
+    for (const effects of html.querySelectorAll(`.effect-control[data-status-id="action${i}"]`)) {
+      effects.remove();
+    }
   }
 }
