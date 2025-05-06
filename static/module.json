@@ -2,7 +2,7 @@
   "id": "yze-combat",
   "title": "Year Zero Engine: ⚔️ Combat",
   "description": "Adds YZE combat mechanics to a game system: Card initiative, slow & fast actions, groups, and more!",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "compatibility": {
     "minimum": 13.341,
     "verified": 13.341,
@@ -20,7 +20,7 @@
     },
     {
       "name": "DrOgres",
-      "url": "https://gitlab.com/florad92"
+      "url": "https://github.com/DrOgres"
     },
     {
       "name": "FloRad",
