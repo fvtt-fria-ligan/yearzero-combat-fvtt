@@ -112,6 +112,16 @@ export function registerSystemSettings() {
     requiresReload: true,
   });
 
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.SHOW_AMBUSHED, {
+    name: 'SETTINGS.ShowAmbushed',
+    hint: 'SETTINGS.ShowAmbushedHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: true,
+    requiresReload: true,
+  });
+
   game.settings.register(MODULE_ID, SETTINGS_KEYS.DUPLICATE_COMBATANTS_ON_START, {
     name: 'SETTINGS.DuplicateCombatantsOnCombatStart',
     hint: 'SETTINGS.DuplicateCombatantsOnCombatStartHint',

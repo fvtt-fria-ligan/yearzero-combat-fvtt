@@ -35,6 +35,10 @@ SETTINGS.InitiativeSortOrderDescending: Fallande (Högst först)
 SETTINGS.InitiativeSortOrderHint: Standardsorteringsordning för initiativ.
 SETTINGS.MaxDrawSize: Maximalt antal kort som kan dras
 SETTINGS.MaxDrawSizeHint: Maximalt antal kort som kan dras samtidigt av en enskild stridsdeltagare.
+SETTINGS.ShowAmbushed: Visa "Utsatt för bakhåll"-knappen
+SETTINGS.ShowAmbushedHint: >-
+  Om ytterligare knapp ska visas i stridsöversikten för att ange att en karaktär är utsatt för bakhåll.
+  Karaktärer utsatta för bakhåll lägger till initiativkortlekens storlek till sitt initiativvärde och hamnar sist i turordningen.
 SETTINGS.SlowAndFastActions: Aktivera långsamma & snabba handlingar
 SETTINGS.SlowAndFastActionsHint: >-
   Om ytterligare knappar för långsamma & snabba handlingar ska visas i stridsöversikten.
@@ -42,6 +46,7 @@ YZEC.Combat.Initiative.ChooseCard: Välj ett kort
 YZEC.Combat.Initiative.Draw: '{name}s initiativ'
 YZEC.Combat.Initiative.ResetDeck: Blanda in alla kastade initiativkort i leken
 YZEC.CombatTracker.AddFollowers: Lägg till valda spelfigurer Som följeslagare
+YZEC.CombatTracker.Ambushed: Utsatt för bakhåll
 YZEC.CombatTracker.ChooseCombatant: Välj en stridsdeltagare
 YZEC.CombatTracker.DuplicateCombatant: Duplicera stridsdeltagare
 YZEC.CombatTracker.FastAction: Snabb handling

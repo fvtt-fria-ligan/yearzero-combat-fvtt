@@ -137,6 +137,20 @@ YZEC.CombatTracker = {
         },
       },
     ],
+    ambushed: [
+      {
+        eventName: 'ambushed-button-clicked',
+        label: 'YZEC.CombatTracker.Ambushed',
+        icon: 'fas fa-face-surprise',
+        id: 'ambushed-button',
+        property: 'ambushed',
+        visibility: 'owner',
+        condition: (_combat, combatant) => {
+          const notInGroup = !combatant.groupId;
+          return notInGroup;
+        },
+      },
+    ],
   },
 };
 
