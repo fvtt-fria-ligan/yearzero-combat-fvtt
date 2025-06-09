@@ -113,16 +113,6 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
   _getEntryContextOptions() {
     const contextMenu = super._getEntryContextOptions();
 
-    // The combat tracker will initialize context menus regardless of there being a combat active
-    if (!game.combat) return contextMenu;
-
-    // Scoped Constants
-    /** @type {YearZeroCombat} */
-    const combat = game.combat;
-
-    /** @type {Collection.<YearZeroCombatant>} EmbeddedCollection */
-    const combatants = combat.combatants;
-
     /** @returns {YearZeroCombatant} */
     const getCombatant = li => this.viewed.combatants.get(li.dataset.combatantId);
 
@@ -144,13 +134,13 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
         const combatant = getCombatant(li);
         if (combatant.groupId) return false;
         return game.user.isGM &&
-          combatants.filter(c => c.initiative && !c.groupId).length > 1;
+          game.combat.combatants.filter(c => c.initiative && !c.groupId).length > 1;
       },
       callback: async li => {
         const combatant = getCombatant(li);
         const template = `modules/${MODULE_ID}/templates/combat/choose-combatant-dialog.hbs`;
         const content = await foundry.applications.handlebars.renderTemplate(template, {
-          combatants: combatants.filter(c => c.initiative && !c.groupId && c.id !== combatant.id),
+          combatants: game.combat.combatants.filter(c => c.initiative && !c.groupId && c.id !== combatant.id),
         });
         const targetId = await Dialog.prompt({
           title: game.i18n.localize('YZEC.CombatTracker.SwapInitiative'),
@@ -158,7 +148,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
           callback: html => html.find('#initiative-swap')[0]?.value,
           options: { classes: ['dialog', game.system.id, MODULE_ID] },
         });
-        const target = combat.combatants.get(targetId);
+        const target = game.combat.combatants.get(targetId);
         if (target) combatant.swapInitiativeCard(target);
       },
     });
@@ -241,12 +231,12 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
             hidden: t.hidden,
           }));
 
-          const cmbts = await combat.createEmbeddedDocuments('Combatant', createData);
+          const cmbts = await game.combat.createEmbeddedDocuments('Combatant', createData);
 
           // For existing combatants, just add them.
           if (existingCombatantTokens.length > 0) {
             for (const t of existingCombatantTokens) {
-              const c = combat.getCombatantByToken(t.id);
+              const c = game.combat.getCombatantByToken(t.id);
               if (c) cmbts.push(c);
             }
           }
