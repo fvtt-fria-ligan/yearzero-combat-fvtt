@@ -298,10 +298,7 @@ export default class YearZeroCombatant extends Combatant {
       const thisActions = this.#getSingleActionStatus(this);
       const combatantActions = this.#getSingleActionStatus(tCombatant);
 
-      const result = await this.combat.updateEmbeddedDocuments('Combatant', updates, {
-        turnEvents: false,
-        yzecSwapInitiative: true,
-      });
+      const result = await this.combat.updateEmbeddedDocuments('Combatant', updates, { combatTurn: this.combat.turn });
 
       this.#updateSingleActionStatus(this, thisActions);
       if (this.tokenId != tCombatant.tokenId) {
@@ -309,10 +306,7 @@ export default class YearZeroCombatant extends Combatant {
       }
       return result;
     }
-    return this.combat.updateEmbeddedDocuments('Combatant', updates, {
-      turnEvents: false,
-      yzecSwapInitiative: true,
-    });
+    return this.combat.updateEmbeddedDocuments('Combatant', updates, { combatTurn: this.combat.turn });
   }
 
 
@@ -342,16 +336,5 @@ export default class YearZeroCombatant extends Combatant {
         },
       },
     });
-  }
-
-  // Fix for turn order changing when swapping initiative.
-  // See https://github.com/foundryvtt/foundryvtt/issues/12990
-  // The override may be removed if/when the github issue is addressed
-  /** @override */
-  static async _preUpdateOperation(_documents, operation, _user) {
-    await super._preUpdateOperation(_documents, operation, _user);
-    if (operation.yzecSwapInitiative) {
-      delete operation.combatTurn;
-    }
   }
 }
