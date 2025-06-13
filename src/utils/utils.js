@@ -44,10 +44,13 @@ export function getInitiativeDeckDiscardPile(strict = false) {
 export async function resetInitiativeDeck(chatNotification = false, toExclude = []) {
   const initiativeDeck = getInitiativeDeck(true);
   const discardPile = getInitiativeDeckDiscardPile(true);
-  const toRecall = discardPile.cards.filter(c => !toExclude.includes(c.value)).map(c => c.id);
+  const toDiscard = initiativeDeck.cards.filter(c => toExclude.includes(c.value)).map(c => c.id);
 
-  await discardPile.pass(initiativeDeck, toRecall, { chatNotification });
+  await initiativeDeck.recall({ chatNotification });
   await initiativeDeck.shuffle({ chatNotification });
+  if (toDiscard.length > 0) {
+    await initiativeDeck.pass(discardPile, toDiscard, { chatNotification });
+  }
 
   ui.notifications.info('YZEC.Combat.Initiative.ResetDeck', { localize: true });
 }
