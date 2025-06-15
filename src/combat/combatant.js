@@ -298,7 +298,7 @@ export default class YearZeroCombatant extends Combatant {
       const thisActions = this.#getSingleActionStatus(this);
       const combatantActions = this.#getSingleActionStatus(tCombatant);
 
-      const result = await this.combat.updateEmbeddedDocuments('Combatant', updates, { turnEvents: false });
+      const result = await this.combat.updateEmbeddedDocuments('Combatant', updates, { combatTurn: this.combat.turn });
 
       this.#updateSingleActionStatus(this, thisActions);
       if (this.tokenId != tCombatant.tokenId) {
@@ -306,7 +306,7 @@ export default class YearZeroCombatant extends Combatant {
       }
       return result;
     }
-    return this.combat.updateEmbeddedDocuments('Combatant', updates, { turnEvents: false });
+    return this.combat.updateEmbeddedDocuments('Combatant', updates, { combatTurn: this.combat.turn });
   }
 
 
