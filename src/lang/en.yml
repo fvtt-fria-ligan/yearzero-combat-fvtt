@@ -43,6 +43,11 @@ SETTINGS.InitiativeSortOrderDescending: Descending (Highest first)
 SETTINGS.InitiativeSortOrderHint: Default sort order for initiative.
 SETTINGS.MaxDrawSize: Maximum Draw Size
 SETTINGS.MaxDrawSizeHint: Maximum number of cards that can be drawn at once by a single combatant.
+SETTINGS.ShowAmbushed: Enable Ambushed button
+SETTINGS.ShowAmbushedHint: >-
+  Whether to show an additional button for Ambushed characters in the Combat Tracker.
+  Ambushed characters get the initiative deck size added to their initiative number
+  and therefore always act last in the round.
 SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
 SETTINGS.SlowAndFastActionsHint: >-
   Whether to show additional buttons for Slow & Fast Actions in the Combat
@@ -56,6 +61,7 @@ YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
 YZEC.Combat.Initiative.NotEnoughCards: Not enough cards in the initiative deck
 YZEC.Combat.Initiative.ResetDeck: Shuffled all the discarded initiative cards back into the deck
 YZEC.CombatTracker.AddFollowers: Add Selected Tokens As Followers
+YZEC.CombatTracker.Ambushed: Ambushed
 YZEC.CombatTracker.ChooseCombatant: Choose a Combatant
 YZEC.CombatTracker.DuplicateCombatant: Duplicate Combatant
 YZEC.CombatTracker.FastAction: Fast Action

@@ -81,11 +81,12 @@ export default class YearZeroCombat extends Combat {
         card = cards[0];
       }
 
+      const ambushedModifier = combatant.ambushed ? initiativeDeck?.cards?.size : 0;
 
       // Updates the combatant.
       const updateData = {
-        initiative: card.value,
-        [`flags.${MODULE_ID}.cardValue`]: card.value,
+        initiative: card.value + ambushedModifier,
+        [`flags.${MODULE_ID}.cardValue`]: card.value + ambushedModifier,
         [`flags.${MODULE_ID}.cardName`]: card.description || card.name,
       };
       updates.push({ _id: combatant.id, ...updateData });

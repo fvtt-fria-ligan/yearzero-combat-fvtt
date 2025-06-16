@@ -35,6 +35,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       action8: YearZeroCombatTracker.#onCombatantControl,
       action9: YearZeroCombatTracker.#onCombatantControl,
       lockInitiative: YearZeroCombatTracker.#onCombatantControl,
+      ambushed: YearZeroCombatTracker.#onCombatantControl,
     } };
 
   /** @override */
@@ -517,6 +518,10 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
 
         if (game.settings.get(MODULE_ID, SETTINGS_KEYS.RESET_EACH_ROUND)) {
           cfg.buttons.unshift(...YZEC.CombatTracker.DefaultCombatantControls.lockInitiative);
+        }
+
+        if (game.settings.get(MODULE_ID, SETTINGS_KEYS.SHOW_AMBUSHED)) {
+          cfg.buttons.unshift(...YZEC.CombatTracker.DefaultCombatantControls.ambushed);
         }
 
         CONFIG.YZE_COMBAT.CombatTracker.config = cfg;
