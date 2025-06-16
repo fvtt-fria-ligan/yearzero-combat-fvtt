@@ -47,7 +47,7 @@ SETTINGS.ShowAmbushed: Enable Ambushed button
 SETTINGS.ShowAmbushedHint: >-
   Whether to show an additional button for Ambushed characters in the Combat Tracker.
   Ambushed characters get the initiative deck size added to their initiative number
-  and therefore act last in the round.
+  and therefore always act last in the round.
 SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
 SETTINGS.SlowAndFastActionsHint: >-
   Whether to show additional buttons for Slow & Fast Actions in the Combat

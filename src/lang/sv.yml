@@ -38,7 +38,7 @@ SETTINGS.MaxDrawSizeHint: Maximalt antal kort som kan dras samtidigt av en enski
 SETTINGS.ShowAmbushed: Visa "Utsatt för bakhåll"-knappen
 SETTINGS.ShowAmbushedHint: >-
   Om ytterligare knapp ska visas i stridsöversikten för att ange att en karaktär är utsatt för bakhåll.
-  Karaktärer utsatta för bakhåll lägger till initiativkortlekens storlek till sitt initiativvärde och hamnar sist i turordningen.
+  Karaktärer utsatta för bakhåll lägger till initiativkortlekens storlek till sitt initiativvärde och hamnar alltid sist i turordningen.
 SETTINGS.SlowAndFastActions: Aktivera långsamma & snabba handlingar
 SETTINGS.SlowAndFastActionsHint: >-
   Om ytterligare knappar för långsamma & snabba handlingar ska visas i stridsöversikten.
