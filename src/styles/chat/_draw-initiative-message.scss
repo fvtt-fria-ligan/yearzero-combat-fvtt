@@ -5,6 +5,10 @@
 /*    https://gitlab.com/peginc/swade         */
 /* ------------------------------------------ */
 
+.chat-message .message-content:has(.initiative-draw) {
+  overflow: unset;
+}
+
 .chat-message .initiative-draw {
   display: flex;
   align-items: center;
