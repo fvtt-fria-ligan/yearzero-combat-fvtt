@@ -6,7 +6,7 @@
 /* ------------------------------------------ */
 
 .chat-message .message-content:has(.initiative-draw) {
-  overflow: unset;
+  overflow: visible;
 }
 
 .chat-message .initiative-draw {
