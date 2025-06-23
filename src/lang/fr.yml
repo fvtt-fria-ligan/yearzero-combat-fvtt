@@ -15,10 +15,10 @@ SETTINGS.ActorDrawSizeAttributeHint: >-
   (ex: system.reflexes.value).
 SETTINGS.AutoDraw: Pioche d'initiative automatique
 SETTINGS.AutoDrawHint: Pioche automatiquement les cartes d'initiative.
-SETTINGS.SlowAndFastActions: Activer les Actions Rapides & Lentes
-SETTINGS.SlowAndFastActionsHint: >-
-  Affiche des boutons supplémentaires dans l'onglet combat
-  pour les actions rapides et lentes.
+SETTINGS.AutoSelectBestCard: Choisir la meilleure carte
+SETTINGS.AutoSelectBestCardHint: >-
+  Renonce au dialogue de sélection des cartes en cas de tirage multiple de cartes d'initiative,
+  et opte à la place pour la meilleure carte d'initiative (la plus rapide).
 SETTINGS.InitiativeDeck: ID du Deck d'Initiative
 SETTINGS.InitiativeDeckHint: ID ou nom du deck d'initiative depuis lequel les cartes d'initiative sont piochées.
 SETTINGS.DiscardPile: ID de la Pile de Défausse
@@ -30,13 +30,32 @@ SETTINGS.InitiativeMessagingHint: Affiche un message dans le chat lorsqu'une car
 SETTINGS.InitiativeResetDeckOnCombatStart: Réinitialiser le Deck d'Initiative
 SETTINGS.InitiativeResetDeckOnCombatStartHint: >-
   Reprendre et mélanger toutes les cartes d'initiative
-  lors d'un démarrage d'un nouveau combat.
+  lors du démarrage d'un nouveau combat.
+SETTINGS.InitiativeResetEachRound: Réinitialiser l'Initiative à Chaque Tour
+SETTINGS.InitiativeResetEachRoundHint: >-
+  Réinitialise l'initiative au début de chaque tour.
+  Si l'option « Pioche d'initiative automatique » est activée, une nouvelle initiative sera tirée à chaque tour.
+  Si l'option « Réinitialiser le Deck d'Initiative » est activée,
+  le Deck d'initiative sera également réinitialisé au début de chaque tour.
 SETTINGS.InitiativeSortOrder: Ordre de Tri d'Initiative
 SETTINGS.InitiativeSortOrderHint: Définit l'ordre de tri par défaut de l'initiative.
 SETTINGS.InitiativeSortOrderAscending: Ascendant (plus petit en premier)
 SETTINGS.InitiativeSortOrderDescending: Descendant (plus grand en premier)
 SETTINGS.MaxDrawSize: Taille de Pioche Maximum
 SETTINGS.MaxDrawSizeHint: Nombre maximum de cartes d'initiative pouvant être piochées en une fois par un combattant.
+SETTINGS.ShowAmbushed: Activer le Bouton Pris En Embuscade
+SETTINGS.ShowAmbushedHint: >-
+  Affiche un bouton supplémentaire pour les personnages pris en embuscade dans l'onglet combat.
+  Les personnages pris en embuscade ont la taille de la pioche d'initiative ajoutée à leur valeur d'initiative
+  et agissent donc toujours en dernier dans le tour.
+SETTINGS.SingleAction: Activer une Action Unique
+SETTINGS.SingleActionHint: >-
+  Affiche un bouton pour le suivi d'une action unique dans l'onglet combat,
+  par exemple pour Dragonbane.
+SETTINGS.SlowAndFastActions: Activer les Actions Rapides & Lentes
+SETTINGS.SlowAndFastActionsHint: >-
+  Affiche des boutons supplémentaires dans l'onglet combat
+  pour les actions rapides et lentes.
 YZEC.Combat.Initiative.ChooseCard: Choisir une Carte
 YZEC.Combat.Initiative.Draw: Carte d'initiative de {name}
 YZEC.Combat.Initiative.DrawQty: Combien de Cartes à Piocher
@@ -52,17 +71,20 @@ YZEC.CombatantConfig.KeepStateBest: Meilleure
 YZEC.CombatantConfig.KeepStateWorst: Pire
 YZEC.CombatantConfig.Speed: Vitesse
 YZEC.CombatTracker.AddFollowers: Ajouter les Jetons Sélectionnés dans le Groupe
+YZEC.CombatTracker.Ambushed: Pris en embuscade
 YZEC.CombatTracker.ChooseCombatant: Choisir un Combattant
 YZEC.CombatTracker.DuplicateCombatant: Copier le Combattant
 YZEC.CombatTracker.FastAction: Action Rapide
 YZEC.CombatTracker.FollowLeader: Suivre {name}
 YZEC.CombatTracker.GroupLeader: Chef de Groupe
 YZEC.CombatTracker.InitiativeDeckReset: Réinitialiser le Deck d'Initiative
+YZEC.CombatTracker.LockInitiative: Verrouiller l'initiative
 YZEC.CombatTracker.MakeGroupLeader: Nommer Chef de Groupe
 YZEC.CombatTracker.RemoveGroupLeader: Défaire Chef de Groupe
 YZEC.CombatTracker.ResetColor: Réinitialiser
 YZEC.CombatTracker.SelectColor: Sélectionner une couleur
 YZEC.CombatTracker.SetGroupColor: Sélectionner la Couleur du Groupe
+YZEC.CombatTracker.SingleAction: Action
 YZEC.CombatTracker.SlowAction: Action Lente
 YZEC.CombatTracker.SubmitColor: Envoyer
 YZEC.CombatTracker.SwapInitiative: Echanger l'Initiative
