@@ -125,7 +125,7 @@ YZEC.CombatTracker = {
     lockInitiative: [
       {
         eventName: 'lock-initiative-button-clicked',
-        label: 'YZEC.CombatTracker.lockInitiative',
+        label: 'YZEC.CombatTracker.LockInitiative',
         icon: 'fas fa-lock',
         id: 'lock-initiative-button',
         property: 'lockInitiative',

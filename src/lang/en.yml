@@ -48,13 +48,13 @@ SETTINGS.ShowAmbushedHint: >-
   Whether to show an additional button for Ambushed characters in the Combat Tracker.
   Ambushed characters get the initiative deck size added to their initiative number
   and therefore always act last in the round.
+SETTINGS.SingleAction: Enable Single Action
+SETTINGS.SingleActionHint: >-
+  Whether to show a button for a single action in the Combat Tracker, for e.g. Dragonbane.
 SETTINGS.SlowAndFastActions: Enable Slow & Fast Actions
 SETTINGS.SlowAndFastActionsHint: >-
   Whether to show additional buttons for Slow & Fast Actions in the Combat
   Tracker.
-SETTINGS.SingleAction: Enable Single Action
-SETTINGS.SingleActionHint: >-
-  Whether to show a button for a single action in the Combat Tracker, for e.g. Dragonbane.
 YZEC.Combat.Initiative.ChooseCard: Choose a Card
 YZEC.Combat.Initiative.Draw: '{name}''s Initiative'
 YZEC.Combat.Initiative.DrawQty: How many Cards to Draw
@@ -68,6 +68,7 @@ YZEC.CombatTracker.FastAction: Fast Action
 YZEC.CombatTracker.FollowLeader: Follow {name}
 YZEC.CombatTracker.GroupLeader: Group Leader
 YZEC.CombatTracker.InitiativeDeckReset: Reset Initiative Deck
+YZEC.CombatTracker.LockInitiative: Lock Initiative
 YZEC.CombatTracker.MakeGroupLeader: Make Group Leader
 YZEC.CombatTracker.RemoveGroupLeader: Remove Group Leader
 YZEC.CombatTracker.ResetColor: Reset
@@ -78,7 +79,6 @@ YZEC.CombatTracker.SlowAction: Slow Action
 YZEC.CombatTracker.SubmitColor: Submit
 YZEC.CombatTracker.SwapInitiative: Swap Initiative
 YZEC.CombatTracker.UnfollowLeader: Unfollow {name}
-YZEC.CombatTracker.lockInitiative: Lock Initiative
 YZEC.CombatantConfig.DrawSize: Draw Size
 YZEC.CombatantConfig.InitiativeCard: Initiative Card
 YZEC.CombatantConfig.InitiativeCardAvailable: Available
