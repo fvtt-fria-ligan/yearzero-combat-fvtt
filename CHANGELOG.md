@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.3.5...1.4.0) (2025-06-23)
+
+
+### Features
+
+* ✨ Ambushed toggle makes ambushed combatants go last in the round ([9eff2f3](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/9eff2f3a5013a6a7ff28ff9a0f6a3ef9e7579ac2))
+
+
+### Bug Fixes
+
+* 🐛 Better fix for Swap initiative changes turn order ([221ee2a](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/221ee2a0f3117a6290f2d5585b781662edfdf01a))
+* 🐛 Changed overflow from unset to visible ([015f96d](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/015f96d12e0b5ca37a4dc6a88163ba31e7ff27cf))
+* 🐛 Drawn card image ([205a68d](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/205a68da09f030dbdd4d2d0fd67586cdedcfe3a4))
+* 🐛 Duplicate cards in initiative deck ([8a17766](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/8a1776622182ddb2c43c6824067e6fea49548179))
+* 🐛 swap initiative changes turn order ([6fe7254](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/6fe7254d529922396d64a8ebeece0fbd62583a7c))
+* 🐛 Swap initiative menu item is not visible ([87b1414](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/87b14142428b70cac7fbc1c822f599f88e9509f4))
+* 🐛 updated EN and SV language files according to feedback. ([50faadf](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/50faadf9358aced7ed8341558bc8e61fe7b0f539))
+
 ### [1.3.1](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.3.0...1.3.1) (2024-06-06)
 
 
