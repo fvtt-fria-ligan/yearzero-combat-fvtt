@@ -62,7 +62,7 @@ YZEC.CombatTracker.SlowAction: Långsam handling
 YZEC.CombatTracker.SubmitColor: Skicka in
 YZEC.CombatTracker.SwapInitiative: Byt initiativ
 YZEC.CombatTracker.UnfollowLeader: 'Sluta följ {name}'
-YZEC.CombatTracker.lockInitiative: Lås initiativ
+YZEC.CombatTracker.LockInitiative: Lås initiativ
 YZEC.CombatantConfig.DrawSize: Antal kort som ska dras
 YZEC.CombatantConfig.InitiativeCard: Initiativkort
 YZEC.CombatantConfig.InitiativeCardAvailable: Tillgängligt

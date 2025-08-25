@@ -19,6 +19,8 @@ SETTINGS.AutoSelectBestCard: Choisir la meilleure carte
 SETTINGS.AutoSelectBestCardHint: >-
   Renonce au dialogue de sélection des cartes en cas de tirage multiple de cartes d'initiative,
   et opte à la place pour la meilleure carte d'initiative (la plus rapide).
+SETTINGS.Configured: Module configuré
+SETTINGS.ConfiguredHint: Indique si le module a été configuré via l'API. Décochez cette case pour réinitialiser.
 SETTINGS.InitiativeDeck: ID du Deck d'Initiative
 SETTINGS.InitiativeDeckHint: ID ou nom du deck d'initiative depuis lequel les cartes d'initiative sont piochées.
 SETTINGS.DiscardPile: ID de la Pile de Défausse
