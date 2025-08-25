@@ -162,6 +162,15 @@ export function registerSystemSettings() {
     },
     default: CONFIG.YZE_COMBAT.ultimateMaxDrawSize,
   });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.CONFIGURED, {
+    name: 'SETTINGS.Configured',
+    hint: 'SETTINGS.ConfiguredHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+  });
 }
 
 /** @param {number} _v value */

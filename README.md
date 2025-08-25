@@ -28,8 +28,16 @@ Go to the module's settings, and add the ID or name of the initiative deck you w
 Listen for the following Hook to add your own YZE Combat's configuration:
 
 ```js
-Hooks.once('yzeCombatInit', async yzec => {
-  // Sets the initiative deck's ID or name in the game settings.
+// Calling the `yzeCombatReady` will check if the current user is a GM or not.
+// Calling the `yzeCombatInit` will bypass this validation.
+// These configurations will only be executed Once. This means that after you
+//   call the `register` method, calling it again will not update the settings.
+// If you want to reconfigure, use the parameter `once` set to `false`.
+// The methods `setInitiativeDeck` and `setDiscardPile` do not mark the module
+//   as configured per default. If you are not calling the `register` method,
+//   set the `finishConfiguration` to `true` to mark the module as configured.
+Hooks.once('yzeCombatReady', async (yzec) => {
+  // Sets the initiative deck's ID in the game settings.
   // If you don't, a new default one will be created and linked in the settings.
   await yzec.setInitiativeDeck('azerty0123456789');
 

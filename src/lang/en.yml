@@ -17,6 +17,8 @@ SETTINGS.AutoSelectBestCard: Choose Best Card
 SETTINGS.AutoSelectBestCardHint: >-
   Forgo the card selection dialog on multiple drawn initiative cards, instead opting for
   the best (fastest) initiative card.
+SETTINGS.Configured: Module Configured
+SETTINGS.ConfiguredHint: Whether the module has been configured via API. Uncheck to reset.
 SETTINGS.DiscardPile: Discard Pile ID
 SETTINGS.DiscardPileHint: ID or name of the Discard pile where to put the drawn initiative cards.
 SETTINGS.DuplicateCombatantsOnCombatStart: Duplicate Combatants

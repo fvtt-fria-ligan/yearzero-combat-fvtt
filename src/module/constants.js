@@ -51,6 +51,7 @@ export const SETTINGS_KEYS = {
   /** @type {'resetEachRound'} */ RESET_EACH_ROUND: 'resetEachRound',
   /** @type {'autoSelectBestCard'} */ AUTO_SELECT_BEST_CARD: 'autoSelectBestCard',
   /** @type {'showAmbushed'} */ SHOW_AMBUSHED: 'showAmbushed',
+  /** @type {'configured'} */ CONFIGURED: 'configured',
 };
 
 /** @enum {string} */

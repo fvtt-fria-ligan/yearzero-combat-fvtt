@@ -5,7 +5,7 @@
   "version": "1.4.0",
   "compatibility": {
     "minimum": 13.341,
-    "verified": 13.345,
+    "verified": 13.347,
     "maximum": 13
   },
   "authors": [
@@ -25,6 +25,11 @@
     {
       "name": "FloRad",
       "url": "https://gitlab.com/florad92"
+    },
+    {
+      "name": "CussaMitre",
+      "url": "https://hodpub.com",
+      "discord": "CussaMitre"
     }
   ],
   "bugs": "https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/issues",
