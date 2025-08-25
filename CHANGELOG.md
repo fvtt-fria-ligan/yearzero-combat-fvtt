@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.4.0...1.5.0) (2025-08-25)
+
+### Bug Fixes
+
+* 🐛 Client Hooks control module configuration ([48bea18](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/48bea18667c1aa4c099f25d903149ca57c089f40))
+
 ## [1.4.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.3.5...1.4.0) (2025-06-23)
 
 
