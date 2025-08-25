@@ -167,7 +167,7 @@ export function registerSystemSettings() {
     name: 'SETTINGS.Configured',
     hint: 'SETTINGS.ConfiguredHint',
     scope: 'world',
-    config: false,
+    config: true,
     type: Boolean,
     default: false,
   });
