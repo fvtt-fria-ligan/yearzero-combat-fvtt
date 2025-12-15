@@ -76,6 +76,18 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
   }
 
   /** @override */
+  async _onRender(context, options) {
+    // Check if group leader status has changed to 'dead', if so, remove from group and find new leader.
+    // This is needed in case the defeated status is changed outside of the combat tracker.
+    for (const combatant of this.viewed.combatants) {
+      if (combatant.isGroupLeader && combatant.isDefeated) {
+        await this.#removeFromGroup(combatant);
+      }
+    }
+    await super._onRender(context, options);
+  }
+
+  /** @override */
   _formatEffectsTooltip(effects) {
     if (!effects.length) return '';
     const ul = document.createElement('ul');
@@ -181,7 +193,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
 
     // 🚫 Remove Group Leader
     groupMenu.push({
-      name: 'YZEC.CombatTracker.RemoveGroupLeader',
+      name: 'YZEC.CombatTracker.removeFromGroup',
       icon: YZEC.Icons.removeLeader,
       condition: li => {
         const c = getCombatant(li);
@@ -361,14 +373,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
 
   /* ------------------------------------------ */
 
-  /**
-   * @param {YearZeroCombatant} combatant
-   * @override
-   */
-  async _onToggleDefeatedStatus(combatant) {
-    await combatTrackerOnToggleDefeatedStatus(combatant);
-
-    // Finds a new group leader.
+  async #removeFromGroup(combatant) {
     if (combatant.isGroupLeader) {
       const newLeader = await this.viewed.combatants.find(f => f.groupId === combatant.id && !f.isDefeated);
       if (!newLeader) return;
@@ -382,6 +387,17 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
     }
     if (combatant.groupId) {
       await combatant.unsetGroupId();
+    }
+  }
+
+  /**
+   * @param {YearZeroCombatant} combatant
+   * @override
+   */
+  async _onToggleDefeatedStatus(combatant) {
+    await combatTrackerOnToggleDefeatedStatus(combatant);
+    if (combatant.isGroupLeader && combatant.isDefeated) {
+      await this.#removeFromGroup(combatant);
     }
   }
 
