@@ -193,7 +193,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
 
     // 🚫 Remove Group Leader
     groupMenu.push({
-      name: 'YZEC.CombatTracker.removeFromGroup',
+      name: 'YZEC.CombatTracker.RemoveGroupLeader',
       icon: YZEC.Icons.removeLeader,
       condition: li => {
         const c = getCombatant(li);
