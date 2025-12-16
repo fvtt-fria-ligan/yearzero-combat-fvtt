@@ -220,7 +220,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       condition: li => {
         const combatant = getCombatant(li);
         const selectedTokens = canvas?.tokens?.controlled || [];
-        const followerTokens = selectedTokens?.filter(t => t.actor.id != combatant.actorId);
+        const followerTokens = selectedTokens?.filter(t => t.id != combatant.tokenId);
         return canvas?.ready &&
           followerTokens.length > 0 &&
           followerTokens.every(t => t.actor?.isOwner);
@@ -228,7 +228,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       callback: async li => {
         const combatant = getCombatant(li);
         const selectedTokens = canvas?.tokens?.controlled;
-        const followerTokens = selectedTokens?.filter(t => t.actor.id != combatant.actorId);
+        const followerTokens = selectedTokens?.filter(t => t.id != combatant.tokenId);
 
         if (followerTokens) {
           await combatant.promoteLeader();
