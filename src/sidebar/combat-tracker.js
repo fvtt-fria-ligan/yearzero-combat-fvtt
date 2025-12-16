@@ -186,7 +186,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       icon: YZEC.Icons.makeLeader,
       condition: li => {
         const c = getCombatant(li);
-        return !c.isGroupLeader && c.actor?.isOwner;
+        return game.user.isGM && !c.isGroupLeader && c.actor?.isOwner;
       },
       callback: async li => getCombatant(li).promoteLeader(),
     });
@@ -197,7 +197,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       icon: YZEC.Icons.removeLeader,
       condition: li => {
         const c = getCombatant(li);
-        return c.isGroupLeader && c.actor?.isOwner;
+        return game.user.isGM && c.isGroupLeader && c.actor?.isOwner;
       },
       callback: async li => getCombatant(li).unpromoteLeader(),
     });
@@ -208,7 +208,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       icon: YZEC.Icons.color,
       condition: li => {
         const c = getCombatant(li);
-        return c.isGroupLeader && c.actor?.isOwner;
+        return game.user.isGM && c.isGroupLeader && c.actor?.isOwner;
       },
       callback: li => new YearZeroCombatGroupColor(getCombatant(li)).render(true),
     });
@@ -221,7 +221,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
         const combatant = getCombatant(li);
         const selectedTokens = canvas?.tokens?.controlled || [];
         const followerTokens = selectedTokens?.filter(t => t.id != combatant.tokenId);
-        return canvas?.ready &&
+        return game.user.isGM && canvas?.ready &&
           followerTokens.length > 0 &&
           followerTokens.every(t => t.actor?.isOwner);
       },
@@ -274,7 +274,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       icon: YZEC.Icons.unfollow,
       condition: li => {
         const c = getCombatant(li);
-        return c.groupId && !c.isGroupLeader && c.actor?.isOwner;
+        return game.user.isGM && c.groupId && !c.isGroupLeader && c.actor?.isOwner;
       },
       callback: async li => {
         const combatant = getCombatant(li);
