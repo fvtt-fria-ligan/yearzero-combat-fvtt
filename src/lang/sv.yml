@@ -9,6 +9,8 @@ SETTINGS.ActorDrawSizeAttributeHint: >-
 SETTINGS.ActorSpeedAttribute: Karaktärens attribut för hastighet
 SETTINGS.ActorSpeedAttributeHint: >-
   Egenskapsnyckeln i karaktärens data som definierar hur många initiativkort som behålls (hastighet) av stridsdeltagaren (t.ex. system.speed.value).
+ETTINGS.AllowReroll: Dra annat initiativ
+SETTINGS.AllowRerollHint: Om spelare ska kunna dra ett annat initiativkort.
 SETTINGS.AutoDraw: Automatisk initiativdragning
 SETTINGS.AutoDrawHint: Om initiativkort ska dras automatiskt när striden börjar.
 SETTINGS.AutoSelectBestCard: Välj bästa kortet

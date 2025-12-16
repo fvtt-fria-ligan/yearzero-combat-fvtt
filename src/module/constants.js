@@ -52,6 +52,7 @@ export const SETTINGS_KEYS = {
   /** @type {'autoSelectBestCard'} */ AUTO_SELECT_BEST_CARD: 'autoSelectBestCard',
   /** @type {'showAmbushed'} */ SHOW_AMBUSHED: 'showAmbushed',
   /** @type {'configured'} */ CONFIGURED: 'configured',
+  /** @type {'allowReroll'} */ ALLOW_REROLL: 'allowReroll',
 };
 
 /** @enum {string} */
