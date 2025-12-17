@@ -224,6 +224,7 @@ export default class YearZeroCombatant extends Combatant {
       [`flags.${MODULE_ID}`]: {
         cardValue: null,
         cardName: '',
+        lockInitiative: false,
       },
     });
   }

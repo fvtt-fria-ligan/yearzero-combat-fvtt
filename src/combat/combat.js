@@ -269,6 +269,12 @@ export default class YearZeroCombat extends Combat {
     if (soft) await this.update({ combatants: this.combatants.toObject() }, { diff: false });
     else await this.update({ turn: 0, combatants: this.combatants.toObject() }, { diff: false });
 
+    // Reset deck here, so that other modules calling resetAll() get the correct deck state.
+    if (!soft) {
+      const lockedCards = this.combatants.filter(c => c.lockInitiative).map(c => c.cardValue);
+      await Utils.resetInitiativeDeck(true, lockedCards);
+    }
+
     return this;
   }
 
