@@ -37,7 +37,12 @@ export default class YearZeroCards extends Cards {
     for (const card of drawn) {
       const createData = card.toObject();
       if (card.isHome || !createData.origin) createData.origin = this.id;
-      toCreate.push(createData);
+      // Card may already exist in discard pile if the initiative deck was reshuffled while
+      // a card selection dialog was open and the player selected the same card as someone else.
+      // In this case, allow the player to "draw" the duplicate, but don't create a duplicate in the discard pile.
+      if (!to.cards.contents.find(c => c.id === card.id)) {
+        toCreate.push(createData);
+      }
       if (card.isHome) toUpdate.push({ _id: card.id, drawn: true });
       else toDelete.push(card.id);
     }
