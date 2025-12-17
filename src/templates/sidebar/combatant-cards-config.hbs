@@ -1,3 +1,4 @@
+<hr>
 {{#if inGroup}}
 	<div class="form-group">
 		<label>{{localize "YZEC.CombatTracker.GroupLeader"}}</label>
@@ -32,7 +33,7 @@
 	</div>
 	<div class="form-group">
 		<label>{{localize "YZEC.CombatantConfig.DrawSize"}}</label>
-		<rangePicker name="flags.yze-combat.drawSize" value=drawSize min=1 max=maxDrawSize step=1/>
+		{{rangePicker name="flags.yze-combat.drawSize" value=drawSize min=1 max=maxDrawSize step=1}}
 	</div>
 	<div class="form-group">
 		<label>{{localize "YZEC.CombatantConfig.KeepState"}}</label>
@@ -40,8 +41,10 @@
 			{{selectOptions config.keepStates selected=keepState localize=true}}
 		</select>
 	</div>
+	<!-- Always disabled, so will comment out for now
 	<div class="form-group">
 		<label>{{localize "YZEC.CombatantConfig.Speed"}}</label>
 		<input class="disabled" type="number" value="{{speed}}" disabled/>
 	</div>
+	-->
 {{/if}}
