@@ -556,6 +556,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
    */
   static #setTurnProperties(combatant, turn) {
     const flags = combatant.flags[MODULE_ID];
+    if (!flags) return {};
     // FIXME: Figure out why these turn up as flags.
     delete flags.fastAction;
     delete flags.slowAction;
