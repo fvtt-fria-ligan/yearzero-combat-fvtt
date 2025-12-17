@@ -1,6 +1,7 @@
 import { YZEC } from '@module/config';
 import { CARDS_DRAW_KEEP_STATES, MODULE_ID, SETTINGS_KEYS } from '@module/constants';
 import { getCanvas, getCombatantSortOrderModifier } from '@utils/utils';
+import { getCombatantsSharingToken } from './duplicate-combatant.js';
 
 export default class YearZeroCombatant extends Combatant {
 
@@ -336,5 +337,26 @@ export default class YearZeroCombatant extends Combatant {
         },
       },
     });
+  }
+
+  /**
+   * Update the value of the tracked resource for this Combatant.
+   * @returns {null|object}
+   * @override
+   */
+  updateResource() {
+    super.updateResource();
+
+    // updateResource() is only called on token.combatant, so if there are duplicate combatants
+    // sharing the same token, we need to update their resource values as well.
+
+    // Grab the superclass prototype (relative to this instance’s class)
+    const superProto = Object.getPrototypeOf(Object.getPrototypeOf(this));
+    const superUpdateResource = superProto.updateResource;
+
+    for (const c of getCombatantsSharingToken(this)) {
+      if (c.id === this.id) continue;
+      superUpdateResource.call(c);
+    }
   }
 }
