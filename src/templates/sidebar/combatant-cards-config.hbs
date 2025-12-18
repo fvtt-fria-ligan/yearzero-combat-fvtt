@@ -33,7 +33,7 @@
 	</div>
 	<div class="form-group">
 		<label>{{localize "YZEC.CombatantConfig.DrawSize"}}</label>
-		{{rangePicker name="flags.yze-combat.drawSize" value=drawSize min=1 max=maxDrawSize step=1}}
+		<range-picker name="flags.yze-combat.drawSize" value={{drawSize}} min="1" max={{maxDrawSize}} step="1" id="draw-size-{{combatant.id}}"></range-picker>
 	</div>
 	<div class="form-group">
 		<label>{{localize "YZEC.CombatantConfig.KeepState"}}</label>
