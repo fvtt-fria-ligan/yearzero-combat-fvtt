@@ -41,10 +41,9 @@
 			{{selectOptions config.keepStates selected=keepState localize=true}}
 		</select>
 	</div>
-	<!-- Always disabled, so will comment out for now
 	<div class="form-group">
 		<label>{{localize "YZEC.CombatantConfig.Speed"}}</label>
-		<input class="disabled" type="number" value="{{speed}}" disabled/>
+		<!-- Modified style to make it look more like a label and less like something that can be modified -->
+		<input class="disabled" style="border: transparent; background: transparent;" type="number" value="{{speed}}" disabled/>
 	</div>
-	-->
 {{/if}}
