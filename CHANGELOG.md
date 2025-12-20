@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.5.0...1.6.0) (2025-12-20)
+
+### Bug Fixes
+
+* 🐛 Players can't choose Draw Another Card #74 via PR #76 ([58e4bf07](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/58e4bf070ed0fbc00d5173a38eb8d6c6d02fe8e8))
+* 🐛 Fix/group management via PR #75 ([99643d7a](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/99643d7a40d3f937239cec9ef35889122dc792e6))
+* 🐛 Reset Initiative doesn't trigger reset cards via PR #77 ([a584480e](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/a584480ea713d201af07d4d12b8ead27055ff108))
+* 🐛 Fix/combatant config via PR #78 ([ef3dfdf3e](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/ef3dfdf3e5ae1e948687613281976a62028982b3))
+* 🐛 Resource doesn't update immediately for combatant duplicates #54 via PR #81 ([f41b5b38](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/f41b5b387dc662336f26bf031c31aa190b75c356))
+* 🐛 Combat tracker becomes unusable #79 via PR #82 ([afbdad5f](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/afbdad5f81d57ae2588e3f7386b2ecd0989651b7))
+* 🐛 Initiative cards not suffled in case of drawsize >1 #49 via PR #80 ([49e29eb3](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/49e29eb3515a15f5c613041951dd00dbbb354573))
+
 ## [1.5.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.4.0...1.5.0) (2025-08-25)
 
 ### Bug Fixes
