@@ -11,6 +11,8 @@ SETTINGS.ActorSpeedAttribute: Actor's Speed Attribute
 SETTINGS.ActorSpeedAttributeHint: >-
   The property key in the actor's data to the attribute that defines how many
   initiative cards are kept (speed) by the combatant (e.g. system.speed.value).
+SETTINGS.AllowReroll: Reroll Initiative
+SETTINGS.AllowRerollHint: Whether to allow players to draw another initiative card.
 SETTINGS.AutoDraw: Automatic Initiative Draw
 SETTINGS.AutoDrawHint: Whether to automatically draw initiative cards when combat starts.
 SETTINGS.AutoSelectBestCard: Choose Best Card

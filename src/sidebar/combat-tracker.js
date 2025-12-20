@@ -124,7 +124,13 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
 
     // Changes existing buttons.
     const rerollIndex = contextMenu.findIndex(m => m.name === 'COMBAT.CombatantReroll');
-    if (~rerollIndex) contextMenu[rerollIndex].icon = YZEC.Icons.cards;
+    if (~rerollIndex) {
+      contextMenu[rerollIndex].icon = YZEC.Icons.cards;
+      contextMenu[rerollIndex].condition = li => {
+        return (game.user.isGM ||
+          getCombatant(li).isOwner && game.settings.get(MODULE_ID, SETTINGS_KEYS.ALLOW_REROLL));
+      };
+    }
 
     // Adds "Swap Initiative" context menu entry before 'COMBAT.CombatantReroll'.
     contextMenu.splice(rerollIndex, 0, {

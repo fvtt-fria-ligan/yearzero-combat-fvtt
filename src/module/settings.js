@@ -171,6 +171,15 @@ export function registerSystemSettings() {
     type: Boolean,
     default: false,
   });
+
+  game.settings.register(MODULE_ID, SETTINGS_KEYS.ALLOW_REROLL, {
+    name: 'SETTINGS.AllowReroll',
+    hint: 'SETTINGS.AllowRerollHint',
+    scope: 'world',
+    config: true,
+    type: Boolean,
+    default: false,
+  });
 }
 
 /** @param {number} _v value */
