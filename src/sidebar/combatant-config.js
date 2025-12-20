@@ -48,6 +48,7 @@ export async function onRenderCombatantConfig(app, html, _options) {
   const customHTML = document.createElement('div');
 
   customHTML.innerHTML = await foundry.applications.handlebars.renderTemplate(template, {
+    combatant,
     drawnCard,
     availableCards,
     discardedCards,
