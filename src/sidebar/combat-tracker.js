@@ -76,6 +76,18 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
   }
 
   /** @override */
+  async _onRender(context, options) {
+    // Check if group leader status has changed to 'dead', if so, remove from group and find new leader.
+    // This is needed in case the defeated status is changed outside of the combat tracker.
+    for (const combatant of this.viewed.combatants) {
+      if (combatant.isGroupLeader && combatant.isDefeated) {
+        await this.#removeFromGroup(combatant);
+      }
+    }
+    await super._onRender(context, options);
+  }
+
+  /** @override */
   _formatEffectsTooltip(effects) {
     if (!effects.length) return '';
     const ul = document.createElement('ul');
@@ -180,7 +192,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       icon: YZEC.Icons.makeLeader,
       condition: li => {
         const c = getCombatant(li);
-        return !c.isGroupLeader && c.actor?.isOwner;
+        return game.user.isGM && !c.isGroupLeader && c.actor?.isOwner;
       },
       callback: async li => getCombatant(li).promoteLeader(),
     });
@@ -191,7 +203,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       icon: YZEC.Icons.removeLeader,
       condition: li => {
         const c = getCombatant(li);
-        return c.isGroupLeader && c.actor?.isOwner;
+        return game.user.isGM && c.isGroupLeader && c.actor?.isOwner;
       },
       callback: async li => getCombatant(li).unpromoteLeader(),
     });
@@ -202,7 +214,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       icon: YZEC.Icons.color,
       condition: li => {
         const c = getCombatant(li);
-        return c.isGroupLeader && c.actor?.isOwner;
+        return game.user.isGM && c.isGroupLeader && c.actor?.isOwner;
       },
       callback: li => new YearZeroCombatGroupColor(getCombatant(li)).render(true),
     });
@@ -214,15 +226,15 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       condition: li => {
         const combatant = getCombatant(li);
         const selectedTokens = canvas?.tokens?.controlled || [];
-        const followerTokens = selectedTokens?.filter(t => t.actor.id != combatant.actorId);
-        return canvas?.ready &&
+        const followerTokens = selectedTokens?.filter(t => t.id != combatant.tokenId);
+        return game.user.isGM && canvas?.ready &&
           followerTokens.length > 0 &&
           followerTokens.every(t => t.actor?.isOwner);
       },
       callback: async li => {
         const combatant = getCombatant(li);
         const selectedTokens = canvas?.tokens?.controlled;
-        const followerTokens = selectedTokens?.filter(t => t.actor.id != combatant.actorId);
+        const followerTokens = selectedTokens?.filter(t => t.id != combatant.tokenId);
 
         if (followerTokens) {
           await combatant.promoteLeader();
@@ -268,7 +280,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
       icon: YZEC.Icons.unfollow,
       condition: li => {
         const c = getCombatant(li);
-        return c.groupId && !c.isGroupLeader && c.actor?.isOwner;
+        return game.user.isGM && c.groupId && !c.isGroupLeader && c.actor?.isOwner;
       },
       callback: async li => {
         const combatant = getCombatant(li);
@@ -367,14 +379,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
 
   /* ------------------------------------------ */
 
-  /**
-   * @param {YearZeroCombatant} combatant
-   * @override
-   */
-  async _onToggleDefeatedStatus(combatant) {
-    await combatTrackerOnToggleDefeatedStatus(combatant);
-
-    // Finds a new group leader.
+  async #removeFromGroup(combatant) {
     if (combatant.isGroupLeader) {
       const newLeader = await this.viewed.combatants.find(f => f.groupId === combatant.id && !f.isDefeated);
       if (!newLeader) return;
@@ -388,6 +393,17 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
     }
     if (combatant.groupId) {
       await combatant.unsetGroupId();
+    }
+  }
+
+  /**
+   * @param {YearZeroCombatant} combatant
+   * @override
+   */
+  async _onToggleDefeatedStatus(combatant) {
+    await combatTrackerOnToggleDefeatedStatus(combatant);
+    if (combatant.isGroupLeader && combatant.isDefeated) {
+      await this.#removeFromGroup(combatant);
     }
   }
 
