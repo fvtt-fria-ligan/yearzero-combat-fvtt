@@ -54,31 +54,42 @@ export default class YearZeroCombat extends Combat {
         await Utils.resetInitiativeDeck();
       }
 
-      // Draws the cards.
+      // Peek at cards so that unused cards can be returned by player
       /** @type {Card} */
       let card;
-      const cards = await this.drawCards(cardsToDraw);
+      const cards = await this.peekAtCards(cardsToDraw);
 
       // FIXME DEBUG
       if (cards.length !== cardsToDraw) console.warn('Something went wrong: Incorrect number of cards drawn');
 
-      if (isRedraw) {
-        const previousCard = this.findCard(combatant.cardValue);
-        if (previousCard) cards.push(previousCard);
+      const previousCard = isRedraw ? this.findCard(combatant.cardValue) : null;
+      if (previousCard) {
+        cards.push(previousCard);
       }
 
       if (cards.length > 1) {
         cards.sort((a, b) => (a.value - b.value) * Utils.getCardSortOrderModifier(combatant.keepState));
 
+        // Choose which card to use
         if (game.settings.get(MODULE_ID, SETTINGS_KEYS.AUTO_SELECT_BEST_CARD)) {
           card = cards[0];
         }
         else {
           card = await this.chooseCard(cards, combatant);
         }
+        // Return unchosen cards to the deck
+        const cardsToReturn = cards.filter(c => (c.id !== card.id && !(c.id === previousCard?.id)));
+        if (cardsToReturn.length > 0) {
+          await this.returnPeekedAtCards(cardsToReturn);
+        }
+        // Draw the chosen card if it's not the previous card (already drawn)
+        if (!(card.id === previousCard?.id)) {
+          await this.drawCards(1, [card]);
+        }
       }
       else {
         card = cards[0];
+        await this.drawCards(1, [card]);
       }
 
       const ambushedModifier = combatant.ambushed ? initiativeDeck?.cards?.size : 0;
@@ -160,12 +171,37 @@ export default class YearZeroCombat extends Combat {
   /**
    * Draws cards from the Initiative deck.
    * @param {number} [qty=1] Quantity of cards to draw
+   * @param {Card[]} [cards] The cards to draw (if they have been peeked at for example)
    * @returns {Promise.<Card[]>}
    */
-  async drawCards(qty = 1) {
+  async drawCards(qty = 1, cards = null) {
     const initiativeDeck = Utils.getInitiativeDeck(true);
     const discardPile = Utils.getInitiativeDeckDiscardPile(true);
-    return initiativeDeck.drawInitiative(discardPile, qty);
+    return initiativeDeck.drawInitiative(discardPile, qty, foundry.CONST.CARD_DRAW_MODES.RANDOM, cards);
+  }
+
+  /* ------------------------------------------ */
+
+  /**
+   * Peeks at cards from the Initiative deck.
+   * @param {number} [qty=1] Quantity of cards to peek at
+   * @returns {Promise.<Card[]>}
+   */
+  async peekAtCards(qty = 1) {
+    const initiativeDeck = Utils.getInitiativeDeck(true);
+    return initiativeDeck.peekInitiative(qty);
+  }
+
+  /* ------------------------------------------ */
+
+  /**
+   * Returns peeked at cards to the Initiative deck.
+   * @param {Card[]} cards Cards to return
+   * @returns {Promise.<Card[]>}
+   */
+  async returnPeekedAtCards(cards) {
+    const initiativeDeck = Utils.getInitiativeDeck(true);
+    return initiativeDeck.returnPeekedAtCards(cards);
   }
 
   /* ------------------------------------------ */
