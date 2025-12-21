@@ -79,9 +79,11 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
   async _onRender(context, options) {
     // Check if group leader status has changed to 'dead', if so, remove from group and find new leader.
     // This is needed in case the defeated status is changed outside of the combat tracker.
-    for (const combatant of this.viewed.combatants) {
-      if (combatant.isGroupLeader && combatant.isDefeated) {
-        await this.#removeFromGroup(combatant);
+    if (this.viewed) {
+      for (const combatant of this.viewed.combatants) {
+        if (combatant.isGroupLeader && combatant.isDefeated) {
+          await this.#removeFromGroup(combatant);
+        }
       }
     }
     await super._onRender(context, options);
