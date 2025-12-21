@@ -55,12 +55,19 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
 
   /** @override */
   async _preparePartContext(partId, context, options) {
-    const data = await super._preparePartContext(partId, context, options);
-    return {
-      ...data,
-      config: YZEC,
-    };
-
+    const data = { ...await super._preparePartContext(partId, context, options), config: YZEC };
+    if (partId === 'footer' && data.control && !game.user.isGM) {
+      // Disable turn controls for non-GM users if they are last in the turn tracker.
+      // If the player causes the round to advance there will be an error when trying to update flags (history).
+      // I think there is a way to set permissisons on the combat document to allow players to advance rounds,
+      // similar to how Combat allows players to modify rounds and turns, but it involves creating proper metadata
+      // for YearZeroCombat. This is a simpler solution for now just to avoid errors.
+      const combat = this.viewed;
+      if (combat?.turn === combat?.turns?.length - 1) {
+        data.control = false;
+      }
+    }
+    return data;
   }
 
   /** @override */
