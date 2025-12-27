@@ -83,9 +83,9 @@ export default class YearZeroCombatant extends Combatant {
     return this.unsetFlag(MODULE_ID, 'isGroupLeader');
   }
 
-  // get isFollower() {
-  //   return !this.isGroupLeader && !!this.groupId;
-  // }
+  get isFollower() {
+    return !this.isGroupLeader && !!this.groupId;
+  }
 
   get groupColor() {
     return this.getFlag(MODULE_ID, 'groupColor');
