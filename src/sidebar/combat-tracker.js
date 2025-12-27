@@ -255,6 +255,7 @@ export default class YearZeroCombatTracker extends foundry.applications.sidebar.
           const createData = newCombatantTokens.map(t => ({
             tokenId: t.id,
             actorId: t.actorId,
+            sceneId: t.scene.id,
             hidden: t.hidden,
           }));
 
