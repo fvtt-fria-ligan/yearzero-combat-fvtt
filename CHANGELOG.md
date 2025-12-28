@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.1](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.6.0...1.6.1) (2025-12-28)
+
+### Bug Fixes
+
+* 🐛 followers show initiative button via PR # 88 ([ed184e1](https://github.com/hodpub/yearzero-combat-fvtt/commit/ed184e19ac74451969ff214e05ea13234106ce49))
+* 🐛 fix issues with Adding Followers in 1.6.0 #86 via PR #87 ([543d6db](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/commit/543d6db87a3997f87857753824004e29ccb3dae4))
+
 ## [1.6.0](https://github.com/fvtt-fria-ligan/yearzero-combat-fvtt/compare/1.5.0...1.6.0) (2025-12-20)
 
 ### Bug Fixes
