@@ -86,7 +86,7 @@ jobs:
       - name: Get Compatibility
         run: |
           echo 'COMPATIBILITY<<EOF' >> $GITHUB_ENV
-          cat ${{ env.TYPE }}.json | jq .compatibility >> $GITHUB_ENV
+          cat dist/${{ env.TYPE }}.json | jq .compatibility >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       # Publishes the release to the FoundryVTT's package repository.
