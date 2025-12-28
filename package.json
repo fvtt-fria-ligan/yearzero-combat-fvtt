@@ -1,6 +1,6 @@
 {
   "name": "yearzero-combat-fvtt",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "type": "module",
   "description": "Foundry VTT module for Year Zero Engine combat",
   "scripts": {

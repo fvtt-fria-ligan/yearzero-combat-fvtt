@@ -2,7 +2,7 @@
   "id": "yze-combat",
   "title": "Year Zero Engine: ⚔️ Combat",
   "description": "Adds YZE combat mechanics to a game system: Card initiative, slow & fast actions, groups, and more!",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "compatibility": {
     "minimum": 13.341,
     "verified": 13.351,
